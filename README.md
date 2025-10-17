@@ -11,8 +11,6 @@ Dean Akin
 > Email - dakin@westernu.edu
 > GitHub - Vexlechuga
 
----
-
 #### Project Members
 Artur Dubanaev
 > Email - dubanaea@oregonstate.edu
