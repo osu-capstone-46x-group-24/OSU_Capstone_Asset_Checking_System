@@ -18,7 +18,7 @@ Dean Akin
 ### Project Members
 Artur Dubanaev
 > Email - dubanaea@oregonstate.edu \
-> GitHub - 
+> GitHub - artur1dubanaev
 
 Ethan Shiota
 > Email - shiotae@oregonstate.edu \
@@ -26,7 +26,7 @@ Ethan Shiota
 
 Michael Zandonella
 > Email - zandonmi@oregonstate.edu \
-> GitHub - 
+> GitHub - zandonella
 
 Mick Forsman
 > Email - forsmami@oregonstate.edu \
