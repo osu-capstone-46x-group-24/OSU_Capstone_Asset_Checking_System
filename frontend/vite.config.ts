@@ -8,4 +8,5 @@ export default defineConfig({
       react(),
       tailwindcss(),
   ],
+  base: './OSU_Capstone_Asset_Checking_System/',
 })
