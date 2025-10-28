@@ -1,15 +1,11 @@
 import './App.css'
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import MainBody from "./components/MainBody";
+import SplashPage from "./Pages/SplashPage.tsx";
 
 function App() {
 
   return (
-    <div>
-        <Header />
-        <MainBody />
-        <Footer/>
+    <div className="bg-amber-100 dark:bg-gray-950">
+        <SplashPage />
     </div>
   );
 }
