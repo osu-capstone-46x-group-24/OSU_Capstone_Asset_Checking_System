@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy React Frontend to GitHub Pages
   
 on:
   push:
