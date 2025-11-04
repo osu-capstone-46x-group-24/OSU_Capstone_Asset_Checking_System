@@ -14,7 +14,7 @@ Welcome! This guide explains how to set up, contribute code to, test, review, an
 
 ### Frontend:
 
-- Prerequisits: Node.js and npm
+- Prerequisites: Node.js and npm
 - Setup:
   - Clone the repo with `git clone https://github.com/osu-capstone-46x-group-24/OSU_Capstone_Asset_Checking_System.git`
   - Install dependencies with `npm install`
@@ -23,7 +23,7 @@ Welcome! This guide explains how to set up, contribute code to, test, review, an
 
 ## Branching & Workflow
 
-We use GitHub Flow to keep main ready for deployment and features to be developed seperately
+We use GitHub Flow to keep main ready for deployment and features to be developed separately
 
 All development happens on short lived branches with short descriptive names of what they do like `fix-example`, `add-example`, or starting with the section they are in like `frontend-example`.
 
@@ -37,11 +37,23 @@ All development happens on short lived branches with short descriptive names of 
 
 ## Issues & Planning
 
-<mark>Go over this on meeting on 11/3</mark>
+- We use GitHub Issues for all tasks
+- Use labels to define which part of the project the issue is for (Frontend, Backend, etc.), and what kind it is (Bug, enhancement, etc.)
+- Assign ownership for each issue
+- Reference issue numbers in pull requests using `Fixes` or `Closes`
+- Issues are planned out on Mondays and assigned to be completed to each person.
 
 ## Commit Messages
 
-<mark>Go over this on meeting on 11/3</mark>
+- Commits should be clear and concise enough to shortly describe what the commit does.
+- Commits should start with what they do, for example:
+
+  - fix ...
+  - add ...
+  - refactor ...
+  - remove ...
+
+- If more detail is necessary, describe it further in the pull request or body of commit.
 
 ## Code Style, Linting & Formatting
 
@@ -56,7 +68,11 @@ Workflows will be added in the future to automatically run linting, and PRs will
 
 ## Pull Requests & Reviews
 
-<mark>Go over this on meeting on 11/3</mark>
+- Open a PR when your code is ready to be reviewed
+- Use the PR template and include a clear description of what was changed and why
+- Reference related issues (for example, `Closes #12`).
+- Ensure your branch is up-to-date with main before merging.
+- At least one team member must review and approve PRs before they merge.
 
 ## CI/CD
 
@@ -68,7 +84,8 @@ Workflows will be added in the future to automatically run linting, and PRs will
 
 ## Documentation Expectations
 
-<mark>Go over this on meeting on 11/3</mark>
+- Update README or component-level documentation for new features.
+- Include inline comments for complex logic.
 
 ## Release Process
 
@@ -76,4 +93,4 @@ Workflows will be added in the future to automatically run linting, and PRs will
 
 ## Support & Contact
 
-<mark>TBD</mark>
+- Questions and clarifications can be posted in the team’s discord server or submitted as a GitHub Issue under the repository.
