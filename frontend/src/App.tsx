@@ -35,7 +35,7 @@ function App() {
     }, []);
 
     return (
-          <Router basename='/OSU_Capstone_Asset_Checking_System/'>
+          <Router basename={import.meta.env.VITE_BASE_URL || '/'}>
               <Routes>
                   <Route path="/" element={<Navigate to="/Home" />} />
                   <Route path="/Home" element={<Home />} />
