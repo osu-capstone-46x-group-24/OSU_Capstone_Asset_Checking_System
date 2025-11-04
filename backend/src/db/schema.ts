@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm/sql";
-import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const items_table = sqliteTable("items_table", {
     id: int().primaryKey({ autoIncrement: true }),
@@ -22,18 +22,20 @@ export const timestamp = sqliteTable("timestamp", {
 });
 
 // stores transaction information
-export const transactions = sqliteTable("transactions", {
-    user_id: int()
-        .primaryKey()
-        .references(() => users_table.id),
-    item_id: int()
-        .primaryKey()
-        .references(() => items_table.id),
-    timestamp_id: int()
-        .primaryKey()
-        .references(() => timestamp.id),
-    checkin: text("checkin_timestamp"),
-});
+export const transactions = sqliteTable(
+    "transactions",
+    {
+        user_id: int().references(() => users_table.id),
+        item_id: int().references(() => items_table.id),
+        timestamp_id: int().references(() => timestamp.id),
+        checkin: text("checkin_timestamp"),
+    },
+    (table) => [
+        primaryKey({
+            columns: [table.user_id, table.item_id, table.timestamp_id],
+        }),
+    ]
+);
 
 // stores what users are admins
 export const admins_table = sqliteTable("admins_table", {
