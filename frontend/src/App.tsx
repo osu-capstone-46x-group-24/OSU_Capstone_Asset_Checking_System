@@ -35,7 +35,7 @@ function App() {
     }, []);
 
     return (
-          <Router>
+          <Router basename='/OSU_Capstone_Asset_Checking_System/'>
               <Routes>
                   <Route path="/" element={<Navigate to="/Home" />} />
                   <Route path="/Home" element={<Home />} />
