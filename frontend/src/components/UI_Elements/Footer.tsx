@@ -4,6 +4,7 @@ import osu_horizontal_light from "../../images/osu-horizontal-light.svg";
 import osu_horizontal_dark from "../../images/osu-horizontal-dark.svg";
 import "tailwindcss";
 import GetTheme from "../GetTheme.tsx";
+import { Link } from "react-router-dom";
 
 
 const Footer = () => {
@@ -21,12 +22,12 @@ const Footer = () => {
                     <div className="flex h-max w-6/10 justify-self-center justify-items-center justify-center p-12">
                         {/* Col 1 - Logo and subtext */}
                         <div className="px-4 mt-4 flex flex-col justify-start self-center w-6/10">
-                            <a href="" className="mb-6 inline-block max-w-10px left-0 w-8/10">
+                            <Link to="/" className="mb-6 inline-block max-w-10px left-0 w-8/10">
                                 <img
                                     src={GetTheme() === "light" ? osu_horizontal_light : osu_horizontal_dark }
                                     alt="Oregon State University Logo"></img>
 
-                            </a>
+                            </Link>
                             <div className="mb-6 max-w-160px text-start w-full">
                                 <span>
                                     <p>Artur Dubanaev &#x2022; Ethan Shiota &#x2022; Michael Zandonella</p>
