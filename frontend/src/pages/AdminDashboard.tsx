@@ -15,7 +15,7 @@ function AdminDashboard() {
                     <div className="basis-12 py-6 text-7xl font-sans font-size-body mt-20">
                         <a
                             href="/Home">
-                            Admin Dashboard
+                            Admin Dashboard :)
                         </a>
                     </div>
                 </div>

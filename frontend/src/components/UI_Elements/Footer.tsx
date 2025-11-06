@@ -19,6 +19,7 @@ const Footer = () => {
             <footer className="relative bg-neutral-100 dark:bg-neutral-900 bottom-0 w-full pb-10 pt-20 lg:pb-20 lg:pt-[120px]">
                 <div className="w-full h-max">
                     <div className="flex h-max w-6/10 justify-self-center justify-items-center justify-center p-12">
+
                         {/* Col 1 - Logo and subtext */}
                         <div className="px-4 mt-4 flex flex-col justify-start self-center w-6/10">
                             <a href="" className="mb-6 inline-block max-w-10px left-0 w-8/10">

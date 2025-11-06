@@ -11,7 +11,7 @@ const Navbar = () => {
     /**
      * @state {boolean} isOpen - Indicates if menu is open for mobile UI
      * @state {boolean} isLoggedIn - Visual indicator if user is logged in
-     * @state {boolean} isDarkMode - Updates elements if darkMode toggle is hit TODO: Handle this properly (through contexts mabye?)
+     * @state {boolean} isDarkMode - Updates elements if darkMode toggle is hit TODO: Handle this properly (through contexts maybe?)
      * **/
     const [isOpen, setIsOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
