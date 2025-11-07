@@ -5,6 +5,7 @@ import { defineConfig } from "eslint/config";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default defineConfig([
+    { ignores: ["drizzle/**"] },
     {
         files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
         plugins: { js },
