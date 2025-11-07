@@ -1,4 +1,11 @@
-import Button from "./Button.tsx";
+import React from "react";
+import {
+    Button,
+    Dialog,
+    DialogHeader,
+    DialogBody,
+    DialogFooter,
+} from "@material-tailwind/react";
 
 /**
  * Function GetModalSpecs
@@ -11,69 +18,57 @@ import Button from "./Button.tsx";
  * ModalProps
  * Description: Props for Modal component
  * **/
-interface ModalProps {
-    bg_color: string,
-    window_title: string,
-    window_description: string,
-    contains_button: boolean,
-    button_position: string,
-}
+// interface ModalProps {
+//     bg_color: string,
+//     window_title: string,
+//     window_description: string,
+//     contains_button: boolean,
+//     button_position: string,
+// }
 
 /**
  * Modal Component
  * Description: Overlay on top of enclosing element, allowing and/or prompting for user input
  * Usage: <Modal bg_color window_title: window_description, contains_button, button_position/>
  * **/
-const Modal = ({ bg_color, window_title, window_description }: ModalProps) => {
+const Modal = () => {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(!open);
+
     return (
         <>
-            <div className={"w-min h-min m-4 justify-self-center"}>
-                <div className={`flex flex-col h-64 w-128 bg-${bg_color} border-2 border-white rounded-lg drop-shadow`}>
+            {/* Open Modal Button */}
+            <Button
+                className="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-slate-800 border-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700"
+                placeholder={undefined} onResize={undefined} onResizeCapture={undefined}
+                onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+                onClick={handleOpen}>
+                    Open Modal
+            </Button>
+            <Dialog open={open} handler={handleOpen} placeholder={undefined} onResize={undefined}
+                    onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     {/* Header Bar - Exit */}
-                    <div className={"flex justify-between pr-16 w-full h-10 text-2xl bg-neutral-200 rounded-t-sm border-b-2 border-white"}>
-                        <div className="order-1 justify-self-start pl-1 m-1">
-                            <span className={"font-semibold text-2xl text-black"}>
-                                {window_title}
-                            </span>
-                        </div>
-                        <div className={"order-2 justify-self-end pr-1 m-1 h-8 w-8"}>
-                            <Button
-                                bg_color={"neutral-200"}
-                                button_size={"xs"}
-                                border_color={"neutral-100"}
-                                alt_text={"exit modal"}
-                                text_color={"neutral-100"}
-                                text_input={"x"}
-                                svg_input={"null"}
-                                display_type={"text"}
-                                border_type={"full"}
-                            />
-                        </div>
-                    </div>
+                    <DialogHeader placeholder={undefined} onResize={undefined} onResizeCapture={undefined}
+                                  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        Window Title
+                    </DialogHeader>
                     {/* Body */}
-                    <div className={"flex w-full h-full"}>
-                        <div className={"text-2xl justify-self-start align-top pl-2 pt-1"}>
-                            <p>{window_description}</p>
-                        </div>
-                    </div>
+                    <DialogBody placeholder={undefined} onResize={undefined} onResizeCapture={undefined}
+                                onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        Window Body
+                    </DialogBody>
                     {/* Footer - Submit */}
-                    <div className={"w-full h-min bg-neutral-600 text-2xl align-bottom"}>
-                        <div className={"justify-self-end"}>
-                            <Button
-                                bg_color={"green-300"}
-                                button_size={"xs"}
-                                border_color={"neutral-100"}
-                                alt_text={"exit modal"}
-                                text_color={"neutral-100"}
-                                text_input={"Submit →"}
-                                svg_input={"null"}
-                                display_type={"text"}
-                                border_type={"none"}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <DialogFooter placeholder={undefined} onResize={undefined} onResizeCapture={undefined}
+                                  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <Button
+                            className="inline-flex items-center justify-center border align-middle select-none font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed data-[shape=pill]:rounded-full data-[width=full]:w-full focus:shadow-none text-sm rounded-md py-2 px-4 shadow-sm hover:shadow-md bg-slate-800 border-slate-800 text-slate-50 hover:bg-slate-700 hover:border-slate-700"
+                            placeholder={undefined} onResize={undefined} onResizeCapture={undefined}
+                            onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+                            onClick={handleOpen}>
+                            Confirm
+                        </Button>
+                </DialogFooter>
+            </Dialog>
         </>
     );
 };
