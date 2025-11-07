@@ -8,7 +8,7 @@ export const items_table = sqliteTable("items_table", {
 
 export const users_table = sqliteTable("users_table", {
     id: int().primaryKey({ autoIncrement: true }),
-    rfid: int("rfid").unique().notNull(),
+    rfid: text("rfid").unique().notNull(),
     username: text("username"),
 });
 
