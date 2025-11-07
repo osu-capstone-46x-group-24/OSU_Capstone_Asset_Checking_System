@@ -6,6 +6,7 @@ import {
     Route,
     Navigate
 } from "react-router-dom";
+import { ThemeProvider } from "@material-tailwind/react";
 
 import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -35,6 +36,7 @@ function App() {
     }, []);
 
     return (
+        <ThemeProvider>
           <Router>
               <Routes>
                   <Route path="/" element={<Navigate to="/Home" />} />
@@ -44,8 +46,7 @@ function App() {
                   <Route path="/User" element={<UserDashboard />} />
               </Routes>
           </Router>
-
-
+        </ThemeProvider>
   );
 }
 
