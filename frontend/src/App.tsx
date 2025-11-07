@@ -35,7 +35,7 @@ function App() {
     }, []);
 
     return (
-          <Router>
+          <Router basename={import.meta.env.VITE_BASE_URL || '/'}>
               <Routes>
                   <Route path="/" element={<Navigate to="/Home" />} />
                   <Route path="/Home" element={<Home />} />

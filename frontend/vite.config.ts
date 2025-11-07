@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -8,5 +8,5 @@ export default defineConfig({
       react(),
       tailwindcss(),
   ],
-  base: '/OSU_Capstone_Asset_Checking_System/',
+  base: loadEnv('', process.cwd()).VITE_BASE_URL || '/',
 })
