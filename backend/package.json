@@ -3,8 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "tsx watch src/index.ts",
-        "build": "tsc",
-        "start": "node dist/index.js"
+        "lint": "eslint"
     },
     "dependencies": {
         "@hono/node-server": "^1.19.6",
