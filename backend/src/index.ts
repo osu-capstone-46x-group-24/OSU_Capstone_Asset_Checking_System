@@ -6,8 +6,11 @@ import { zValidator } from "@hono/zod-validator";
 import "dotenv/config";
 import { createInsertSchema } from "drizzle-zod";
 import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
 import * as schema from "./db/schema.js";
 const db = drizzle({ connection: process.env.DB_FILE_NAME!, schema: schema });
+// auto migrate database using generated migrations
+await migrate(db, { migrationsFolder: "drizzle/" });
 const app = new Hono();
 
 app.post(
