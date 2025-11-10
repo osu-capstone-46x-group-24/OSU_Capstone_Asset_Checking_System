@@ -9,6 +9,10 @@ When updating the schema run `npx drizzle-kit generate`
 to generate the migration files.
 When the server is run migrations are automatically applied.
 
+## Tooling
+
+`npx drizzle-kit studio` can be used to inspect database state.
+
 ## Running
 
 ```
