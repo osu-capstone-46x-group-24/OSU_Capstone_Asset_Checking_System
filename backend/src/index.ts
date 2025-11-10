@@ -8,7 +8,16 @@ import { createInsertSchema } from "drizzle-zod";
 import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import * as schema from "./db/schema.js";
-const db = drizzle({ connection: process.env.DB_FILE_NAME!, schema: schema });
+
+// handle error where .env is not present / DB_FILE_NAME is not defined as an environment variable
+if (process.env.DB_FILE_NAME == undefined) {
+    console.log(
+        "Failed to get DB_FILE_NAME from env. Is there a .env present?"
+    );
+    process.exit(1);
+}
+
+const db = drizzle({ connection: process.env.DB_FILE_NAME, schema: schema });
 // auto migrate database using generated migrations
 await migrate(db, { migrationsFolder: "drizzle/" });
 const app = new Hono();
