@@ -17,6 +17,10 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
+      - name: Create .env for GitHub Pages
+        run: echo "VITE_BASE_URL=/OSU_Capstone_Asset_Checking_System/" > .env
+        working-directory: ./frontend
+
       - name: install dependencies
         run: npm install
         working-directory: ./frontend
