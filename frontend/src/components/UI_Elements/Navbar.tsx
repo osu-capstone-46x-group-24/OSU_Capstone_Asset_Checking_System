@@ -92,16 +92,15 @@ const Navbar = () => {
                             <span className="text-neutral-200 font-bold text-3xl tracking-wider hover:text-purple-200 transition-all duration-300">
                                 {title}
                             </span>
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
                         {navItems.map((item, index) => (
-                            <a
+                            <Link
                                 key={index}
-                                href={item.link}
-                                target="_self"
+                                to={item.link}
                                 className="text-neutral-200 hover:text-purple-200 transition duration-300 ease-in-out text-lg relative group"
                             >
                                 {item.title}
