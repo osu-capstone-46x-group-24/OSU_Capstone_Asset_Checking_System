@@ -18,7 +18,13 @@ type ModalProps = {
     items?: { itemId: string; itemName: string }[];
 };
 
-const DatetimeModal = ({ open, onClose, onConfirm, user, items }: ModalProps) => {
+const DatetimeModal = ({
+    open,
+    onClose,
+    onConfirm,
+    user,
+    items,
+}: ModalProps) => {
     const [datetime, setDatetime] = useState<string>("");
     const [unsure, setUnsure] = useState(false);
 
@@ -44,7 +50,11 @@ const DatetimeModal = ({ open, onClose, onConfirm, user, items }: ModalProps) =>
                 <div className="flex flex-col gap-4">
                     {user && (
                         <p className="text-gray-700 text-sm">
-                            Checking out as <strong>{user.firstName} {user.lastName}</strong> (ID: {user.id})
+                            Checking out as{" "}
+                            <strong>
+                                {user.firstName} {user.lastName}
+                            </strong>{" "}
+                            (ID: {user.id})
                         </p>
                     )}
                     {items && items.length > 0 && (
@@ -57,7 +67,9 @@ const DatetimeModal = ({ open, onClose, onConfirm, user, items }: ModalProps) =>
                             </ul>
                         </div>
                     )}
-                    <label className="text-sm text-gray-700 mt-2">Expected Return Time:</label>
+                    <label className="text-sm text-gray-700 mt-2">
+                        Expected Return Time:
+                    </label>
                     <Input
                         type="datetime-local"
                         value={datetime}
@@ -73,17 +85,10 @@ const DatetimeModal = ({ open, onClose, onConfirm, user, items }: ModalProps) =>
                 </div>
             </DialogBody>
             <DialogFooter>
-                <Button
-                    color="gray"
-                    onClick={onClose}
-                    className="mr-2"
-                >
+                <Button color="gray" onClick={onClose} className="mr-2">
                     Cancel
                 </Button>
-                <Button
-                    color="blue"
-                    onClick={handleConfirm}
-                >
+                <Button color="blue" onClick={handleConfirm}>
                     Confirm & Checkout
                 </Button>
             </DialogFooter>

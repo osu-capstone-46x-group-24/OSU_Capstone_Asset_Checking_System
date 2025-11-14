@@ -1,5 +1,5 @@
 // UserDashboard.tsx
-import React, { useState } from "react";
+import { useState } from "react";
 import "../App.css";
 import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
@@ -18,7 +18,7 @@ type CartItem = {
     itemId: string;
     itemName: string;
     raw: string;
-}
+};
 
 function UserDashboard() {
     const [scanned, setScanned] = useState<ScanData | null>(null);
@@ -83,20 +83,19 @@ function UserDashboard() {
         console.log("Return time:", returnTime ?? "Not specified");
 
         // reset
-        setShowModal(false);     // close modal
-        setThankYou(true);       // show thank-you screen
+        setShowModal(false); // close modal
+        setThankYou(true); // show thank-you screen
 
         setTimeout(() => {
             // after 8 seconds, fully reset to dashboard. if it feels like too long you can shorten it idk
             handleReset();
         }, 8000);
-
     }
 
     return (
         <div className="absolute w-full top-0 left-0 bg-neutral-100 dark:bg-neutral-800 min-h-screen">
             <Navbar />
-            
+
             {thankYou ? (
                 <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
                     <h1 className="text-5xl font-semibold text-ehitedark:text-white">
@@ -118,7 +117,11 @@ function UserDashboard() {
 
                         <div className="basis-12 py-6 text-5xl font-sans mt-12">
                             <div className="flex items-center">
-                                <div onClick={() => handleScan("@05607858,Lilliam,Kalina")}>
+                                <div
+                                    onClick={() =>
+                                        handleScan("@05607858,Lilliam,Kalina")
+                                    }
+                                >
                                     <ScanButton onScan={handleScan} />
                                 </div>
                                 <div className="ml-4 text-lg text-white">
@@ -153,29 +156,51 @@ function UserDashboard() {
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead>
                                     <tr>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-1/4">Item ID</th>
-                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-3/4">Item</th>
-                                        <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider w-1/4">Remove</th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-1/4">
+                                            Item ID
+                                        </th>
+                                        <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-3/4">
+                                            Item
+                                        </th>
+                                        <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider w-1/4">
+                                            Remove
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {cartItems.length === 0 ? (
                                         <tr>
-                                            <td className="px-6 py-4 text-left text-gray-400" colSpan={3}>
-                                                No Items in Cart, Scan to Add Items.
+                                            <td
+                                                className="px-6 py-4 text-left text-gray-400"
+                                                colSpan={3}
+                                            >
+                                                No Items in Cart, Scan to Add
+                                                Items.
                                             </td>
                                         </tr>
                                     ) : (
                                         cartItems.map((item, index) => (
                                             <tr key={index}>
-                                                <td className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-1/4">{item.itemId}</td>
-                                                <td className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-3/4">{item.itemName}</td>
+                                                <td className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-1/4">
+                                                    {item.itemId}
+                                                </td>
+                                                <td className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider w-3/4">
+                                                    {item.itemName}
+                                                </td>
                                                 <td className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider w-1/4">
                                                     <button
                                                         className="text-red-500 hover:underline"
                                                         onClick={() =>
-                                                            setCartItems((prev) =>
-                                                                prev.filter((_, i) => i !== index)
+                                                            setCartItems(
+                                                                (prev) =>
+                                                                    prev.filter(
+                                                                        (
+                                                                            _,
+                                                                            i
+                                                                        ) =>
+                                                                            i !==
+                                                                            index
+                                                                    )
                                                             )
                                                         }
                                                     >
@@ -189,13 +214,19 @@ function UserDashboard() {
                             </table>
 
                             <div className="absolute left-0 mt-6">
-                                <button onClick={handleItemScan} className="text-white">
+                                <button
+                                    onClick={handleItemScan}
+                                    className="text-white"
+                                >
                                     Mime Ultrasound Machine
                                 </button>
                             </div>
 
                             <div className="mt-6">
-                                <button onClick={handleItemScan2} className="text-white">
+                                <button
+                                    onClick={handleItemScan2}
+                                    className="text-white"
+                                >
                                     Mime Osculatation Simulator
                                 </button>
                             </div>
@@ -222,7 +253,6 @@ function UserDashboard() {
                 user={scanned}
                 items={cartItems}
             />
-
 
             <Footer />
         </div>

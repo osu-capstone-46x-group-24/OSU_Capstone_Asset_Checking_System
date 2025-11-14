@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
-import { MoonIcon, SunIcon } from '@heroicons/react/24/solid'
+import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 import "tailwindcss";
 
 /**
@@ -23,18 +23,18 @@ const Navbar = () => {
 
     const toggleDarkMode = () => {
         setIsDarkMode(!isDarkMode);
-    }
+    };
 
     // Parameter for leftmost navbar text - logo-equivalent
     const title = "CS 46X Capstone";
 
     // Names and links for navbar items
     const navItems = [
-        { title: "Dashboard", link: "#" },
-        { title: "Docs", link: "#" },
-        { title: "About", link: "#" },
+        { title: "User Dashboard", link: "/User" },
+        // { title: "Docs", link: "#" },
         { title: "Admin", link: "/Admin" },
-        { title: "User", link: "/User" },
+        { title: "About", link: "/Home" },
+        // { title: "User", link: "/User" },
     ];
 
     /**
@@ -87,9 +87,9 @@ const Navbar = () => {
                     <div className="flex items-center">
                         <a
                             href="/Home"
-                            className="hover:text-purple-200 transition duration-300 ease-in-out text-lg relative group">
-                            <span
-                                className="text-neutral-200 font-bold text-3xl tracking-wider hover:text-purple-200 transition-all duration-300">
+                            className="hover:text-purple-200 transition duration-300 ease-in-out text-lg relative group"
+                        >
+                            <span className="text-neutral-200 font-bold text-3xl tracking-wider hover:text-purple-200 transition-all duration-300">
                                 {title}
                             </span>
                         </a>
@@ -105,8 +105,7 @@ const Navbar = () => {
                                 className="text-neutral-200 hover:text-purple-200 transition duration-300 ease-in-out text-lg relative group"
                             >
                                 {item.title}
-                                <span
-                                    className="absolute bottom-0 left-0 w-0 h-0.5 bg-inverse-background/10 transition-all duration-300 group-hover:w-full"></span>
+                                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-inverse-background/10 transition-all duration-300 group-hover:w-full"></span>
                             </a>
                         ))}
                         {/* Login & Logout */}
@@ -114,7 +113,7 @@ const Navbar = () => {
                             onClick={() => setIsLoggedIn(!isLoggedIn)}
                             className="text-neutral-200 flex items-center space-x-2 bg-inverse-background/10 backdrop-blur-md px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition duration-300 ease-in-out border border-white/10"
                         >
-                            <FaUserCircle className="h-5 w-5"/>
+                            <FaUserCircle className="h-5 w-5" />
                             <span>{isLoggedIn ? "Sign Out" : "Login"}</span>
                         </button>
                         {/* Theme Switcher*/}
@@ -122,7 +121,11 @@ const Navbar = () => {
                             onClick={() => ToggleTheme()}
                             className="text-neutral-200 flex items-center space-x-2 inverse-background/25 backdrop-blur-md px-6 py-2 rounded-full font-semibold hover:bg-white/20 transition duration-300 ease-in-out border border-white/20"
                         >
-                            {isDarkMode ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
+                            {isDarkMode ? (
+                                <MoonIcon className="h-5 w-5" />
+                            ) : (
+                                <SunIcon className="h-5 w-5" />
+                            )}
                         </button>
                     </div>
 
@@ -133,7 +136,7 @@ const Navbar = () => {
                             className="text-color-primary focus:outline-none focus:ring-2 focus:ring-white rounded-lg p-2"
                         >
                             {isOpen ? (
-                                <FaTimes className="h-6 w-6"/>
+                                <FaTimes className="h-6 w-6" />
                             ) : (
                                 <FaBars className="h-6 w-6" />
                             )}

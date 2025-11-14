@@ -5,6 +5,6 @@ const GetTheme = () => {
     } else {
         return "light";
     }
-}
+};
 
 export default GetTheme;

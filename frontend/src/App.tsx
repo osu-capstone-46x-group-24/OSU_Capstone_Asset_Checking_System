@@ -1,10 +1,10 @@
 //import React from "react";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import {
     BrowserRouter as Router,
     Routes,
     Route,
-    Navigate
+    Navigate,
 } from "react-router-dom";
 import { ThemeProvider } from "@material-tailwind/react";
 
@@ -37,17 +37,17 @@ function App() {
 
     return (
         <ThemeProvider>
-          <Router>
-              <Routes>
-                  <Route path="/" element={<Navigate to="/Home" />} />
-                  <Route path="/Home" element={<Home />} />
-                  {/*<Route path="/about" element={<About />} />*/}
-                  <Route path="/Admin" element={<AdminDashboard />} />
-                  <Route path="/User" element={<UserDashboard />} />
-              </Routes>
-          </Router>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Navigate to="/Home" />} />
+                    <Route path="/Home" element={<Home />} />
+                    {/*<Route path="/about" element={<About />} />*/}
+                    <Route path="/Admin" element={<AdminDashboard />} />
+                    <Route path="/User" element={<UserDashboard />} />
+                </Routes>
+            </Router>
         </ThemeProvider>
-  );
+    );
 }
 
 export default App;
