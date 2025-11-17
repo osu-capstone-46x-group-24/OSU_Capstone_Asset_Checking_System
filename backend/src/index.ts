@@ -9,6 +9,9 @@ import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import * as schema from "./db/schema.js";
 
+import checkinRoute from "./routes/checkin.ts";
+import checkoutRoute from "./routes/checkout.ts";
+
 // handle error where .env is not present / DB_FILE_NAME is not defined as an environment variable
 if (process.env.DB_FILE_NAME == undefined) {
     console.log(
@@ -17,7 +20,10 @@ if (process.env.DB_FILE_NAME == undefined) {
     process.exit(1);
 }
 
-const db = drizzle({ connection: process.env.DB_FILE_NAME, schema: schema });
+export const db = drizzle({
+    connection: process.env.DB_FILE_NAME,
+    schema: schema,
+});
 // auto migrate database using generated migrations
 await migrate(db, { migrationsFolder: "drizzle/" });
 const app = new Hono();
@@ -67,6 +73,9 @@ app.post("/api/checkout", zValidator("json", checkout_schema), async (c) => {
         return c.text("success", 200);
     }
 });
+
+app.route("api/", checkinRoute);
+app.route("api/", checkoutRoute);
 
 serve({ fetch: app.fetch, port: 3000 }, (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
