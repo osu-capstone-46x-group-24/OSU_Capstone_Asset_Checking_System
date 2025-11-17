@@ -1,9 +1,11 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
-import { db } from "../index.js";
 import { transactions } from "../db/schema.js";
 import { and, eq } from "drizzle-orm";
+import * as Schema from "../db/schema.js";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
+declare const db: LibSQLDatabase<typeof Schema>;
 
 const checkinRoute = new Hono();
 

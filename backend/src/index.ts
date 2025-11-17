@@ -20,7 +20,7 @@ if (process.env.DB_FILE_NAME == undefined) {
     process.exit(1);
 }
 
-export const db = drizzle({
+const db = drizzle({
     connection: process.env.DB_FILE_NAME,
     schema: schema,
 });

@@ -1,14 +1,18 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
-import { db } from "../index.ts";
 import {
     users_table,
     items_table,
     timestamp,
     transactions,
-} from "../db/schema.ts";
+} from "../db/schema.js";
 import { eq } from "drizzle-orm";
+
+import * as Schema from "../db/schema.js";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
+
+declare const db: LibSQLDatabase<typeof Schema>;
 
 const checkoutRoute = new Hono();
 
