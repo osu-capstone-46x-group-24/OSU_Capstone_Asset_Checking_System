@@ -8,8 +8,7 @@
         "types": ["node"],
         "jsx": "react-jsx",
         "jsxImportSource": "hono/jsx",
-        "outDir": "./dist",
-        "allowImportingTsExtensions": true
+        "outDir": "./dist"
     },
     "exclude": ["node_modules"]
 }

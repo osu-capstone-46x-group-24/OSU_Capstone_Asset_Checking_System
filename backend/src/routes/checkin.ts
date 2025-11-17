@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
-import { db } from "../index.ts";
-import { transactions } from "../db/schema.ts";
+import { db } from "../index.js";
+import { transactions } from "../db/schema.js";
 import { and, eq } from "drizzle-orm";
 
 const checkinRoute = new Hono();

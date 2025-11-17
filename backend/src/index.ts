@@ -9,8 +9,8 @@ import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import * as schema from "./db/schema.js";
 
-import checkinRoute from "./routes/checkin.ts";
-import checkoutRoute from "./routes/checkout.ts";
+import checkinRoute from "./routes/checkin.js";
+import checkoutRoute from "./routes/checkout.js";
 
 // handle error where .env is not present / DB_FILE_NAME is not defined as an environment variable
 if (process.env.DB_FILE_NAME == undefined) {
