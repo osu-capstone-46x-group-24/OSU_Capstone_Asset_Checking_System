@@ -1,5 +1,5 @@
 // DatetimeModal.tsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
     Dialog,
     DialogHeader,
@@ -42,11 +42,12 @@ const DatetimeModal = ({
     }
 
     return (
-        <Dialog open={open} handler={onClose}>
+        <Dialog open={open} handler={onClose} placeholder={undefined} onResize={undefined}
+                onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <div className="text-gray-800">
-                <DialogHeader>Confirm Checkout</DialogHeader>
+                <DialogHeader placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Confirm Checkout</DialogHeader>
             </div>
-            <DialogBody>
+            <DialogBody placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <div className="flex flex-col gap-4">
                     {user && (
                         <p className="text-gray-700 text-sm">
@@ -75,20 +76,24 @@ const DatetimeModal = ({
                         value={datetime}
                         onChange={(e) => setDatetime(e.target.value)}
                         disabled={unsure}
-                        className="border rounded p-2 text-gray-800"
-                    />
+                        className="border rounded p-2 text-gray-800" onResize={undefined} onResizeCapture={undefined}
+                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}                    />
                     <Checkbox
                         label="Not sure when I'll return these items"
                         checked={unsure}
-                        onChange={(e) => setUnsure(e.target.checked)}
-                    />
+                        onChange={(e) => setUnsure(e.target.checked)} onResize={undefined} onResizeCapture={undefined}
+                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}                    />
                 </div>
             </DialogBody>
-            <DialogFooter>
-                <Button color="gray" onClick={onClose} className="mr-2">
+            <DialogFooter placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <Button color="gray" onClick={onClose} className="mr-2" placeholder={undefined}
+                        onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}>
                     Cancel
                 </Button>
-                <Button color="blue" onClick={handleConfirm}>
+                <Button color="blue" onClick={handleConfirm} placeholder={undefined}
+                        onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}>
                     Confirm & Checkout
                 </Button>
             </DialogFooter>

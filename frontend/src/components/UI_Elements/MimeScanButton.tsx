@@ -9,6 +9,7 @@ interface ScanButtonProps {
  * Description: Custom wrapper around Button that simulates an ID scan
  */
 const ScanButton = ({ onScan }: ScanButtonProps) => {
+    void onScan;
     return (
         <Button
             bg_color=""

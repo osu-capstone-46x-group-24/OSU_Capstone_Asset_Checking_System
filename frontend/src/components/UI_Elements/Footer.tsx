@@ -4,7 +4,6 @@ import osu_horizontal_light from "../../images/osu-horizontal-light.svg";
 import osu_horizontal_dark from "../../images/osu-horizontal-dark.svg";
 import "tailwindcss";
 import GetTheme from "../GetTheme.tsx";
-import { Link } from "react-router-dom";
 
 const Footer = () => {
     const githubUrl =
