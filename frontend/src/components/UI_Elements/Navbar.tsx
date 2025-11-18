@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaBars, FaTimes, FaUserCircle } from "react-icons/fa";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 import "tailwindcss";
 
 /**
@@ -85,28 +86,29 @@ const Navbar = () => {
                 <div className="flex justify-between items-center">
                     {/* Branding / Logo Equivalent */}
                     <div className="flex items-center">
-                        <a
-                            href="/Home"
+                        <Link
+                            to={"/Home"}
+                            target="_self"
                             className="hover:text-purple-200 transition duration-300 ease-in-out text-lg relative group"
                         >
                             <span className="text-neutral-200 font-bold text-3xl tracking-wider hover:text-purple-200 transition-all duration-300">
                                 {title}
                             </span>
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
                         {navItems.map((item, index) => (
-                            <a
+                            <Link
                                 key={index}
-                                href={item.link}
+                                to={item.link}
                                 target="_self"
                                 className="text-neutral-200 hover:text-purple-200 transition duration-300 ease-in-out text-lg relative group"
                             >
                                 {item.title}
                                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-inverse-background/10 transition-all duration-300 group-hover:w-full"></span>
-                            </a>
+                            </Link>
                         ))}
                         {/* Login & Logout */}
                         <button
@@ -149,13 +151,13 @@ const Navbar = () => {
                     <div className="md:hidden backdrop-blur-lg bg-purple-600/90 rounded-lg mt-4 shadow-xl">
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                             {navItems.map((item, index) => (
-                                <a
+                                <Link
                                     key={index}
-                                    href={item.link}
+                                    to={item.link}
                                     className="text-neutral-200 block px-3 py-2 rounded-md text-base font-medium hover:bg-white/10 transition duration-300 ease-in-out"
                                 >
                                     {item.title}
-                                </a>
+                                </Link>
                             ))}
                             <button
                                 onClick={() => setIsLoggedIn(!isLoggedIn)}
