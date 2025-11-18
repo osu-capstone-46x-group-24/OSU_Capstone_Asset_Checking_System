@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');*/
 
 /*@import "tailwindcss/theme.css" layer(theme);*/
 /*@import "tailwindcss/preflight.css" layer(base);*/
@@ -110,11 +110,11 @@
 
 /* Font */
 
-.instrument-sans-400 {
-  font-family: "Instrument Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings:
-          "wdth" 100;
-}
+/*.instrument-sans-400 {*/
+/*  font-family: "Instrument Sans", sans-serif;*/
+/*  font-optical-sizing: auto;*/
+/*  font-weight: 400;*/
+/*  font-style: normal;*/
+/*  font-variation-settings:*/
+/*          "wdth" 100;*/
+/*}*/
