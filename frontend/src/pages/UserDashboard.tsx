@@ -1,4 +1,5 @@
 // UserDashboard.tsx
+
 import { useState } from "react";
 import "../App.css";
 import Footer from "../components/UI_Elements/Footer.tsx";
@@ -20,7 +21,17 @@ type CartItem = {
     raw: string;
 };
 
-function UserDashboard() {
+/**
+ * UserDashboard Page
+ * @constructor
+ */
+export default function UserDashboard({
+    theme,
+    setTheme,
+}: {
+    theme: "light" | "dark";
+    setTheme: (t: "light" | "dark") => void;
+}) {
     const [scanned, setScanned] = useState<ScanData | null>(null);
     const [showCart, setShowCart] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -93,24 +104,30 @@ function UserDashboard() {
     }
 
     return (
-        <div className="absolute w-full top-0 left-0 bg-neutral-100 dark:bg-neutral-800 min-h-screen">
-            <Navbar />
+        <div
+            className={`absolute w-full top-0 left-0 min-h-screen font-mono
+        transition-colors duration-300
+            ${
+                theme === "light"
+                    ? "bg-wu-gray-200 text-wu-gray-400"
+                    : "bg-wu-gray-400 text-wu-gray-200"
+            }`}
+        >
+            <Navbar theme={theme} setTheme={setTheme} />
 
             {thankYou ? (
                 <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
-                    <h1 className="text-5xl font-semibold text-ehitedark:text-white">
+                    <h1 className="text-5xl">
                         Thank you for checking out your items!
                     </h1>
-                    <p className="text-lg text-white mt-4">
-                        Resetting User Dashboard...
-                    </p>
+                    <p className="text-lg mt-4">Resetting User Dashboard...</p>
                 </div>
             ) : !showCart ? (
                 <div className="relative min-h-[60vh] w-full pt-19 px-6">
                     <div className="flex flex-col pt-20">
-                        <div className="basis-12 py-6 text-7xl font-sans mt-20">
+                        <div className="basis-12 py-6 text-7xl mt-20">
                             <h2>User Dashboard</h2>
-                            <h2 className="basis-12 py-4 text-3xl text-color-secondary mt-10">
+                            <h2 className="basis-12 py-4 text-3xl mt-10">
                                 Scan ID To Get Started:
                             </h2>
                         </div>
@@ -133,7 +150,7 @@ function UserDashboard() {
                     </div>
                 </div>
             ) : (
-                <div className="relative min-h-[70vh] w-full pt-6 px-6 text-gray-500">
+                <div className="relative min-h-[70vh] w-full pt-6 px-6">
                     <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 mt-8">
                         <div className="flex items-center justify-between">
                             <div>
@@ -254,9 +271,7 @@ function UserDashboard() {
                 items={cartItems}
             />
 
-            <Footer />
+            <Footer theme={theme} setTheme={setTheme} />
         </div>
     );
 }
-
-export default UserDashboard;

@@ -1,11 +1,18 @@
+// Footer.tsx
+
 import github_light from "../../images/github-mark-light.svg";
 import github_dark from "../../images/github-mark-dark.svg";
 import osu_horizontal_light from "../../images/osu-horizontal-light.svg";
 import osu_horizontal_dark from "../../images/osu-horizontal-dark.svg";
 import "tailwindcss";
-import GetTheme from "../GetTheme.tsx";
 
-const Footer = () => {
+export default function Footer({
+    theme,
+    setTheme,
+}: {
+    theme: "light" | "dark";
+    setTheme: (t: "light" | "dark") => void;
+}) {
     const githubUrl =
         "https://github.com/osu-capstone-46x-group-24/OSU_Capstone_Asset_Checking_System";
 
@@ -16,7 +23,15 @@ const Footer = () => {
     ];
 
     return (
-        <footer className="relative bg-neutral-100 dark:bg-neutral-900 bottom-0 w-full pb-10 pt-20 lg:pb-20 lg:pt-[120px]">
+        <footer
+            className={`relative bottom-0 w-full pb-10 pt-20 lg:pb-20 lg:pt-[120px]
+            transition-all duration-300
+            ${
+                theme === "light"
+                    ? "bg-emerald-600 text-wu-gray-200"
+                    : "bg-wu-gray-500 text-wu-gray-200"
+            }`}
+        >
             <div className="w-full h-max">
                 <div className="flex h-max w-6/10 justify-self-center justify-items-center justify-center p-12">
                     {/* Col 1 - Logo and subtext */}
@@ -27,7 +42,7 @@ const Footer = () => {
                         >
                             <img
                                 src={
-                                    GetTheme() === "light"
+                                    theme === "light"
                                         ? osu_horizontal_light
                                         : osu_horizontal_dark
                                 }
@@ -41,7 +56,6 @@ const Footer = () => {
                                     &#x2022; Michael Zandonella
                                 </p>
                                 <p>
-                                    {" "}
                                     Mick Forsman &#x2022; Ryan Dobkin &#x2022;
                                     © 2025
                                 </p>
@@ -60,10 +74,10 @@ const Footer = () => {
                                     key={index}
                                     href={item.link}
                                     target="_self"
-                                    className="text-white pb-1 hover:text-purple-200 transition duration-300 ease-in-out text-lg relative"
+                                    className="pb-1 ease-in-out text-lg relative"
                                 >
                                     {item.title}
-                                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                                    <span className="absolute bottom-0 left-0 w-0 h-0.5"></span>
                                 </a>
                             ))}
                         </div>
@@ -77,7 +91,7 @@ const Footer = () => {
                         >
                             <img
                                 src={
-                                    GetTheme() === "light"
+                                    theme === "light"
                                         ? github_light
                                         : github_dark
                                 }
@@ -89,6 +103,4 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
-
-export default Footer;
+}
