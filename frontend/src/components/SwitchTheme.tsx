@@ -1,0 +1,37 @@
+// SwitchTheme.tsx
+
+// import { Switch } from "@material-tailwind/react";
+// import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+
+/**
+ * Component SwitchTheme
+ * @constructor
+ */
+export default function SwitchTheme({
+    theme,
+    setTheme,
+}: {
+    theme: "light" | "dark";
+    setTheme: (t: "light" | "dark") => void;
+}) {
+    // @ts-expect-ignore
+    return (
+        <div className="relative inline-block w-10 h-5.5">
+            <input
+                checked={theme === "dark"}
+                onChange={(): void =>
+                    setTheme(theme === "light" ? "dark" : "light")
+                }
+                id="switch-component-dark"
+                type="checkbox"
+                className="peer appearance-none w-10 h-5.5 bg-wu-gray-400 rounded-full checked:bg-wu-gray-200 cursor-pointer transition-colors duration-300"
+            />
+            <label
+                htmlFor="switch-component-dark"
+                className="absolute top-0.25 left-0.5 w-5 h-5 bg-wu-gray-200 peer-checked:bg-wu-gray-500
+                peer-checked:hover:border-wu-gray-200 hover:border-wu-gray-500 rounded-full border border-wu-gray-200 shadow-sm
+                 transition-all duration-300 peer-checked:translate-x-4.25 peer-checked:border-wu-gray-500 cursor-pointer"
+            ></label>
+        </div>
+    );
+}
