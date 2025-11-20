@@ -1,5 +1,5 @@
 // ScanButton.tsx
-import Button from "./Button";
+import ButtonDefault from "./ButtonDefault.tsx";
 
 interface ScanButtonProps {
     onScan: (scanString: string) => void;
@@ -10,19 +10,7 @@ interface ScanButtonProps {
  */
 const ScanButton = ({ onScan }: ScanButtonProps) => {
     void onScan;
-    return (
-        <Button
-            bg_color=""
-            text_color="white"
-            display_type="text"
-            text_input="MIME ID SCAN"
-            svg_input=""
-            alt_text="Simulated scan"
-            button_size="sm"
-            border_type="rounded"
-            border_color=""
-        />
-    );
+    return <ButtonDefault children={"MIME ID SCAN"} />;
 };
 
 export default ScanButton;
