@@ -1,120 +1,102 @@
+/* App.css */
+
 @import "tailwindcss";
 
-/*@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');*/
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
 
-/*@import "tailwindcss/theme.css" layer(theme);*/
-/*@import "tailwindcss/preflight.css" layer(base);*/
-/*@import "tailwindcss/utilities.css" layer(utilities);*/
-/*@layer theme, base, components, utilities;*/
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+@layer theme, base, components, utilities;
 
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
 }
+
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+    filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+    filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+    a:nth-of-type(2) .logo {
+        animation: logo-spin infinite 20s linear;
+    }
 }
 
 .card {
-  padding: 2em;
+    padding: 2em;
 }
 
 .read-the-docs {
-  color: #888;
+    color: #888;
 }
 
-{/* Variables */}
+{ /* Variables */  }
 
-/*@theme {*/
-/*  !* Default Theme: Light *!*/
-/*  --accent-white: #ffffff;*/
-/*  --accent-black: #000000;*/
-/*  --accent-orange: #D73F09;*/
-/*  --bg-color-primary: #FFFFFF;*/
-/*  --font-sans: instrument-sans-400;*/
-/*  --font-size-body: 16;*/
-/*}*/
+@theme {
+    --color-wu-red-100: rgb(105, 3, 35);
+    --color-wu-red-200: rgb(88, 0, 27);
+    --color-wu-red-300: rgb(62, 2, 20);
+    --color-wu-yellow-100: rgb(224, 171, 76);
+    --color-wu-gray-100: rgb(255, 255, 255);
+    --color-wu-gray-200: rgb(226, 228, 219);
+    --color-wu-gray-300: rgb(124, 135, 142);
+    --color-wu-gray-400: rgb(36, 36, 36);
+    --color-wu-gray-500: rgb(26, 26, 26);
 
-/*@layer base {*/
-/*  [data-theme="dark"] {*/
-/*    --accent-white: #000000;*/
-/*    --accent-black: #a1a1a1;*/
-/*    --accent-orange: #D73F09;*/
-/*    --bg-color-primary: #000000;*/
-/*    --font-sans: instrument-sans-400;*/
-/*    --font-size-body: 16;*/
-/*  }*/
-/*}*/
-
-{/* Themes */}
-/*.light {*/
-/*  --background: 255, 255, 255;*/
-/*  --accent-background: "bg-gradient-to-r from-orange-300 via-pink-500 to-blue-600";*/
-/*  --inverse-background: 0, 0, 0;*/
-
-/*  --border: 210, 210, 210;*/
-
-/*  --color-primary: 100, 0, 0;*/
-/*  --color-secondary: 200, 75, 75;*/
-
-/*  background: rgba(var(--background));*/
-/*}*/
-
-/*.dark {*/
-/*  --background: 0, 0, 0;*/
-/*  --accent-background: "bg-gradient-to-r from-blue-600 via-orange-700 to-pink-800";*/
-/*  --inverse-background: 255, 255, 255;*/
-
-/*  --border: 38, 38, 38;*/
-
-/*  --color-primary: 55, 55, 255;*/
-/*  --color-secondary: 115, 115, 115;*/
-
-/*  background: rgba(var(--background));*/
-/*}*/
-
-.bg-gradient-light {
-  background-image: linear-gradient(to right, rgb(255, 141, 65), rgb(175, 13, 171), rgb(0, 53, 177));
+    --font-sans: ui-sans-serif system-ui, sans-serif;
+    --font-serif: libre-baskerville-regular, normal, serif;
+    --font-mono: jetbrains-mono-400, normal, monospace;
 }
 
-.bg-gradient-dark {
-  background-image: linear-gradient(to right, rgb(0, 53, 177), rgb(255, 141, 65), rgb(175, 13, 171));
+{/* Font */}
+
+.libre-baskerville-regular {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
-/* Font */
+.libre-baskerville-bold {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 700;
+    font-style: normal;
+}
 
-/*.instrument-sans-400 {*/
-/*  font-family: "Instrument Sans", sans-serif;*/
-/*  font-optical-sizing: auto;*/
-/*  font-weight: 400;*/
-/*  font-style: normal;*/
-/*  font-variation-settings:*/
-/*          "wdth" 100;*/
-/*}*/
+.libre-baskerville-regular-italic {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.jetbrains-mono-400 {
+     font-family: "JetBrains Mono", monospace;
+     font-optical-sizing: auto;
+     font-weight: 400;
+     font-style: normal;
+}
