@@ -3,10 +3,10 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { transactions } from "../db/schema.js";
 import { and, eq } from "drizzle-orm";
-import * as Schema from "../db/schema.js";
+import * as schema from "../db/schema.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 
-function checkinRoute(db: LibSQLDatabase<typeof Schema>) {
+function checkinRoute(db: LibSQLDatabase<typeof schema>) {
     const checkinRoute = new Hono();
 
     const checkinSchema = z.object({

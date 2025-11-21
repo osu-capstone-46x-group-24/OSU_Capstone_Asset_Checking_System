@@ -9,10 +9,10 @@ import {
 } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 
-import * as Schema from "../db/schema.js";
+import * as schema from "../db/schema.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 
-function checkoutRoute(db: LibSQLDatabase<typeof Schema>) {
+function checkoutRoute(db: LibSQLDatabase<typeof schema>) {
     const checkoutRoute = new Hono();
 
     // Zod validation
@@ -35,9 +35,11 @@ function checkoutRoute(db: LibSQLDatabase<typeof Schema>) {
             if (!user) return c.json({ error: "User not found" }, 404);
 
             // 2. Verify item exists
-            const item = await db.query.items_table.findFirst({
-                where: eq(items_table.id, itemId),
-            });
+            const [item] = await db
+                .select()
+                .from(schema.available_items)
+                .where(eq(schema.available_items.id, itemId))
+                .limit(1);
             if (!item) return c.json({ error: "Item not found" }, 404);
 
             // 3. Create entry in timestamp table
@@ -49,11 +51,14 @@ function checkoutRoute(db: LibSQLDatabase<typeof Schema>) {
                 .returning();
 
             // 4. Insert into transactions
-            await db.insert(transactions).values({
-                user_id: userId,
-                item_id: itemId,
-                timestamp_id: ts.id,
-            });
+            await db
+                .insert(transactions)
+                .values({
+                    user_id: userId,
+                    item_id: itemId,
+                    timestamp_id: ts.id,
+                })
+                .onConflictDoNothing();
 
             return c.json({
                 status: "success",

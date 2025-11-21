@@ -4,25 +4,24 @@ import * as z from "zod";
 import { zValidator } from "@hono/zod-validator";
 import "dotenv/config";
 import { createInsertSchema } from "drizzle-zod";
-import { drizzle, type LibSQLDatabase } from "drizzle-orm/libsql";
-import { migrate } from "drizzle-orm/libsql/migrator";
-import * as Schema from "./db/schema.js";
+import * as schema from "./db/schema.js";
 
 import checkinRoute from "./routes/checkin.js";
 import checkoutRoute from "./routes/checkout.js";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
 
-function app_constructor(db: LibSQLDatabase<typeof Schema>) {
+function app_constructor(db: LibSQLDatabase<typeof schema>) {
     const app = new Hono();
 
     app.post(
         "api/user",
         zValidator(
             "json",
-            createInsertSchema(Schema.users_table).omit({ id: true })
+            createInsertSchema(schema.users_table).omit({ id: true })
         ),
         async (c) => {
             const data = c.req.valid("json");
-            await db.insert(Schema.users_table).values(data);
+            await db.insert(schema.users_table).values(data);
             return c.text("success", 200);
         }
     );
@@ -33,17 +32,26 @@ function app_constructor(db: LibSQLDatabase<typeof Schema>) {
         items: z.array(z.int()),
         expected_return: z.string(), // what should this be?
     });
+    app.get("/api/items/all", async (c) => {
+        const items = await db.select().from(schema.items_table);
+        return c.json(items);
+    });
+    app.get("/api/items/available", async (c) => {
+        const items = await db.select().from(schema.items_table);
+        return c.json(items);
+    });
+
     app.post(
-        "/api/checkout",
+        "/api/checkouts",
         zValidator("json", checkout_schema),
         async (c) => {
             const data = c.req.valid("json");
             // insert new timestamp
-            const timestamp = await db
-                .insert(Schema.timestamp)
+            const [timestamp] = await db
+                .insert(schema.timestamp)
                 .values({ expected_return: data.expected_return })
                 .returning();
-            const timestamp_id = timestamp[0].id;
+            const timestamp_id = timestamp.id;
 
             const insert_values = data.items.map((item) => {
                 return {
@@ -53,7 +61,7 @@ function app_constructor(db: LibSQLDatabase<typeof Schema>) {
                 };
             });
             const result = await db
-                .insert(Schema.transactions)
+                .insert(schema.transactions)
                 .values(insert_values)
                 .onConflictDoNothing();
             if (result.rowsAffected != data.items.length) {
