@@ -1,4 +1,4 @@
-import { drizzle } from "drizzle-orm/libsql";
+import { drizzle } from "drizzle-orm/libsql/node";
 import app from "./app.js";
 import { serve } from "@hono/node-server";
 
