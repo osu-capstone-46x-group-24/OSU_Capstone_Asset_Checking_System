@@ -27,7 +27,10 @@ export const transactions = sqliteTable(
     {
         user_id: int().references(() => users_table.id),
         item_id: int().references(() => items_table.id),
-        timestamp_id: int().references(() => timestamp.id),
+        timestamp_id: int().references(() => timestamp.id, {
+            onDelete: "cascade",
+            onUpdate: "cascade",
+        }),
         checkin: text("checkin_timestamp"),
     },
     (table) => [
@@ -41,5 +44,8 @@ export const transactions = sqliteTable(
 export const admins_table = sqliteTable("admins_table", {
     user_id: int()
         .primaryKey()
-        .references(() => users_table.id),
+        .references(() => users_table.id, {
+            onDelete: "cascade",
+            onUpdate: "cascade",
+        }),
 });
