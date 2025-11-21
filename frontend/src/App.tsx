@@ -1,7 +1,7 @@
 //import React from "react";
 import { useEffect } from "react";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Routes,
     Route,
     Navigate,
@@ -37,7 +37,7 @@ function App() {
 
     return (
         <ThemeProvider>
-            <Router basename={import.meta.env.VITE_BASE_URL || '/'}>
+            <Router>
                 <Routes>
                     <Route path="/" element={<Navigate to="/Home" />} />
                     <Route path="/Home" element={<Home />} />
