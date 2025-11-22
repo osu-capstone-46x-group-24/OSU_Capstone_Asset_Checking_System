@@ -13,16 +13,12 @@ import * as schema from "../db/schema.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 import { LibsqlError } from "@libsql/client";
 
+// Zod validation
+// items is a flat array of item_ids
+import { checkoutSchema } from "../api.js";
+
 function checkoutRoute(db: LibSQLDatabase<typeof schema>) {
     const checkoutRoute = new Hono();
-
-    // Zod validation
-    // items is a flat array of item_ids
-    const checkoutSchema = z.object({
-        userId: z.number().int(),
-        items: z.array(z.number().int()),
-        expectedReturn: z.string().optional(),
-    });
 
     checkoutRoute.post(
         "/checkout",

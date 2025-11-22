@@ -32,6 +32,8 @@ afterAll(async (c) => {
     const items_table = await db.select().from(schema.items_table).all();
     const transactions = await db.select().from(schema.transactions).all();
     const items = await db.select().from(schema.available_items).all();
+    const timestamps = await db.select().from(schema.timestamp).all();
+    console.log(timestamps);
     console.log(users_table);
     console.log(items_table);
     console.log(transactions);

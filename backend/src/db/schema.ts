@@ -23,7 +23,7 @@ export const timestamp = sqliteTable("timestamp", {
     id: int().primaryKey({ autoIncrement: true }),
     checkout: text("timestamp")
         .notNull()
-        .default(sql`(current_timestamp)`),
+        .default(sql`(datetime('now'))`),
     expected_return: text("expected_return"),
 });
 

@@ -6,14 +6,10 @@ import { and, eq } from "drizzle-orm";
 import * as schema from "../db/schema.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 
+import { checkinSchema } from "../api.js";
+
 function checkinRoute(db: LibSQLDatabase<typeof schema>) {
     const checkinRoute = new Hono();
-
-    const checkinSchema = z.object({
-        userId: z.number().int(),
-        itemId: z.number().int(),
-        timestampId: z.number().int(),
-    });
 
     checkinRoute.post(
         "/checkin",
