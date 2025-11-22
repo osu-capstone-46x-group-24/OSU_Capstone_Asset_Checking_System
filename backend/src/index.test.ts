@@ -130,15 +130,14 @@ describe.sequential("POST /api/checkout", async (c) => {
     });
 });
 
-// TODO:
-// describe.sequential("POST /api/checkin", async (c) => {
-//     test.sequential("Valid checkin", async (c) => {
-//         await app.request("/api/checkin", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify({
-//                 userId: 1,
-//             }),
-//         });
-//     });
-// });
+describe.todo.sequential("POST /api/checkin", async (c) => {
+    test.sequential("Valid checkin", async (c) => {
+        await app.request("/api/checkin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: 1,
+            }),
+        });
+    });
+});
