@@ -7,18 +7,20 @@ import {
     timestamp,
     transactions,
 } from "../db/schema.js";
-import { eq } from "drizzle-orm";
+import { DrizzleQueryError, eq, inArray, is } from "drizzle-orm";
 
 import * as schema from "../db/schema.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
+import { LibsqlError } from "@libsql/client";
 
 function checkoutRoute(db: LibSQLDatabase<typeof schema>) {
     const checkoutRoute = new Hono();
 
     // Zod validation
+    // items is a flat array of item_ids
     const checkoutSchema = z.object({
         userId: z.number().int(),
-        itemId: z.number().int(),
+        items: z.array(z.number().int()),
         expectedReturn: z.string().optional(),
     });
 
@@ -26,7 +28,7 @@ function checkoutRoute(db: LibSQLDatabase<typeof schema>) {
         "/checkout",
         zValidator("json", checkoutSchema),
         async (c) => {
-            const { userId, itemId, expectedReturn } = c.req.valid("json");
+            const { userId, items, expectedReturn } = c.req.valid("json");
 
             // 1. Verify user exists
             const user = await db.query.users_table.findFirst({
@@ -35,12 +37,14 @@ function checkoutRoute(db: LibSQLDatabase<typeof schema>) {
             if (!user) return c.json({ error: "User not found" }, 404);
 
             // 2. Verify item exists
-            const [item] = await db
+            const available_items = await db
                 .select()
                 .from(schema.available_items)
-                .where(eq(schema.available_items.id, itemId))
-                .limit(1);
-            if (!item) return c.json({ error: "Item not found" }, 404);
+                .where(inArray(schema.available_items.id, items));
+
+            if (available_items.length < items.length) {
+                return c.text("item not available or doesn't exist", 404);
+            }
 
             // 3. Create entry in timestamp table
             const [ts] = await db
@@ -51,19 +55,33 @@ function checkoutRoute(db: LibSQLDatabase<typeof schema>) {
                 .returning();
 
             // 4. Insert into transactions
-            await db
-                .insert(transactions)
-                .values({
-                    user_id: userId,
-                    item_id: itemId,
-                    timestamp_id: ts.id,
-                })
-                .onConflictDoNothing();
+            try {
+                await db
+                    .insert(transactions)
+                    .values(
+                        items.map((itemId) => {
+                            return {
+                                user_id: userId,
+                                item_id: itemId,
+                                timestamp_id: ts.id,
+                            };
+                        })
+                    )
+                    .onConflictDoNothing();
+            } catch (error) {
+                if (error instanceof DrizzleQueryError) {
+                    console.log(error.cause);
+                }
+                if (error instanceof LibsqlError) {
+                    console.log(error.cause);
+                }
+                return c.text("insert failed", 501);
+            }
 
             return c.json({
                 status: "success",
                 userId,
-                itemId,
+                items,
                 timestampId: ts.id,
             });
         }
