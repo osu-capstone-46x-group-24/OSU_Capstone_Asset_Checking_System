@@ -6,6 +6,6 @@ name: Footer
 
 ### Footer
 
-Path: ```~/src/components/Footer.tsx```
+Path: `~/src/components/Footer.tsx`
 
 Footer documentation.

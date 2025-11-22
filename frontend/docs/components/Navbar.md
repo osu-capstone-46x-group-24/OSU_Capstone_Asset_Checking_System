@@ -6,6 +6,6 @@ name: Navbar
 
 ### Navbar
 
-Path: ```~/src/components/Navbar.tsx```
+Path: `~/src/components/Navbar.tsx`
 
 Navbar implementation.
