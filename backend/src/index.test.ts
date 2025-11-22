@@ -10,6 +10,7 @@ const testdb = "file:test.db";
 const db = drizzle({
     connection: { url: testdb },
     schema: schema,
+    logger: true,
 });
 // auto migrate database using generated migrations
 await migrate(db, { migrationsFolder: "drizzle/" });
@@ -45,14 +46,14 @@ describe.sequential("POST /api/checkout", async (c) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 userId: 1,
-                itemId: 1,
+                items: [1],
                 expectedReturn: new Date().toISOString(),
             }),
         });
 
         expect(req.status).toBe(200);
         expect(await req.json()).containSubset({
-            itemId: 1,
+            items: [1],
             status: "success",
             userId: 1,
         });
@@ -64,7 +65,7 @@ describe.sequential("POST /api/checkout", async (c) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 userId: 1,
-                itemId: 1,
+                items: [1],
                 expectedReturn: new Date().toISOString(),
             }),
         });
@@ -78,11 +79,66 @@ describe.sequential("POST /api/checkout", async (c) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 userId: 200,
-                itemId: 1,
+                items: [1],
                 expectedReturn: new Date().toISOString(),
             }),
         });
 
         expect(req.status).toBe(404);
     });
+
+    test.sequential("Checkout many with invalid item", async (c) => {
+        const available_items = await db.select().from(schema.available_items);
+        const req = await app.request("/api/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: 2,
+                items: [1, 2, 3],
+                expectedReturn: new Date().toISOString(),
+            }),
+        });
+        const available_items_after_transaction = await db
+            .select()
+            .from(schema.available_items);
+
+        expect(available_items).toStrictEqual(
+            available_items_after_transaction
+        );
+
+        expect(req.status).toBe(404);
+    });
+
+    test.sequential("Checkout many", async (c) => {
+        const available_items = await db.select().from(schema.available_items);
+        const req = await app.request("/api/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: 2,
+                items: available_items.map((item) => item.id),
+                expectedReturn: new Date().toISOString(),
+            }),
+        });
+
+        const available_items_after_transaction = await db
+            .select()
+            .from(schema.available_items);
+        expect(available_items_after_transaction).toStrictEqual([]);
+
+        expect(req.status).toBe(200);
+    });
 });
+
+// TODO:
+// describe.sequential("POST /api/checkin", async (c) => {
+//     test.sequential("Valid checkin", async (c) => {
+//         await app.request("/api/checkin", {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify({
+//                 userId: 1,
+//             }),
+//         });
+//     });
+// });
