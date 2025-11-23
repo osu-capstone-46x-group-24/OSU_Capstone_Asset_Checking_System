@@ -8,10 +8,10 @@ import "tailwindcss";
 
 export default function Footer({
     theme,
-    setTheme,
+    // setTheme,
 }: {
     theme: "light" | "dark";
-    setTheme: (t: "light" | "dark") => void;
+    // setTheme: (t: "light" | "dark") => void;
 }) {
     const githubUrl =
         "https://github.com/osu-capstone-46x-group-24/OSU_Capstone_Asset_Checking_System";
