@@ -50,7 +50,7 @@ export default function Home({
                 </div>
             </div>
 
-            <Footer theme={theme} setTheme={setTheme} />
+            <Footer theme={theme} />
         </div>
     );
 }

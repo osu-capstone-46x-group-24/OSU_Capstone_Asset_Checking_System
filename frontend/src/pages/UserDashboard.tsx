@@ -5,7 +5,7 @@ import "../App.css";
 import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
 import DatetimeModal from "../components/UI_Elements/DatetimeModal.tsx";
-import ScanButton from "../components/UI_Elements/MimeScanButton.tsx";
+import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
 
 // ID data types based on the example stuff he provided
 type ScanData = {
@@ -38,7 +38,7 @@ export default function UserDashboard({
     const [showModal, setShowModal] = useState(false);
     const [thankYou, setThankYou] = useState(false);
 
-    function handleScan(scanString: string) {
+    function handleScan(scanString: string): void {
         const parts = scanString.replace(/^@/, "").split(",");
         const data: ScanData = {
             id: parts[0] ?? "",
@@ -49,7 +49,7 @@ export default function UserDashboard({
         setShowCart(true);
     }
 
-    function handleReset() {
+    function handleReset(): void {
         setScanned(null);
         setShowCart(false);
         setCartItems([]);
@@ -86,7 +86,7 @@ export default function UserDashboard({
         return newItem;
     }
 
-    function handleConfirmCheckout(returnTime: string | null) {
+    function handleConfirmCheckout(returnTime: string | null): void {
         const rawExport = cartItems.map((item) => item.raw); // array of raw strings
         console.log("Checkout summary:");
         console.log("User:", scanned);
@@ -102,6 +102,16 @@ export default function UserDashboard({
             handleReset();
         }, 8000);
     }
+
+    const buttonTheme =
+        theme === "light"
+            ? "bg-wu-gray-400 text-wu-gray-200"
+            : "bg-wu-gray-400 text-wu-gray-200";
+
+    const modalTheme =
+        theme === "light"
+            ? "bg-wu-gray-400 text-wu-gray-200"
+            : "bg-wu-gray-200 text-wu-gray-400";
 
     return (
         <div
@@ -132,16 +142,20 @@ export default function UserDashboard({
                             </h2>
                         </div>
 
-                        <div className="basis-12 py-6 text-5xl font-sans mt-12">
+                        <div className="basis-12 py-6 text-5xl mt-12">
                             <div className="flex items-center">
-                                <div
-                                    onClick={() =>
-                                        handleScan("@05607858,Lilliam,Kalina")
-                                    }
-                                >
-                                    <ScanButton onScan={handleScan} />
+                                <div>
+                                    <ButtonDefault
+                                        onClick={() =>
+                                            handleScan(
+                                                "@05607858,Lilliam,Kalina"
+                                            )
+                                        }
+                                        children={"MIME ID SCAN"}
+                                        className={`${buttonTheme}`}
+                                    />
                                 </div>
-                                <div className="ml-4 text-lg text-white">
+                                <div className="ml-4 text-lg">
                                     Click to simulate an ID scan returning{" "}
                                     <code>@05607858,Lilliam,Kalina</code>
                                 </div>
@@ -151,7 +165,9 @@ export default function UserDashboard({
                 </div>
             ) : (
                 <div className="relative min-h-[70vh] w-full pt-6 px-6">
-                    <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 mt-8">
+                    <div
+                        className={`max-w-4xl mx-auto rounded shadow p-6 mt-8 ${modalTheme}`}
+                    >
                         <div className="flex items-center justify-between">
                             <div>
                                 <h1 className="text-3xl font-semibold">
@@ -161,12 +177,11 @@ export default function UserDashboard({
                                     ID: {scanned?.id}
                                 </p>
                             </div>
-                            <button
+                            <ButtonDefault
                                 onClick={handleReset}
-                                className="bg-gray-200 hover:bg-gray-300 text-white px-4 py-2 rounded"
-                            >
-                                Not Me? (logout)
-                            </button>
+                                children={"Not Me? (logout)"}
+                                className={`px-4 py-2 rounded ${buttonTheme}`}
+                            />
                         </div>
 
                         <div className="mt-6 relative">
@@ -184,11 +199,11 @@ export default function UserDashboard({
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="bg-white divide-y divide-gray-200 text-wu-gray-400">
                                     {cartItems.length === 0 ? (
                                         <tr>
                                             <td
-                                                className="px-6 py-4 text-left text-gray-400"
+                                                className="px-6 py-4 text-left text-wu-gray-400"
                                                 colSpan={3}
                                             >
                                                 No Items in Cart, Scan to Add
@@ -205,8 +220,7 @@ export default function UserDashboard({
                                                     {item.itemName}
                                                 </td>
                                                 <td className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider w-1/4">
-                                                    <button
-                                                        className="text-red-500 hover:underline"
+                                                    <ButtonDefault
                                                         onClick={() =>
                                                             setCartItems(
                                                                 (prev) =>
@@ -220,42 +234,40 @@ export default function UserDashboard({
                                                                     )
                                                             )
                                                         }
-                                                    >
-                                                        X
-                                                    </button>
+                                                        children={"X"}
+                                                        className={`text-red-500 hover:underline ${buttonTheme}`}
+                                                    />
                                                 </td>
                                             </tr>
                                         ))
                                     )}
                                 </tbody>
                             </table>
+                            <div className="flex flex-col">
+                                <div className="left-0 mt-6">
+                                    <ButtonDefault
+                                        onClick={handleItemScan}
+                                        children={"Mime Ultrasound Machine"}
+                                        className={`${buttonTheme}`}
+                                    />
+                                </div>
 
-                            <div className="absolute left-0 mt-6">
-                                <button
-                                    onClick={handleItemScan}
-                                    className="text-white"
-                                >
-                                    Mime Ultrasound Machine
-                                </button>
-                            </div>
-
-                            <div className="mt-6">
-                                <button
-                                    onClick={handleItemScan2}
-                                    className="text-white"
-                                >
-                                    Mime Osculatation Simulator
-                                </button>
+                                <div className="mt-6">
+                                    <ButtonDefault
+                                        onClick={handleItemScan2}
+                                        children={"Mime Osculatation Simulator"}
+                                        className={`${buttonTheme}`}
+                                    />
+                                </div>
                             </div>
 
                             {cartItems.length > 0 && (
                                 <div className="flex justify-end mt-10">
-                                    <button
+                                    <ButtonDefault
                                         onClick={() => setShowModal(true)}
-                                        className="bg-slate-800 text-white rounded-md px-6 py-3 shadow hover:bg-slate-700"
-                                    >
-                                        Submit Checkout
-                                    </button>
+                                        children={"Submit Checkout"}
+                                        className={`rounded-md px-6 py-3 shadow hover:bg-slate-700 ${buttonTheme}`}
+                                    />
                                 </div>
                             )}
                         </div>
@@ -271,7 +283,7 @@ export default function UserDashboard({
                 items={cartItems}
             />
 
-            <Footer theme={theme} setTheme={setTheme} />
+            <Footer theme={theme} />
         </div>
     );
 }
