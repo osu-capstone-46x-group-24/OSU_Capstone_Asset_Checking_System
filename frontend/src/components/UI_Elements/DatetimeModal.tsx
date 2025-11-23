@@ -11,21 +11,27 @@ import {
 } from "@material-tailwind/react";
 import ButtonDefault from "./ButtonDefault";
 
-type ModalProps = {
-    open: boolean;
-    onClose: () => void;
-    onConfirm: (returnTime: string | null) => void;
-    user?: { id: string; firstName: string; lastName: string } | null;
-    items?: { itemId: string; itemName: string }[];
-};
+// type ModalProps = {
+//     open: boolean;
+//     onClose: () => void;
+//     onConfirm: (returnTime: string | null) => void;
+//     user?: { id: string; firstName: string; lastName: string } | null;
+//     items?: { itemId: string; itemName: string }[];
+// };
 
-const DatetimeModal = ({
+export default function DatetimeModal({
     open,
     onClose,
     onConfirm,
     user,
     items,
-}: ModalProps) => {
+}: {
+    open: boolean;
+    onClose: () => void;
+    onConfirm: (returnTime: string | null) => void;
+    user?: { id: string; firstName: string; lastName: string } | null;
+    items?: { itemId: string; itemName: string }[];
+}) {
     const [datetime, setDatetime] = useState<string>("");
     const [unsure, setUnsure] = useState(false);
 
@@ -123,19 +129,12 @@ const DatetimeModal = ({
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
             >
+                <ButtonDefault onClick={onClose} children={"Cancel"} />
                 <ButtonDefault
-                    color="primary"
-                    onClick={onClose}
-                    children={"Cancel"}
-                />
-                <ButtonDefault
-                    color="primary"
                     onClick={handleConfirm}
                     children={"Confirm & Checkout"}
                 />
             </DialogFooter>
         </Dialog>
     );
-};
-
-export default DatetimeModal;
+}
