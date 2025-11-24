@@ -1,13 +1,7 @@
 import { Hono } from "hono";
-import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
-import {
-    users_table,
-    items_table,
-    timestamp,
-    transactions,
-} from "../db/schema.js";
-import { DrizzleQueryError, eq, inArray, is } from "drizzle-orm";
+import { users_table, timestamp, transactions } from "../db/schema.js";
+import { DrizzleQueryError, eq, inArray } from "drizzle-orm";
 
 import * as schema from "../db/schema.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";

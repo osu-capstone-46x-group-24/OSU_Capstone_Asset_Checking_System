@@ -28,9 +28,9 @@ function app_constructor(db: LibSQLDatabase<typeof schema>) {
 
     // requires id of user and of each item, will fail if these do not exist
     const checkout_schema = z.object({
-        user_id: z.int(),
-        items: z.array(z.int()),
-        expected_return: z.string(), // what should this be?
+        userId: z.number().int(),
+        items: z.array(z.number().int()),
+        expectedReturn: z.string(), // changed that 11.23
     });
     app.get("/api/items/all", async (c) => {
         const items = await db.select().from(schema.items_table);
@@ -49,13 +49,13 @@ function app_constructor(db: LibSQLDatabase<typeof schema>) {
             // insert new timestamp
             const [timestamp] = await db
                 .insert(schema.timestamp)
-                .values({ expected_return: data.expected_return })
+                .values({ expected_return: data.expectedReturn })
                 .returning();
             const timestamp_id = timestamp.id;
 
             const insert_values = data.items.map((item) => {
                 return {
-                    user_id: data.user_id,
+                    user_id: data.userId,
                     item_id: item,
                     timestamp_id: timestamp_id,
                 };

@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { transactions } from "../db/schema.js";
 import { and, eq } from "drizzle-orm";
@@ -19,7 +18,7 @@ function checkinRoute(db: LibSQLDatabase<typeof schema>) {
 
             const now = new Date().toISOString();
 
-            const updated = await db
+            await db
                 .update(transactions)
                 .set({ checkin: now })
                 .where(
