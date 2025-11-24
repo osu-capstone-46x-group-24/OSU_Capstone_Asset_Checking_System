@@ -3,8 +3,9 @@
     "type": "module",
     "scripts": {
         "dev": "tsx watch src/index.ts",
-        "build": "tsc",
-        "start": "node dist/index.js"
+        "lint": "eslint",
+        "test": "vitest",
+        "docs": "zod2md"
     },
     "dependencies": {
         "@hono/node-server": "^1.19.6",
@@ -13,23 +14,28 @@
         "@libsql/client": "^0.15.15",
         "dotenv": "^17.2.3",
         "drizzle-orm": "^0.44.7",
+        "drizzle-seed": "^0.3.1",
         "drizzle-zod": "^0.8.3",
-        "hono": "^4.10.4",
-        "zod": "^4.1.12"
+        "hono": "^4.10.6",
+        "zod": "^4.1.13"
     },
     "devDependencies": {
         "@eslint/js": "^9.38.0",
-        "@types/node": "^20.11.17",
-        "drizzle-kit": "^0.31.6",
-        "eslint": "^9.38.0",
+        "@types/node": "^20.19.25",
+        "@vitest/coverage-v8": "^4.0.13",
+        "drizzle-kit": "^0.31.7",
+        "eslint": "^9.39.1",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.4",
         "globals": "^16.4.0",
         "jiti": "^2.6.1",
-        "prettier": "3.6.2",
+        "prettier": "^3.6.2",
         "prettier-eslint": "^16.4.2",
+        "ts-node": "^10.9.2",
         "tsx": "^4.20.6",
-        "typescript": "^5.8.3",
-        "typescript-eslint": "^8.46.2"
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.46.2",
+        "vitest": "^4.0.13",
+        "zod2md": "^0.2.4"
     }
 }
