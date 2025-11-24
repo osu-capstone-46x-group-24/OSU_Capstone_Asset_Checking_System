@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 
-import * as z from "zod";
 import { zValidator } from "@hono/zod-validator";
 import "dotenv/config";
 import { createInsertSchema } from "drizzle-zod";
@@ -14,6 +13,7 @@ import itemsRoute from "./routes/items.js";
 function app_constructor(db: LibSQLDatabase<typeof schema>) {
     const app = new Hono();
 
+    // TODO: Refactor into seperate file
     app.post(
         "api/user",
         zValidator(

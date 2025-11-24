@@ -23,3 +23,12 @@ _Object containing the following properties:_
 | `expectedReturn`  | Expected time item will be returned | `string` (_ISO 8601_)   |
 
 _(\*) Required._
+
+## Item
+
+_Union of the following possible types:_
+
+- _Object with properties:_<ul><li>**`name`** (\*): `string` - Human readable item name</li><li>**`rfid`** (\*): `string` - The unique identifier for this item</li></ul>
+- _Array of objects:_
+
+<ul><li>**`name`** (\*): `string` - Human readable item name</li><li>**`rfid`** (\*): `string` - The unique identifier for this item</li></ul>

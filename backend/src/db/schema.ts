@@ -1,4 +1,4 @@
-import { isNotNull, isNull, notExists, notInArray, sql } from "drizzle-orm/sql";
+import { isNull, notInArray, sql } from "drizzle-orm/sql";
 import {
     int,
     primaryKey,
@@ -10,6 +10,7 @@ import {
 export const items_table = sqliteTable("items_table", {
     id: int().primaryKey({ autoIncrement: true }),
     name: text("name").notNull(),
+    rfid: text("rfid").notNull().unique(),
 });
 
 export const users_table = sqliteTable("users_table", {
