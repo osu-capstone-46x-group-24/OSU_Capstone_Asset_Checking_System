@@ -154,6 +154,32 @@ describe.sequential("POST /api/items", async () => {
         });
         expect(res.status).toBe(501);
     });
+    test("Add many items", async () => {
+        const items = [
+            {
+                rfid: "3d7d22a4-3125-41c7-a3f1-1d959b1e9fa7",
+                name: "First Item",
+            },
+            {
+                rfid: "e6cb1de3-6e8c-4e73-9461-b6bd2b5fa955",
+                name: "Second Item",
+            },
+        ];
+        const res = await app.request("/api/items", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(items),
+        });
+        expect(
+            await db
+                .select({
+                    name: schema.items_table.name,
+                    rfid: schema.items_table.rfid,
+                })
+                .from(schema.items_table)
+        ).containSubset(items);
+        expect(res.status).toBe(200);
+    });
 });
 
 describe.sequential("GET /api/items", async () => {
