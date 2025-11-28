@@ -61,7 +61,7 @@ export default function Navbar({
                                     className={`transition duration-300 ease-in-out text-lg relative group
                                                 ${
                                                     theme === "light"
-                                                        ? "hover:text-wu-red-100"
+                                                        ? "hover:text-yellow-500"
                                                         : "hover:text-wu-yellow-100"
                                                 }
                                     `}
