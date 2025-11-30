@@ -1,9 +1,10 @@
 // AdminDashboard.tsx
 
+// Imports
 import "../App.css";
 import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
-import LogRFIDRequests from "../components/LogRFIDRequests";
+import LogRequestConsole from "../components/LogRequestConsole";
 
 
 /**
@@ -45,10 +46,10 @@ function AdminDashboard({
                 </div>
                 <div className="min-h-[600px] min-w-[1000px] w-full p-10 flex flex-col">
                     <div className="flex p-0.5 text-xl">
-                        <span>RFID Request Console</span>
+                        <span>Request Console</span>
                     </div>
                     <div className={`p-1`}>
-                            <LogRFIDRequests
+                            <LogRequestConsole
                                 {...consoleParams}
                             />
                     </div>
