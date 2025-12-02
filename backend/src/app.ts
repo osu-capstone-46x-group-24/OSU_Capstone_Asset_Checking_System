@@ -1,0 +1,79 @@
+import { Hono } from "hono";
+
+import * as z from "zod";
+import { zValidator } from "@hono/zod-validator";
+import "dotenv/config";
+import { createInsertSchema } from "drizzle-zod";
+import * as schema from "./db/schema.js";
+
+import checkinRoute from "./routes/checkin.js";
+import checkoutRoute from "./routes/checkout.js";
+import type { LibSQLDatabase } from "drizzle-orm/libsql";
+
+function app_constructor(db: LibSQLDatabase<typeof schema>) {
+    const app = new Hono();
+
+    app.post(
+        "api/user",
+        zValidator(
+            "json",
+            createInsertSchema(schema.users_table).omit({ id: true })
+        ),
+        async (c) => {
+            const data = c.req.valid("json");
+            await db.insert(schema.users_table).values(data);
+            return c.text("success", 200);
+        }
+    );
+
+    // requires id of user and of each item, will fail if these do not exist
+    const checkout_schema = z.object({
+        userId: z.number().int(),
+        items: z.array(z.number().int()),
+        expectedReturn: z.string(), // changed that 11.23
+    });
+    app.get("/api/items/all", async (c) => {
+        const items = await db.select().from(schema.items_table);
+        return c.json(items);
+    });
+    app.get("/api/items/available", async (c) => {
+        const items = await db.select().from(schema.items_table);
+        return c.json(items);
+    });
+
+    app.post(
+        "/api/checkouts",
+        zValidator("json", checkout_schema),
+        async (c) => {
+            const data = c.req.valid("json");
+            // insert new timestamp
+            const [timestamp] = await db
+                .insert(schema.timestamp)
+                .values({ expected_return: data.expectedReturn })
+                .returning();
+            const timestamp_id = timestamp.id;
+
+            const insert_values = data.items.map((item) => {
+                return {
+                    user_id: data.userId,
+                    item_id: item,
+                    timestamp_id: timestamp_id,
+                };
+            });
+            const result = await db
+                .insert(schema.transactions)
+                .values(insert_values)
+                .onConflictDoNothing();
+            if (result.rowsAffected != data.items.length) {
+                return c.text("failed to insert rows", 501);
+            } else {
+                return c.text("success", 200);
+            }
+        }
+    );
+
+    app.route("api/", checkinRoute(db));
+    app.route("api/", checkoutRoute(db));
+    return app;
+}
+export default app_constructor;

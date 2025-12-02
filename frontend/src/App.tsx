@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Routes,
     Route,
     Navigate,
@@ -39,8 +39,8 @@ function App() {
     }, [theme]);
 
     return (
-        <ThemeProvider value={theme === "light" ? lightTheme : darkTheme}>
-            <Router basename={import.meta.env.VITE_BASE_URL || "/"}>
+        <ThemeProvider>
+            <Router>
                 <Routes>
                     <Route path="/" element={<Navigate to="/Home" />} />
                     <Route
