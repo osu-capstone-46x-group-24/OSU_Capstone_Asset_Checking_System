@@ -1,30 +1,37 @@
 // DatetimeModal.tsx
+
 import { useState, useEffect } from "react";
 import {
     Dialog,
     DialogHeader,
     DialogBody,
     DialogFooter,
-    Button,
     Checkbox,
     Input,
 } from "@material-tailwind/react";
+import ButtonDefault from "./ButtonDefault";
 
-type ModalProps = {
-    open: boolean;
-    onClose: () => void;
-    onConfirm: (returnTime: string | null) => void;
-    user?: { id: string; firstName: string; lastName: string } | null;
-    items?: { itemId: string; itemName: string }[];
-};
+// type ModalProps = {
+//     open: boolean;
+//     onClose: () => void;
+//     onConfirm: (returnTime: string | null) => void;
+//     user?: { id: string; firstName: string; lastName: string } | null;
+//     items?: { itemId: string; itemName: string }[];
+// };
 
-const DatetimeModal = ({
+export default function DatetimeModal({
     open,
     onClose,
     onConfirm,
     user,
     items,
-}: ModalProps) => {
+}: {
+    open: boolean;
+    onClose: () => void;
+    onConfirm: (returnTime: string | null) => void;
+    user?: { id: string; firstName: string; lastName: string } | null;
+    items?: { itemId: string; itemName: string }[];
+}) {
     const [datetime, setDatetime] = useState<string>("");
     const [unsure, setUnsure] = useState(false);
 
@@ -42,12 +49,32 @@ const DatetimeModal = ({
     }
 
     return (
-        <Dialog open={open} handler={onClose} placeholder={undefined} onResize={undefined}
-                onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Dialog
+            open={open}
+            handler={onClose}
+            placeholder={undefined}
+            onResize={undefined}
+            onResizeCapture={undefined}
+            onPointerEnterCapture={undefined}
+            onPointerLeaveCapture={undefined}
+        >
             <div className="text-gray-800">
-                <DialogHeader placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Confirm Checkout</DialogHeader>
+                <DialogHeader
+                    children={"Confirm Checkout"}
+                    placeholder={undefined}
+                    onResize={undefined}
+                    onResizeCapture={undefined}
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                />
             </div>
-            <DialogBody placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <DialogBody
+                placeholder={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+            >
                 <div className="flex flex-col gap-4">
                     {user && (
                         <p className="text-gray-700 text-sm">
@@ -76,29 +103,38 @@ const DatetimeModal = ({
                         value={datetime}
                         onChange={(e) => setDatetime(e.target.value)}
                         disabled={unsure}
-                        className="border rounded p-2 text-gray-800" onResize={undefined} onResizeCapture={undefined}
-                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}                    />
+                        className="border rounded p-2 text-gray-800"
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined}
+                    />
                     <Checkbox
                         label="Not sure when I'll return these items"
                         checked={unsure}
-                        onChange={(e) => setUnsure(e.target.checked)} onResize={undefined} onResizeCapture={undefined}
-                        onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}                    />
+                        onChange={(e) => setUnsure(e.target.checked)}
+                        onResize={undefined}
+                        onResizeCapture={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined}
+                    />
                 </div>
             </DialogBody>
-            <DialogFooter placeholder={undefined} onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <Button color="gray" onClick={onClose} className="mr-2" placeholder={undefined}
-                        onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}>
-                    Cancel
-                </Button>
-                <Button color="blue" onClick={handleConfirm} placeholder={undefined}
-                        onResize={undefined} onResizeCapture={undefined} onPointerEnterCapture={undefined}
-                        onPointerLeaveCapture={undefined}>
-                    Confirm & Checkout
-                </Button>
+            <DialogFooter
+                placeholder={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+            >
+                <ButtonDefault onClick={onClose} children={"Cancel"} />
+                <ButtonDefault
+                    onClick={handleConfirm}
+                    children={"Confirm & Checkout"}
+                />
             </DialogFooter>
         </Dialog>
     );
-};
-
-export default DatetimeModal;
+}

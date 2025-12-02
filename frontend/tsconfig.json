@@ -1,7 +1,28 @@
 {
-    "files": [],
-    "references": [
-        { "path": "./tsconfig.app.json" },
-        { "path": "./tsconfig.node.json" }
-    ]
+  "compilerOptions": {
+    "types": [
+      "react",
+      "react-dom",
+    ],
+    "jsx": "react-jsx",
+    "baseUrl": "src",
+    "paths": {
+      "*": [
+        "*",
+        "types/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ],
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
 }

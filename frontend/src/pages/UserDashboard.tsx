@@ -1,10 +1,11 @@
 // UserDashboard.tsx
+
 import { useState } from "react";
 import "../App.css";
 import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
 import DatetimeModal from "../components/UI_Elements/DatetimeModal.tsx";
-import ScanButton from "../components/UI_Elements/MimeScanButton.tsx";
+import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
 
 // ID data types based on the example stuff he provided
 type ScanData = {
@@ -20,14 +21,24 @@ type CartItem = {
     raw: string;
 };
 
-function UserDashboard() {
+/**
+ * UserDashboard Page
+ * @constructor
+ */
+export default function UserDashboard({
+    theme,
+    setTheme,
+}: {
+    theme: "light" | "dark";
+    setTheme: (t: "light" | "dark") => void;
+}) {
     const [scanned, setScanned] = useState<ScanData | null>(null);
     const [showCart, setShowCart] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [thankYou, setThankYou] = useState(false);
 
-    function handleScan(scanString: string) {
+    function handleScan(scanString: string): void {
         const parts = scanString.replace(/^@/, "").split(",");
         const data: ScanData = {
             id: parts[0] ?? "",
@@ -38,7 +49,7 @@ function UserDashboard() {
         setShowCart(true);
     }
 
-    function handleReset() {
+    function handleReset(): void {
         setScanned(null);
         setShowCart(false);
         setCartItems([]);
@@ -75,7 +86,7 @@ function UserDashboard() {
         return newItem;
     }
 
-    function handleConfirmCheckout(returnTime: string | null) {
+    function handleConfirmCheckout(returnTime: string | null): void {
         const rawExport = cartItems.map((item) => item.raw); // array of raw strings
         console.log("Checkout summary:");
         console.log("User:", scanned);
@@ -92,39 +103,59 @@ function UserDashboard() {
         }, 8000);
     }
 
+    const buttonTheme =
+        theme === "light"
+            ? "bg-wu-gray-400 text-wu-gray-200"
+            : "bg-wu-gray-400 text-wu-gray-200";
+
+    const modalTheme =
+        theme === "light"
+            ? "bg-wu-gray-400 text-wu-gray-200"
+            : "bg-wu-gray-200 text-wu-gray-400";
+
     return (
-        <div className="absolute w-full top-0 left-0 bg-neutral-100 dark:bg-neutral-800 min-h-screen">
-            <Navbar />
+        <div
+            className={`absolute w-full top-0 left-0 min-h-screen font-mono
+        transition-colors duration-300
+            ${
+                theme === "light"
+                    ? "bg-wu-gray-200 text-wu-gray-400"
+                    : "bg-wu-gray-400 text-wu-gray-200"
+            }`}
+        >
+            <Navbar theme={theme} setTheme={setTheme} />
 
             {thankYou ? (
                 <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
-                    <h1 className="text-5xl font-semibold text-ehitedark:text-white">
+                    <h1 className="text-5xl">
                         Thank you for checking out your items!
                     </h1>
-                    <p className="text-lg text-white mt-4">
-                        Resetting User Dashboard...
-                    </p>
+                    <p className="text-lg mt-4">Resetting User Dashboard...</p>
                 </div>
             ) : !showCart ? (
                 <div className="relative min-h-[60vh] w-full pt-19 px-6">
                     <div className="flex flex-col pt-20">
-                        <div className="basis-12 py-6 text-7xl font-sans mt-20">
+                        <div className="basis-12 py-6 text-7xl mt-20">
                             <h2>User Dashboard</h2>
-                            <h2 className="basis-12 py-4 text-3xl text-color-secondary mt-10">
+                            <h2 className="basis-12 py-4 text-3xl mt-10">
                                 Scan ID To Get Started:
                             </h2>
                         </div>
 
-                        <div className="basis-12 py-6 text-5xl font-sans mt-12">
+                        <div className="basis-12 py-6 text-5xl mt-12">
                             <div className="flex items-center">
-                                <div
-                                    onClick={() =>
-                                        handleScan("@05607858,Lilliam,Kalina")
-                                    }
-                                >
-                                    <ScanButton onScan={handleScan} />
+                                <div>
+                                    <ButtonDefault
+                                        onClick={() =>
+                                            handleScan(
+                                                "@05607858,Lilliam,Kalina"
+                                            )
+                                        }
+                                        children={"MIME ID SCAN"}
+                                        className={`${buttonTheme}`}
+                                    />
                                 </div>
-                                <div className="ml-4 text-lg text-white">
+                                <div className="ml-4 text-lg">
                                     Click to simulate an ID scan returning{" "}
                                     <code>@05607858,Lilliam,Kalina</code>
                                 </div>
@@ -133,8 +164,10 @@ function UserDashboard() {
                     </div>
                 </div>
             ) : (
-                <div className="relative min-h-[70vh] w-full pt-6 px-6 text-gray-500">
-                    <div className="max-w-4xl mx-auto bg-white rounded shadow p-6 mt-8">
+                <div className="relative min-h-[70vh] w-full pt-6 px-6">
+                    <div
+                        className={`max-w-4xl mx-auto rounded shadow p-6 mt-8 ${modalTheme}`}
+                    >
                         <div className="flex items-center justify-between">
                             <div>
                                 <h1 className="text-3xl font-semibold">
@@ -144,12 +177,11 @@ function UserDashboard() {
                                     ID: {scanned?.id}
                                 </p>
                             </div>
-                            <button
+                            <ButtonDefault
                                 onClick={handleReset}
-                                className="bg-gray-200 hover:bg-gray-300 text-white px-4 py-2 rounded"
-                            >
-                                Not Me? (logout)
-                            </button>
+                                children={"Not Me? (logout)"}
+                                className={`px-4 py-2 rounded ${buttonTheme}`}
+                            />
                         </div>
 
                         <div className="mt-6 relative">
@@ -167,11 +199,11 @@ function UserDashboard() {
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="bg-white divide-y divide-gray-200 text-wu-gray-400">
                                     {cartItems.length === 0 ? (
                                         <tr>
                                             <td
-                                                className="px-6 py-4 text-left text-gray-400"
+                                                className="px-6 py-4 text-left text-wu-gray-400"
                                                 colSpan={3}
                                             >
                                                 No Items in Cart, Scan to Add
@@ -188,8 +220,7 @@ function UserDashboard() {
                                                     {item.itemName}
                                                 </td>
                                                 <td className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider w-1/4">
-                                                    <button
-                                                        className="text-red-500 hover:underline"
+                                                    <ButtonDefault
                                                         onClick={() =>
                                                             setCartItems(
                                                                 (prev) =>
@@ -203,42 +234,40 @@ function UserDashboard() {
                                                                     )
                                                             )
                                                         }
-                                                    >
-                                                        X
-                                                    </button>
+                                                        children={"X"}
+                                                        className={`text-red-500 hover:underline ${buttonTheme}`}
+                                                    />
                                                 </td>
                                             </tr>
                                         ))
                                     )}
                                 </tbody>
                             </table>
+                            <div className="flex flex-col">
+                                <div className="left-0 mt-6">
+                                    <ButtonDefault
+                                        onClick={handleItemScan}
+                                        children={"Mime Ultrasound Machine"}
+                                        className={`${buttonTheme}`}
+                                    />
+                                </div>
 
-                            <div className="absolute left-0 mt-6">
-                                <button
-                                    onClick={handleItemScan}
-                                    className="text-white"
-                                >
-                                    Mime Ultrasound Machine
-                                </button>
-                            </div>
-
-                            <div className="mt-6">
-                                <button
-                                    onClick={handleItemScan2}
-                                    className="text-white"
-                                >
-                                    Mime Osculatation Simulator
-                                </button>
+                                <div className="mt-6">
+                                    <ButtonDefault
+                                        onClick={handleItemScan2}
+                                        children={"Mime Osculatation Simulator"}
+                                        className={`${buttonTheme}`}
+                                    />
+                                </div>
                             </div>
 
                             {cartItems.length > 0 && (
                                 <div className="flex justify-end mt-10">
-                                    <button
+                                    <ButtonDefault
                                         onClick={() => setShowModal(true)}
-                                        className="bg-slate-800 text-white rounded-md px-6 py-3 shadow hover:bg-slate-700"
-                                    >
-                                        Submit Checkout
-                                    </button>
+                                        children={"Submit Checkout"}
+                                        className={`rounded-md px-6 py-3 shadow hover:bg-slate-700 ${buttonTheme}`}
+                                    />
                                 </div>
                             )}
                         </div>
@@ -254,9 +283,7 @@ function UserDashboard() {
                 items={cartItems}
             />
 
-            <Footer />
+            <Footer theme={theme} />
         </div>
     );
 }
-
-export default UserDashboard;
