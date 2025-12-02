@@ -6,15 +6,24 @@ import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
 import LogRequestConsole from "../components/LogRequestConsole";
 
+// Type
+type FilterProperty = {
+    name: string,
+    boolValue?: boolean,
+    strValue?: string,
+}
+
+// Const
+const filterList = {
+
+}
 
 /**
  * AdminDashboard
- * @type page
- * @param theme
- * @param setTheme
- * @constructor
+ * Type: Page
+ * Params: theme: "light" | "dark", setTheme: (t: "light" | "dark") => void
  */
-function AdminDashboard({
+export default function AdminDashboard({
     theme,
     setTheme,
 }: {
@@ -44,6 +53,9 @@ function AdminDashboard({
                 <div className="justify-items-start w-full pb-1 pt-10 text-5xl">
                     <span className="">Admin Dashboard</span>
                 </div>
+                <div className={`w-[100px] h-[600px] flex flex-col ${pageTheme}`}>
+
+                </div>
                 <div className="min-h-[600px] min-w-[1000px] w-full p-10 flex flex-col">
                     <div className="flex p-0.5 text-xl">
                         <span>Request Console</span>
@@ -58,6 +70,4 @@ function AdminDashboard({
             <Footer theme={theme} />
         </div>
     );
-}
-
-export default AdminDashboard;
+};
