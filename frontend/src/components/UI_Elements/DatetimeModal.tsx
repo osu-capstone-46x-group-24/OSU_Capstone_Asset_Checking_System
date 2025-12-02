@@ -1,5 +1,6 @@
 // DatetimeModal.tsx
 
+// Imports
 import { useState, useEffect } from "react";
 import {
     Dialog,
@@ -19,6 +20,11 @@ import ButtonDefault from "./ButtonDefault";
 //     items?: { itemId: string; itemName: string }[];
 // };
 
+/**
+ * Name: DatetimeModal
+ * Type: Component
+ * Description: TBD
+ */
 export default function DatetimeModal({
     open,
     onClose,
@@ -57,6 +63,7 @@ export default function DatetimeModal({
             onResizeCapture={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
+            className={"mx-auto"}
         >
             <div className="text-gray-800">
                 <DialogHeader

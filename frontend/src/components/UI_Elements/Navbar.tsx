@@ -1,21 +1,23 @@
 // Navbar.tsx
 
+// Imports
 // import { useState } from "react";
 import { Link } from "react-router-dom";
 import "tailwindcss";
 import SwitchTheme from "../SwitchTheme.tsx";
 
-/**
- * Navbar Component
- * Description: Displays a header navigation bar fixed to the top of the screen.
- * **/
-export default function Navbar({
-    theme,
-    setTheme,
-}: {
+// Types
+type NavbarProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;
-}) {
+};
+
+/**
+ * Name: Navbar
+ * Type: Component
+ * Description: Displays a header navigation bar fixed to the top of the screen.
+ * **/
+export default function Navbar({ theme, setTheme }: NavbarProps) {
     // Parameter for leftmost navbar text - logo-equivalent
     const title = "CS 46X Capstone";
 

@@ -1,18 +1,24 @@
 // Footer.tsx
 
+// Imports
 import github_light from "../../images/github-mark-light.svg";
 import github_dark from "../../images/github-mark-dark.svg";
 import osu_horizontal_light from "../../images/osu-horizontal-light.svg";
 import osu_horizontal_dark from "../../images/osu-horizontal-dark.svg";
 import "tailwindcss";
 
-export default function Footer({
-    theme,
-    // setTheme,
-}: {
+// Types
+type FooterProps = {
     theme: "light" | "dark";
     // setTheme: (t: "light" | "dark") => void;
-}) {
+};
+
+/**
+ * Name: Footer
+ * Type: Component
+ * Description: TBD
+ */
+export default function Footer({ theme }: FooterProps) {
     const githubUrl =
         "https://github.com/osu-capstone-46x-group-24/OSU_Capstone_Asset_Checking_System";
 

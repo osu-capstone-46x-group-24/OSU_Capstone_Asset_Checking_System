@@ -1,22 +1,22 @@
 // Home.tsx
 
+// Imports
 import "../App.css";
 import Navbar from "../components/UI_Elements/Navbar";
 import Footer from "../components/UI_Elements/Footer.tsx";
 
-/**
- * Page Home
- * @param theme
- * @param setTheme
- * @constructor
- */
-export default function Home({
-    theme,
-    setTheme,
-}: {
+// Types
+type HomeProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;
-}) {
+};
+
+/**
+ * Name: Home
+ * Type: Page
+ * Description: Home page - '/' base directory
+ */
+export default function Home({ theme, setTheme }: HomeProps) {
     return (
         <div
             className={`absolute w-full top-0 left-0 transition-colors font-mono

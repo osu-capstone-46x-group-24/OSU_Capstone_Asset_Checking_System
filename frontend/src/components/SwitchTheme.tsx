@@ -1,19 +1,21 @@
 // SwitchTheme.tsx
 
+// Imports
 // import { Switch } from "@material-tailwind/react";
 // import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 
-/**
- * Component SwitchTheme
- * @constructor
- */
-export default function SwitchTheme({
-    theme,
-    setTheme,
-}: {
+// Types
+type SwitchThemeProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;
-}) {
+};
+
+/**
+ * Name: SwitchTheme
+ * Type: Component
+ * Description: TBD
+ */
+export default function SwitchTheme({ theme, setTheme }: SwitchThemeProps) {
     // @ts-expect-ignore
     return (
         <div className="relative inline-block w-10 h-5.5">
