@@ -12,7 +12,7 @@ import { ThemeProvider } from "@material-tailwind/react";
 import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
-import { lightTheme, darkTheme } from "./theme.ts";
+// import { lightTheme, darkTheme } from "./theme.ts";
 
 /**
  * Name: App
@@ -42,7 +42,7 @@ export default function App() {
     }, [theme]);
 
     return (
-        <ThemeProvider value={theme === "light" ? lightTheme : darkTheme}>
+        <ThemeProvider>
             <Router basename={import.meta.env.VITE_BASE_URL || "/"}>
                 <Routes>
                     <Route path="/" element={<Navigate to="/Home" />} />
