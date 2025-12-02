@@ -12,7 +12,6 @@ import { ThemeProvider } from "@material-tailwind/react";
 import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
-import { lightTheme, darkTheme } from "./theme.ts";
 
 function App() {
     const [theme, setTheme] = useState<"light" | "dark">("light");
