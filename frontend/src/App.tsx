@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Routes,
     Route,
     Navigate,
@@ -43,7 +43,7 @@ export default function App() {
 
     return (
         <ThemeProvider>
-            <Router basename={import.meta.env.VITE_BASE_URL || "/"}>
+            <Router>
                 <Routes>
                     <Route path="/" element={<Navigate to="/Home" />} />
                     <Route

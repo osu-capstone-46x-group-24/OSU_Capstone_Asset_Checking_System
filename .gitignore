@@ -1,3 +1,4 @@
 .idea
+backend/test.db
 node_modules/
 .env

@@ -1,24 +1,25 @@
+import { drizzle } from "drizzle-orm/libsql/node";
+import app from "./app.js";
 import { serve } from "@hono/node-server";
-import { Hono } from "hono";
 
-import { zValidator } from "@hono/zod-validator";
-import "dotenv/config";
-import { drizzle } from "drizzle-orm/libsql";
-import { users_table } from "./db/schema.js";
-import { createInsertSchema } from "drizzle-zod";
-const db = drizzle(process.env.DB_FILE_NAME!);
-const app = new Hono();
+import * as Schema from "./db/schema.js";
+import { migrate } from "drizzle-orm/libsql/migrator";
 
-app.post(
-    "/user",
-    zValidator("json", createInsertSchema(users_table)),
-    async (c) => {
-        const data = c.req.valid("json");
-        await db.insert(users_table).values(data);
-        return c.text("success", 200);
-    }
-);
+// handle error where .env is not present / DB_FILE_NAME is not defined as an environment variable
+if (process.env.DB_FILE_NAME == undefined) {
+    console.log(
+        "Failed to get DB_FILE_NAME from env. Is there a .env present?"
+    );
+    process.exit(1);
+}
 
-serve({ fetch: app.fetch, port: 3000 }, (info) => {
+const db = drizzle({
+    connection: process.env.DB_FILE_NAME,
+    schema: Schema,
+});
+// auto migrate database using generated migrations
+await migrate(db, { migrationsFolder: "drizzle/" });
+
+serve({ fetch: app(db).fetch, port: 3000 }, (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
 });

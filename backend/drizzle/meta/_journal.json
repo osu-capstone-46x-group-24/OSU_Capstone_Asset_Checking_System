@@ -8,6 +8,27 @@
       "when": 1762223902559,
       "tag": "0000_talented_the_order",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1762539324412,
+      "tag": "0001_dry_jubilee",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1763765363834,
+      "tag": "0002_remarkable_zodiak",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1763971332183,
+      "tag": "0003_spicy_otto_octavius",
+      "breakpoints": true
     }
   ]
 }
