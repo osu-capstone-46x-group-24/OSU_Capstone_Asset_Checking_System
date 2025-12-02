@@ -4,6 +4,8 @@
     "scripts": {
         "dev": "tsx watch src/index.ts",
         "lint": "eslint",
+        "format": "prettier src --write",
+        "ci": "npm run format && npm run lint",
         "test": "vitest",
         "docs": "zod2md"
     },

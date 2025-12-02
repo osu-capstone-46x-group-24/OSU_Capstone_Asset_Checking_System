@@ -19,14 +19,13 @@ const app = appfn(db);
 
 beforeAll(async () => {
     // setup database for testing
-    await reset(drizzle(testdb), schema);
-    // defaults to 10 items
+    await reset(drizzle(testdb), schema); // defaults to 10 items
     await seed(drizzle(testdb), {
         users_table: schema.users_table,
         items_table: schema.items_table,
     });
 });
-afterAll(async (c) => {
+afterAll(async () => {
     // print db
     const users_table = await db.select().from(schema.users_table).all();
     const items_table = await db.select().from(schema.items_table).all();
@@ -41,8 +40,8 @@ afterAll(async (c) => {
 });
 
 // sequential is required because test are dependent on shared state (database)
-describe.sequential("POST /api/checkout", async (c) => {
-    test.sequential("Valid checkout", async (c) => {
+describe.sequential("POST /api/checkout", async () => {
+    test.sequential("Valid checkout", async () => {
         const req = await app.request("/api/checkout", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -61,7 +60,7 @@ describe.sequential("POST /api/checkout", async (c) => {
         });
     });
 
-    test.sequential("Item is already checkedout", async (c) => {
+    test.sequential("Item is already checkedout", async () => {
         const req = await app.request("/api/checkout", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -75,7 +74,7 @@ describe.sequential("POST /api/checkout", async (c) => {
         expect(req.status).toBe(404);
     });
 
-    test.sequential("User doesn't exist", async (c) => {
+    test.sequential("User doesn't exist", async () => {
         const req = await app.request("/api/checkout", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -89,7 +88,7 @@ describe.sequential("POST /api/checkout", async (c) => {
         expect(req.status).toBe(404);
     });
 
-    test.sequential("Checkout many with invalid item", async (c) => {
+    test.sequential("Checkout many with invalid item", async () => {
         const available_items = await db.select().from(schema.available_items);
         const req = await app.request("/api/checkout", {
             method: "POST",
@@ -111,7 +110,7 @@ describe.sequential("POST /api/checkout", async (c) => {
         expect(req.status).toBe(404);
     });
 
-    test.sequential("Checkout many", async (c) => {
+    test.sequential("Checkout many", async () => {
         const available_items = await db.select().from(schema.available_items);
         const req = await app.request("/api/checkout", {
             method: "POST",
@@ -132,8 +131,74 @@ describe.sequential("POST /api/checkout", async (c) => {
     });
 });
 
-describe.todo.sequential("POST /api/checkin", async (c) => {
-    test.sequential("Valid checkin", async (c) => {
+describe.sequential("POST /api/items", async () => {
+    test("Add item", async () => {
+        const res = await app.request("/api/items", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                rfid: "7e39f83d-70ee-4b19-90db-099245563e18",
+                name: "My item",
+            }),
+        });
+        expect(res.status).toBe(200);
+    });
+    test("Add duplicate item", async () => {
+        const res = await app.request("/api/items", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                rfid: "7e39f83d-70ee-4b19-90db-099245563e18",
+                name: "My item",
+            }),
+        });
+        expect(res.status).toBe(501);
+    });
+    test("Add many items", async () => {
+        const items = [
+            {
+                rfid: "3d7d22a4-3125-41c7-a3f1-1d959b1e9fa7",
+                name: "First Item",
+            },
+            {
+                rfid: "e6cb1de3-6e8c-4e73-9461-b6bd2b5fa955",
+                name: "Second Item",
+            },
+        ];
+        const res = await app.request("/api/items", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(items),
+        });
+        expect(
+            await db
+                .select({
+                    name: schema.items_table.name,
+                    rfid: schema.items_table.rfid,
+                })
+                .from(schema.items_table)
+        ).containSubset(items);
+        expect(res.status).toBe(200);
+    });
+});
+
+describe.sequential("GET /api/items", async () => {
+    test.concurrent("GET /available", async () => {
+        const res = await app.request("/api/items/available");
+        const items = await res.json();
+        const expected_items = await db.select().from(schema.available_items);
+        expect(items).toStrictEqual(expected_items);
+    });
+    test.concurrent("GET /all", async () => {
+        const res = await app.request("/api/items/all");
+        const items = await res.json();
+        const expected_items = await db.select().from(schema.items_table);
+        expect(items).toStrictEqual(expected_items);
+    });
+});
+
+describe.todo.sequential("POST /api/checkin", async () => {
+    test.sequential("Valid checkin", async () => {
         await app.request("/api/checkin", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

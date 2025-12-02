@@ -15,3 +15,12 @@ export const checkoutSchema = z.object({
 
         .describe("Expected time item will be returned"),
 });
+
+const item = z
+    .object({
+        name: z.string().describe("Human readable item name"),
+        rfid: z.string().describe("The unique identifier for this item"),
+    })
+    .describe("`POST api/items`");
+
+export const itemSchema = z.union([item, z.array(item)]);
