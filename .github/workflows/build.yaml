@@ -1,0 +1,30 @@
+name: Deploy React Frontend to GitHub Pages
+  
+on:
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Create .env for GitHub Pages
+        run: echo "VITE_BASE_URL=/OSU_Capstone_Asset_Checking_System/" > .env
+        working-directory: ./frontend
+
+      - name: install dependencies
+        run: npm install
+        working-directory: ./frontend
+
+      - name: Build to dist
+        run: npm run build
+        working-directory: ./frontend
