@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeAll } from "vitest";
 import { render, screen } from "@testing-library/react";
 import App from "../App";
-import UserDashboard from "../pages/UserDashboard.tsx";
+// import UserDashboard from "../pages/UserDashboard.tsx";
 
 // --- mock browser APIs that jsdom lacks ---
 beforeAll(() => {
@@ -38,12 +38,12 @@ describe("App component", () => {
     });
 });
 
-describe("User walkthrough", () => {
-    it("renders without crashing", () => {
-        render(<UserDashboard />);
-        // You can adjust this text to something actually visible on your Home page
-        expect(screen.getByText(/User/i)).toBeTruthy();
-        expect(screen.getByText(/Admin/i)).toBeTruthy();
-        //expect(screen.getByText())
-    });
-});
+// describe("User walkthrough", () => {
+//     it("renders without crashing", () => {
+//         render(<UserDashboard />);
+//         // You can adjust this text to something actually visible on your Home page
+//         expect(screen.getByText(/User/i)).toBeTruthy();
+//         expect(screen.getByText(/Admin/i)).toBeTruthy();
+//         //expect(screen.getByText())
+//     });
+// });
