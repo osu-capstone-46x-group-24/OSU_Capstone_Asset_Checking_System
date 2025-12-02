@@ -41,12 +41,12 @@ describe("App component", () => {
     });
 });
 
-describe("User walkthrough", () => {
-    it("renders without crashing", () => {
-        // render(<UserDashboard />);
-        // You can adjust this text to something actually visible on your Home page
-        // expect(screen.getByText(/User/i)).toBeTruthy();
-        // expect(screen.getByText(/Admin/i)).toBeTruthy();
-        //expect(screen.getByText())
-    });
-});
+// describe("User walkthrough", () => {
+//     it("renders without crashing", () => {
+//         render(<UserDashboard />);
+//         // You can adjust this text to something actually visible on your Home page
+//         expect(screen.getByText(/User/i)).toBeTruthy();
+//         expect(screen.getByText(/Admin/i)).toBeTruthy();
+//         //expect(screen.getByText())
+//     });
+// });

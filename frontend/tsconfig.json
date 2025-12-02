@@ -1,23 +1,4 @@
 {
-  "compilerOptions": {
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "types": [
-      "react",
-      "react-dom",
-    ],
-    "jsx": "react-jsx",
-    "baseUrl": "src",
-    "paths": {
-      "*": [
-        "*",
-        "types/*"
-      ]
-    }
-  },
-  "include": [
-    "src"
-  ],
   "files": [],
   "references": [
     {
