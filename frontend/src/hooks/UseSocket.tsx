@@ -10,6 +10,7 @@ const PORT: number = configJson.scanner.port;
 const BASE_URL: string = `http://localhost:${PORT}`;
 const socket = io(BASE_URL);
 
+// Types
 type ReqItem = {
     reqType: string;
     sender: string;
@@ -19,9 +20,12 @@ type ReqItem = {
 };
 
 /**
- * useSocket Hook
- * @type Hook
- * Listens for socket events from *scanner* server
+
+ * Name: UseSocket
+ * Type: Hook
+ * Description: Listens for socket events from *scanner* server
+ * Props: onRequest: (req: ReqItem)
+ * Return: void
  */
 export default function UseSocket(onRequest: (req: ReqItem) => void) {
 
@@ -31,6 +35,7 @@ export default function UseSocket(onRequest: (req: ReqItem) => void) {
             return new Date(epochTime).toLocaleString();
         }
 
+        // Used as callback
         const sendRequestToParent = ( requestType: string, message: string, requestSender: string) => {
             onRequest({
                 reqType: requestType,
@@ -41,21 +46,26 @@ export default function UseSocket(onRequest: (req: ReqItem) => void) {
             });
         };
 
-        // listen for socket events
+        // Listen for socket events - Scanner
+        // Message Event
         socket.on("message", (msg: string): void => {
             console.log(`Message from server: ${msg}`);
             sendRequestToParent("message", msg, "scanner");
         });
 
+        // Card Event
         socket.on("card", (cardId: string): void => {
             console.log(`Card scanned: ${cardId}`);
             sendRequestToParent("card", cardId, "scanner");
         });
 
+        // Item Event
         socket.on("item", (itemId: string): void => {
             console.log(`Item scanned: ${itemId}`);
             sendRequestToParent("item", itemId, "scanner");
         });
+
+        // Listen for socket events - Backend
 
         // Cleanup / Unmount
         return () => {
