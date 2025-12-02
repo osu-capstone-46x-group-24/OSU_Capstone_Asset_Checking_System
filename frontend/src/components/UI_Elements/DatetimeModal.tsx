@@ -12,13 +12,14 @@ import {
 } from "@material-tailwind/react";
 import ButtonDefault from "./ButtonDefault";
 
-// type ModalProps = {
-//     open: boolean;
-//     onClose: () => void;
-//     onConfirm: (returnTime: string | null) => void;
-//     user?: { id: string; firstName: string; lastName: string } | null;
-//     items?: { itemId: string; itemName: string }[];
-// };
+// Types
+type ModalProps = {
+    open: boolean;
+    onClose: () => void;
+    onConfirm: (returnTime: string | null) => void;
+    user?: { id: string; firstName: string; lastName: string } | null;
+    items?: { itemId: string; itemName: string }[];
+};
 
 /**
  * Name: DatetimeModal
@@ -31,13 +32,7 @@ export default function DatetimeModal({
     onConfirm,
     user,
     items,
-}: {
-    open: boolean;
-    onClose: () => void;
-    onConfirm: (returnTime: string | null) => void;
-    user?: { id: string; firstName: string; lastName: string } | null;
-    items?: { itemId: string; itemName: string }[];
-}) {
+}: ModalProps) {
     const [datetime, setDatetime] = useState<string>("");
     const [unsure, setUnsure] = useState(false);
 
