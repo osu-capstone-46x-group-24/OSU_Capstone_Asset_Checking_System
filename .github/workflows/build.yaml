@@ -1,4 +1,4 @@
-name: Deploy React Frontend to GitHub Pages
+name: Build and run tests
   
 on:
   pull_request:
