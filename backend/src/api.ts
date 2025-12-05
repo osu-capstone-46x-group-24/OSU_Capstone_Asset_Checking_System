@@ -24,3 +24,14 @@ const item = z
     .describe("`POST api/items`");
 
 export const itemSchema = z.union([item, z.array(item)]);
+
+export const canaryResponse = z.object({
+    connection: z.object({
+        address: z.optional(z.string()),
+        addressType: z.optional(z.string()),
+        transport: z.optional(z.string()),
+        port: z.optional(z.number()),
+    }),
+    uptime: z.int().describe("Server uptime in milliseconds"),
+    timestamp: z.iso.datetime(),
+});

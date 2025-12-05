@@ -9,6 +9,7 @@ import checkinRoute from "./routes/checkin.js";
 import checkoutRoute from "./routes/checkout.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 import itemsRoute from "./routes/items.js";
+import canaryRoute from "./routes/canary.js";
 
 function app_constructor(db: LibSQLDatabase<typeof schema>) {
     const app = new Hono();
@@ -27,6 +28,7 @@ function app_constructor(db: LibSQLDatabase<typeof schema>) {
         }
     );
 
+    app.route("api/", canaryRoute());
     app.route("api/", itemsRoute(db));
 
     app.route("api/", checkinRoute(db));
