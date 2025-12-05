@@ -1,5 +1,6 @@
 // UserDashboard.tsx
 
+// Imports
 import { useState } from "react";
 import "../App.css";
 import Footer from "../components/UI_Elements/Footer.tsx";
@@ -7,6 +8,7 @@ import Navbar from "../components/UI_Elements/Navbar.tsx";
 import DatetimeModal from "../components/UI_Elements/DatetimeModal.tsx";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
 
+// Types
 // ID data types based on the example stuff he provided
 type ScanData = {
     id: string;
@@ -21,17 +23,16 @@ type CartItem = {
     raw: string;
 };
 
+type UserDashboardProps = {
+    theme: "light" | "dark";
+    setTheme: (t: "light" | "dark") => void;
+};
+
 /**
  * UserDashboard Page
  * @constructor
  */
-export default function UserDashboard({
-    theme,
-    setTheme,
-}: {
-    theme: "light" | "dark";
-    setTheme: (t: "light" | "dark") => void;
-}) {
+export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
     const [scanned, setScanned] = useState<ScanData | null>(null);
     const [showCart, setShowCart] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -164,6 +165,7 @@ export default function UserDashboard({
                     </div>
                 </div>
             ) : (
+                /* Modal */
                 <div className="relative min-h-[70vh] w-full pt-6 px-6">
                     <div
                         className={`max-w-4xl mx-auto rounded shadow p-6 mt-8 ${modalTheme}`}
@@ -274,15 +276,15 @@ export default function UserDashboard({
                     </div>
                 </div>
             )}
-
-            <DatetimeModal
-                open={showModal}
-                onClose={() => setShowModal(false)}
-                onConfirm={handleConfirmCheckout}
-                user={scanned}
-                items={cartItems}
-            />
-
+            <div className="flex items-center">
+                <DatetimeModal
+                    open={showModal}
+                    onClose={() => setShowModal(false)}
+                    onConfirm={handleConfirmCheckout}
+                    user={scanned}
+                    items={cartItems}
+                />
+            </div>
             <Footer theme={theme} />
         </div>
     );

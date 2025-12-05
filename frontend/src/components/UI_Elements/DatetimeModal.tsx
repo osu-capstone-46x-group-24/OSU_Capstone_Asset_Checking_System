@@ -1,5 +1,6 @@
 // DatetimeModal.tsx
 
+// Imports
 import { useState, useEffect } from "react";
 import {
     Dialog,
@@ -11,27 +12,27 @@ import {
 } from "@material-tailwind/react";
 import ButtonDefault from "./ButtonDefault";
 
-// type ModalProps = {
-//     open: boolean;
-//     onClose: () => void;
-//     onConfirm: (returnTime: string | null) => void;
-//     user?: { id: string; firstName: string; lastName: string } | null;
-//     items?: { itemId: string; itemName: string }[];
-// };
+// Types
+type ModalProps = {
+    open: boolean;
+    onClose: () => void;
+    onConfirm: (returnTime: string | null) => void;
+    user?: { id: string; firstName: string; lastName: string } | null;
+    items?: { itemId: string; itemName: string }[];
+};
 
+/**
+ * Name: DatetimeModal
+ * Type: Component
+ * Description: TBD
+ */
 export default function DatetimeModal({
     open,
     onClose,
     onConfirm,
     user,
     items,
-}: {
-    open: boolean;
-    onClose: () => void;
-    onConfirm: (returnTime: string | null) => void;
-    user?: { id: string; firstName: string; lastName: string } | null;
-    items?: { itemId: string; itemName: string }[];
-}) {
+}: ModalProps) {
     const [datetime, setDatetime] = useState<string>("");
     const [unsure, setUnsure] = useState(false);
 
@@ -57,6 +58,7 @@ export default function DatetimeModal({
             onResizeCapture={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
+            className={"mx-auto"}
         >
             <div className="text-gray-800">
                 <DialogHeader

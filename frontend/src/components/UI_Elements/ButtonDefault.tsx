@@ -1,23 +1,27 @@
 // ButtonDefault.tsx
 
+// Imports
 import type { ButtonProps } from "@material-tailwind/react";
 
+// Types
+type ButtonDefaultProps = {
+    props?: ButtonProps;
+    onClick?: () => void;
+    children?: string;
+    className?: string;
+};
+
 /**
- * ButtonDefault Component
- * @param props
- * @constructor
+ * Name: ButtonDefault
+ * Type: Component
+ * Description: TBD
  */
 export default function ButtonDefault({
     props,
     onClick,
     children,
     className,
-}: {
-    props?: ButtonProps;
-    onClick?: () => void;
-    children?: string;
-    className?: string;
-}) {
+}: ButtonDefaultProps) {
     return (
         <div className={`flex items-center gap-4`}>
             <button

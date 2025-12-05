@@ -1,0 +1,35 @@
+{
+  "scanner": {
+    "port": 3000
+  },
+  "backend": {},
+  "theme": {
+    "color": {
+      "text": {
+        "primary": "text-wu-gray-200",
+        "accent": "text-wu-gray-400",
+        "white": "text-wu-gray-100",
+        "black": "text-wu-gray-500",
+        "teal": "text-emerald-600",
+        "yellow": "text-wu-yellow-100"
+      },
+      "bg": {
+        "primary": "bg-wu-gray-200",
+        "accent": "bg-wu-gray-400",
+        "white": "bg-wu-gray-100",
+        "black": "bg-wu-gray-500",
+        "teal": "bg-emerald-600",
+        "yellow": "bg-wu-yellow-100"
+      },
+      "request": {
+        "message": "text-blue-400",
+        "item": "text-yellow-500",
+        "card": "text-green-600"
+      }
+    },
+    "font": {
+      "mono": "mono"
+    }
+  }
+}
+

@@ -1,29 +1,23 @@
-// SwitchTheme.tsx
-
-// Imports
-// import { Switch } from "@material-tailwind/react";
-// import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+// ToggleButton.tsx
 
 // Types
-type SwitchThemeProps = {
-    theme: "light" | "dark";
-    setTheme: (t: "light" | "dark") => void;
+type ToggleButtonProps = {
+    // theme: "light" | "dark";
+    // setTheme: (t: "light" | "dark") => void;
+    value: boolean;
 };
 
 /**
- * Name: SwitchTheme
+ * Name: ToggleButton
  * Type: Component
  * Description: TBD
  */
-export default function SwitchTheme({ theme, setTheme }: SwitchThemeProps) {
-    // @ts-expect-ignore
+export default function ToggleButton({ value }: ToggleButtonProps) {
     return (
         <div className="relative inline-block w-10 h-5.5">
             <input
-                checked={theme === "dark"}
-                onChange={(): void =>
-                    setTheme(theme === "light" ? "dark" : "light")
-                }
+                checked={value === false}
+                onChange={undefined}
                 id="switch-component-dark"
                 type="checkbox"
                 className="peer appearance-none w-10 h-5.5 bg-wu-gray-400 rounded-full checked:bg-wu-gray-200 cursor-pointer transition-colors duration-300"

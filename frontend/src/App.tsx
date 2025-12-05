@@ -12,8 +12,12 @@ import { ThemeProvider } from "@material-tailwind/react";
 import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
+// import { lightTheme, darkTheme } from "./theme.ts";
 
-function App() {
+/**
+ * Name: App
+ */
+export default function App() {
     const [theme, setTheme] = useState<"light" | "dark">("light");
 
     // Load theme from localStorage
@@ -65,5 +69,3 @@ function App() {
         </ThemeProvider>
     );
 }
-
-export default App;

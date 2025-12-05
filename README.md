@@ -13,7 +13,6 @@ Dean Akin
 > Email - dakin@westernu.edu \
 > GitHub - Vexlechuga
 
-<br><br />
 
 ### Project Members
 Artur Dubanaev
@@ -36,15 +35,56 @@ Ryan Dobkin
 > Email - dobkinr@oregonstate.edu \
 > GitHub - ryandobkin
 
-<br><br />
 
 ### Project TA
 Birat Thapa
 > Email - thapabi@oregonstate.edu \
-> GitHub - 
+> GitHub - N/A
 
-<br><br />
 
-### Info
-Team Discord Server (Permanent Invite Link)
+### Communication Info
+Team Discord Server
 > https://discord.gg/73yH4WAGxj
+
+<br />
+
+## Setup
+
+### Frontend
+
+In a terminal, navigate to the frontend folder, run `npm install`, `npm run dev`, then open the webpage at `http://localahost:5173`.
+```
+> [User@root ~]$ cd /OSU_Capstone_Asset_Checking_System
+> [User@root OSU_Capstone_Asset_Checking_System]$ cd frontend
+> [User@root frontend]$ npm install
+> [User@root frontend]$ npm run dev
+> open http://localhost:5173 in a web browser
+```
+
+### Backend
+
+In a terminal, navigate to the backend folder, run `npm install`, `cp .env.example .env`, `npm run dev`, then open in a browser at `http://localhost:3001`.
+```
+> [User@root ~]$ cd /OSU_Capstone_Asset_Checking_System
+> [User@root OSU_Capstone_Asset_Checking_System]$ cd backend
+> [User@root backend]$ npm install
+> [User@root backend]$ cp .env.example .env
+> [User@root backend]$ npm run dev
+> open http://localhost:3001 in a web browser
+```
+
+### Scanner
+
+In a terminal, navigate to the scanner folder, run `npm install`, `node server.js`, then open `index.html` in a web browser.
+```
+> [User@root ~]$ cd /OSU_Capstone_Asset_Checking_System
+> [User@root OSU_Capstone_Asset_Checking_System]$ cd scanner
+> [User@root scanner]$ npm install
+> [User@root scanner]$ node server.js
+> open index.html in a web browser
+> server runs on http://localhost:3000
+```
+
+
+
+
