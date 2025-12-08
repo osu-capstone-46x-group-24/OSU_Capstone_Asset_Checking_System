@@ -16,7 +16,7 @@ export default function checkinRoute(
         async (c) => {
             const { rfid, item } = c.req.valid("json");
 
-            // 1️⃣ find user by RFID (TEXT)
+            //  find user by RFID (TEXT)
             const [user] = await db
                 .select()
                 .from(schema.users_table)
@@ -26,7 +26,7 @@ export default function checkinRoute(
                 return c.json({ error: "User not found" }, 404);
             }
 
-            // 2️⃣ find item by name
+            //  find item by name
             const [itemRow] = await db
                 .select()
                 .from(schema.items_table)
@@ -36,7 +36,7 @@ export default function checkinRoute(
                 return c.json({ error: "Item not found" }, 404);
             }
 
-            // 3️⃣ find active transaction
+            //  find active transaction
             const [tx] = await db
                 .select()
                 .from(schema.transactions)
@@ -52,7 +52,7 @@ export default function checkinRoute(
                 return c.json({ error: "No active checkout found" }, 400);
             }
 
-            // 4️⃣ check in
+            //  check in
             const now = new Date().toISOString();
 
             await db
