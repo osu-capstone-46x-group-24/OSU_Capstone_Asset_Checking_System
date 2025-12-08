@@ -1,34 +1,70 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { transactions } from "../db/schema.js";
-import { and, eq } from "drizzle-orm";
-import * as schema from "../db/schema.js";
+import { and, eq, isNull } from "drizzle-orm";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
-
+import * as schema from "../db/schema.js";
 import { checkinSchema } from "../api.js";
 
-function checkinRoute(db: LibSQLDatabase<typeof schema>) {
-    const checkinRoute = new Hono();
+export default function checkinRoute(
+    db: LibSQLDatabase<typeof schema>
+) {
+    const router = new Hono();
 
-    checkinRoute.post(
+    router.post(
         "/checkin",
         zValidator("json", checkinSchema),
         async (c) => {
-            const { userId, itemId, timestampId } = c.req.valid("json");
+            const { rfid, item } = c.req.valid("json");
 
+            // 1️⃣ find user by RFID (TEXT)
+            const [user] = await db
+                .select()
+                .from(schema.users_table)
+                .where(eq(schema.users_table.rfid, rfid));
+
+            if (!user) {
+                return c.json({ error: "User not found" }, 404);
+            }
+
+            // 2️⃣ find item by name
+            const [itemRow] = await db
+                .select()
+                .from(schema.items_table)
+                .where(eq(schema.items_table.name, item));
+
+            if (!itemRow) {
+                return c.json({ error: "Item not found" }, 404);
+            }
+
+            // 3️⃣ find active transaction
+            const [tx] = await db
+                .select()
+                .from(schema.transactions)
+                .where(
+                    and(
+                        eq(schema.transactions.user_id, user.id),
+                        eq(schema.transactions.item_id, itemRow.id),
+                        isNull(schema.transactions.checkin)
+                    )
+                );
+
+            if (!tx) {
+                return c.json({ error: "No active checkout found" }, 400);
+            }
+
+            // 4️⃣ check in
             const now = new Date().toISOString();
 
             await db
-                .update(transactions)
+                .update(schema.transactions)
                 .set({ checkin: now })
                 .where(
                     and(
-                        eq(transactions.user_id, userId),
-                        eq(transactions.item_id, itemId),
-                        eq(transactions.timestamp_id, timestampId)
+                        eq(schema.transactions.user_id, tx.user_id),
+                        eq(schema.transactions.item_id, tx.item_id),
+                        eq(schema.transactions.timestamp_id, tx.timestamp_id)
                     )
-                )
-                .limit(1);
+                );
 
             return c.json({
                 status: "success",
@@ -36,7 +72,6 @@ function checkinRoute(db: LibSQLDatabase<typeof schema>) {
             });
         }
     );
-    return checkinRoute;
-}
 
-export default checkinRoute;
+    return router;
+}

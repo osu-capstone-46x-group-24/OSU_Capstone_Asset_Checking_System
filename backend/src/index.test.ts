@@ -5,6 +5,8 @@ import { drizzle } from "drizzle-orm/libsql/node";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { reset, seed } from "drizzle-seed";
 import { beforeAll } from "vitest";
+import { eq, isNull, and } from "drizzle-orm";
+
 
 const testdb = "file:test.db";
 const db = drizzle({
@@ -132,14 +134,49 @@ describe.sequential("POST /api/checkout", async (c) => {
     });
 });
 
-describe.todo.sequential("POST /api/checkin", async (c) => {
-    test.sequential("Valid checkin", async (c) => {
-        await app.request("/api/checkin", {
+describe.sequential("POST /api/checkin", () => {
+
+    test.sequential("Checkin fails if already checked in", async () => {
+        const [tx] = await db
+            .select()
+            .from(schema.transactions)
+            .where(isNull(schema.transactions.checkin));
+
+        // manually check in
+        await db
+            .update(schema.transactions)
+            .set({ checkin: new Date().toISOString() })
+            .where(
+                and(
+                    eq(schema.transactions.user_id, tx.user_id),
+                    eq(schema.transactions.item_id, tx.item_id),
+                    eq(schema.transactions.timestamp_id, tx.timestamp_id)
+                )
+            );
+
+        const [user] = await db
+            .select()
+            .from(schema.users_table)
+            .where(eq(schema.users_table.id, tx.user_id));
+
+        const [item] = await db
+            .select()
+            .from(schema.items_table)
+            .where(eq(schema.items_table.id, tx.item_id));
+
+        const res = await app.request("/api/checkin", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userId: 1,
+                rfid: user.rfid,
+                item: item.name,
             }),
         });
+
+        expect(res.status).toBe(400);
     });
 });
+
+
+    
+
