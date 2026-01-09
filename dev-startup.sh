@@ -22,6 +22,7 @@ cleanup() {
     return
   fi
 
+  echo ""
   echo "Exiting, goodbye!"
   exit 0
 }
