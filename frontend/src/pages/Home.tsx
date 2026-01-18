@@ -4,6 +4,7 @@
 import "../App.css";
 import Navbar from "../components/UI_Elements/Navbar";
 import Footer from "../components/UI_Elements/Footer.tsx";
+import NetworkManager from "../API/NetworkManager.tsx";
 
 // Types
 type HomeProps = {
@@ -46,6 +47,7 @@ export default function Home({ theme, setTheme }: HomeProps) {
                     </div>
                     <div className="basis-12 py-4 text-3xl mt-10">
                         <p>OSU CS 46X Capstone Project '25-'26</p>
+                        <NetworkManager />
                     </div>
                 </div>
             </div>
