@@ -17,7 +17,7 @@ for these events independantly like this on the frontend:
 const socket = io();
 
 socket.on('card', (cardId) => {
-  console.log(cardId);
+    console.log(cardId);
 });
 ```
 
