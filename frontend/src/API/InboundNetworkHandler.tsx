@@ -1,5 +1,8 @@
 // InboundNetworkHandler.tsx
 
+// Constants
+let BACKEND_ROUTE: string = "";
+
 /**
  * Name: InboundNetworkHandler
  * Type: Hook
@@ -10,6 +13,5 @@
  */
 export default function InboundNetworkHandler() {
     // Scanner
-
     // Backend
 }
