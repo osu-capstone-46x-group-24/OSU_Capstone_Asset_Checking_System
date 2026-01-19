@@ -1,17 +1,18 @@
 // LogRequestConsole.tsx
 
 // Imports
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import configJson from "../spec_config.json";
-import UseSocket from "../hooks/UseSocket";
 
 // Types
-type ConsoleItem = {
+type NetworkLogItem = {
     reqType: string;
     sender: string;
+    destination: string;
     itemName: string;
     timestamp: string;
-    raw: string;
+    httpType: string;
+    endpoint: string;
 };
 
 type LogRequestConsoleProps = {
@@ -19,6 +20,7 @@ type LogRequestConsoleProps = {
     color_primary_bg: string;
     color_accent_text: string;
     color_accent_bg: string;
+    networkLogItems: NetworkLogItem[];
 };
 
 // Constants
@@ -35,13 +37,13 @@ export default function LogRequestConsole({
     color_primary_bg,
     color_accent_text,
     color_accent_bg,
+    networkLogItems,
 }: LogRequestConsoleProps) {
-    const [consoleItems, setConsoleItems] = useState<ConsoleItem[]>([]);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    const addNetworkTransactionLog = useCallback((newLog: ConsoleItem) => {
-        setConsoleItems((prev) => [...prev, newLog]);
-    }, []);
+    // const addNetworkTransactionLog = useCallback((newLog: NetworkLogItem) => {
+    //     setConsoleItems((prev) => [...prev, newLog]);
+    // }, []);
 
     // Color-code message types *based on spec_config.json file
     function getReqTypeColor(reqType: string) {
@@ -62,13 +64,7 @@ export default function LogRequestConsole({
         if (!e1) return;
 
         e1.scrollTop = e1.scrollHeight;
-    }, [consoleItems]);
-
-    // Call UseSocket
-    UseSocket(addNetworkTransactionLog);
-
-    // Call UseBackendSocket
-    // UseBackendSocket(addNetworkTransactionLog);
+    }, [networkLogItems]);
 
     return (
         <>
@@ -86,9 +82,11 @@ export default function LogRequestConsole({
                             </th>
                             <th className="px-4 whitespace-nowrap">Sender</th>
                             <th className="px-4 whitespace-nowrap">
-                                Request Type
+                                Destination
                             </th>
-                            <th className="px-4 whitespace-nowrap">RAW</th>
+                            <th className="px-4 whitespace-nowrap">Endpoint</th>
+                            <th className="px-4 whitespace-nowrap">Request</th>
+                            <th className="px-4 whitespace-nowrap">Type</th>
                             <th className="px-4 whitespace-nowrap">Message</th>
                             <th className="w-full"></th>
                         </tr>
@@ -96,7 +94,7 @@ export default function LogRequestConsole({
                     <tbody
                         className={`pt-[32px] min-w-full text-${color_primary_text}`}
                     >
-                        {consoleItems.length === 0 ? (
+                        {networkLogItems.length === 0 ? (
                             <tr>
                                 <td
                                     className={`text-${color_placeholder_text} px-4 py-2`}
@@ -106,8 +104,8 @@ export default function LogRequestConsole({
                                 </td>
                             </tr>
                         ) : (
-                            consoleItems.map(
-                                (item: ConsoleItem, index: number) => (
+                            networkLogItems.map(
+                                (item: NetworkLogItem, index: number) => (
                                     <tr
                                         key={index}
                                         className={`border-b text-center border-dashed border-${color_primary_text} nth-[2n]:border-wu-gray-300 text-xs uppercase`}
@@ -125,6 +123,18 @@ export default function LogRequestConsole({
                                             {item.sender}
                                         </td>
                                         <td
+                                            className="px-4 py-2 whitespace-nowrap"
+                                            colSpan={1}
+                                        >
+                                            {item.destination}
+                                        </td>
+                                        <td
+                                            className="px-4 py-2 whitespace-nowrap"
+                                            colSpan={1}
+                                        >
+                                            {item.endpoint}
+                                        </td>
+                                        <td
                                             className={`px-4 py-2 whitespace-nowrap 
                                             ${getReqTypeColor(item.reqType)}`}
                                             colSpan={1}
@@ -135,7 +145,7 @@ export default function LogRequestConsole({
                                             className="px-4 py-2 whitespace-nowrap"
                                             colSpan={1}
                                         >
-                                            {item.raw}
+                                            {item.httpType}
                                         </td>
                                         <td
                                             className="px-4 py-2 whitespace-nowrap"
