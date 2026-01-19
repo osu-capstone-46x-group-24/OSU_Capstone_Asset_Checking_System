@@ -32,11 +32,13 @@ afterAll(async () => {
     const transactions = await db.select().from(schema.transactions).all();
     const items = await db.select().from(schema.available_items).all();
     const timestamps = await db.select().from(schema.timestamp).all();
+    const logs = await db.select().from(schema.log_table).all();
     console.log(timestamps);
     console.log(users_table);
     console.log(items_table);
     console.log(transactions);
     console.log(items);
+    console.log(logs);
 });
 
 // sequential is required because test are dependent on shared state (database)
@@ -205,6 +207,24 @@ describe.todo.sequential("POST /api/checkin", async () => {
             body: JSON.stringify({
                 userId: 1,
             }),
+        });
+    });
+});
+
+describe.sequential("POST /api/log/info", async (c) => {
+    test.sequential("log saves to database", async (c) => {
+        await app.request("/api/log/info", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                type: "scanner",
+                message: "hello world",
+            }),
+        });
+        const log_message = await db.select().from(schema.log_table);
+        expect(log_message[0]).toMatchObject({
+            type: "scanner",
+            message: "hello world",
         });
     });
 });

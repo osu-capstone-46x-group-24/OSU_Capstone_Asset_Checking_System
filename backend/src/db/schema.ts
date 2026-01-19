@@ -71,3 +71,12 @@ export const admins_table = sqliteTable("admins_table", {
             onUpdate: "cascade",
         }),
 });
+
+export const log_table = sqliteTable("log_table", {
+    timestamp: text("timestamp")
+        .notNull()
+        .default(sql`(datetime('now'))`),
+    level: text("level"),
+    type: text("type").notNull(),
+    message: text("message"),
+});
