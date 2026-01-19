@@ -1,62 +1,105 @@
 // NetworkManager.tsx
 
 // Types
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import "./OutboundNetworkHandler.ts";
 import { sendGetRequest, sendPostRequest } from "./OutboundNetworkHandler.ts";
-import { Button, Option, Select } from "@material-tailwind/react";
+import { Option, Select } from "@material-tailwind/react";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
 
 type ReqItem = {
     reqType: string;
     sender: string;
+    destination: string;
     itemName: string;
     timestamp: string;
-    raw: string;
+    httpType: string;
+    endpoint: string;
 };
 
-// Const
-let inboundNetworkQueue: ReqItem[] = [];
-const examplePostRequest = {
-    userId: 0,
-    itemId: 0,
-    timestampId: 0,
+type NetworkManagerProps = {
+    color_primary_text: string;
+    color_primary_bg: string;
+    color_accent_text: string;
+    color_accent_bg: string;
+    onRequest: (req: ReqItem) => void;
 };
-const exampleGetRequest = {};
+
+type RequestType = "GET" | "POST" | "";
 
 /**
  * Name: NetworkManager
  */
-export default function NetworkManager() {
-    const [reqType, setReqType] = React.useState("react");
-    const [reqEndpoint, setReqEndpoint] = React.useState("react");
+export default function NetworkManager({
+    color_primary_text,
+    color_primary_bg,
+    color_accent_text,
+    color_accent_bg,
+    onRequest,
+}: NetworkManagerProps) {
+    const [reqType, setReqType] = React.useState<RequestType>("");
+    const [reqEndpoint, setReqEndpoint] = React.useState("");
+
+    function getTimeStamp(): string {
+        const epochTime = Date.now();
+        return new Date(epochTime).toLocaleString();
+    }
+
+    // Used as callback
+    const sendRequestToParent = (
+        requestType: string,
+        message: string,
+        requestSender: string,
+        httpType: string,
+        endpoint: string
+    ) => {
+        onRequest({
+            reqType: requestType,
+            sender: requestSender,
+            destination: "backend",
+            endpoint: endpoint,
+            itemName: message,
+            timestamp: getTimeStamp(),
+            httpType: httpType,
+        });
+    };
 
     const handleSubmit = async (type: string, endpoint: string) => {
         try {
             console.log("Request [", type, "], [", endpoint, "]...");
             if (type === "POST") {
-                const result = await sendPostRequest(endpoint);
+                const result: string = await sendPostRequest(endpoint);
+                console.log("Success: ", result);
+                sendRequestToParent("API", result, "frontend", type, endpoint);
             } else if (type === "GET") {
                 const result = await sendGetRequest(endpoint);
+                console.log("Success: ", result);
+                sendRequestToParent("API", result, "frontend", type, endpoint);
+            } else {
+                const result = "ERROR";
+                console.log("Success: ", result);
+                sendRequestToParent("API", result, "frontend", type, endpoint);
             }
-
-            console.log("Success: ", result);
         } catch (err) {
-            console.error("Error: ", err.message);
+            const message =
+                err instanceof Error ? err.message : "Unknown Error";
+            console.error("Error: ", message);
+            sendRequestToParent("API", message, "frontend", type, endpoint);
         }
     };
 
     return (
         <>
-            <div>
-                <ButtonDefault
-                    onClick={() => handleSubmit(reqType, reqEndpoint)}
-                    children={"Send Request"}
-                />
-                <div className={`w-1/2 flex flex-row bg-wuGrey-100`}>
+            <div
+                className={`rounded-sm h-50 w-120 gap-6 flex-col flex shadow-lg text-${color_primary_text} bg-${color_primary_bg}`}
+            >
+                <div
+                    className={`flex flex-row gap-6 m-6 min-h-12 text-wuGrey-100 bg-${color_primary_bg}`}
+                >
                     <Select
-                        className="h-15 w-50"
                         value={reqType}
+                        className={`text-center`}
                         onChange={(val) => setReqType(val)}
                         label="Select Request Type"
                         placeholder={undefined}
@@ -65,15 +108,22 @@ export default function NetworkManager() {
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                     >
-                        <Option className="text-gray-400" value="null">
-                            Select...
+                        <Option
+                            value="GET"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                        >
+                            GET
                         </Option>
-                        <Option value="GET">GET</Option>
-                        <Option value="POST">POST</Option>
+                        <Option
+                            value="POST"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                        >
+                            POST
+                        </Option>
                     </Select>
                     <Select
-                        className="h-15 w-50"
                         value={reqEndpoint}
+                        className={`text-center`}
                         onChange={(val) => setReqEndpoint(val)}
                         label="Select Endpoint"
                         placeholder={undefined}
@@ -83,19 +133,43 @@ export default function NetworkManager() {
                         onPointerLeaveCapture={undefined}
                     >
                         <Option
-                            className="bg-wuGrey-300 text-gray-400"
-                            value="null"
+                            value="/checkin"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
                         >
-                            Select...
+                            /checkin
                         </Option>
-                        <Option value="/checkin">/checkin</Option>
-                        <Option value="/checkout">/checkout</Option>
-                        <Option value="/items">/items</Option>
-                        <Option value="/items/available">
+                        <Option
+                            value="/checkout"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                        >
+                            /checkout
+                        </Option>
+                        <Option
+                            value="/items"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                        >
+                            /items
+                        </Option>
+                        <Option
+                            value="/items/available"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                        >
                             /items/available
                         </Option>
-                        <Option value="/items/all">/items/all</Option>
+                        <Option
+                            value="/items/all"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                        >
+                            /items/all
+                        </Option>
                     </Select>
+                </div>
+                <div>
+                    <ButtonDefault
+                        onClick={() => handleSubmit(reqType, reqEndpoint)}
+                        children={"Send Request ⇨"}
+                        className={`ml-6`}
+                    />
                 </div>
             </div>
         </>
