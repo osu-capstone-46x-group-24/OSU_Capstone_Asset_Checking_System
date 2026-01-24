@@ -6,7 +6,6 @@ import "./OutboundNetworkHandler.ts";
 import { sendGetRequest, sendPostRequest } from "./OutboundNetworkHandler.ts";
 import { Option, Select } from "@material-tailwind/react";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
-import { ChevronDownIcon } from "@heroicons/react/16/solid";
 
 type ReqItem = {
     reqType: string;
@@ -132,6 +131,12 @@ export default function NetworkManager({
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                     >
+                        <Option
+                            value="/"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                        >
+                            /
+                        </Option>
                         <Option
                             value="/checkin"
                             className={`bg-${color_accent_bg} text-${color_accent_text}`}
