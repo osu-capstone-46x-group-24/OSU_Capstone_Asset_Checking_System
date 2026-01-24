@@ -1,7 +1,7 @@
 // OutboundNetworkHandler.ts
 
 // Constants
-const BACKEND_BASE: string = "http://localhost:3000/api";
+const BACKEND_BASE: string = "http://localhost:3001/api";
 const CHECK_IN: string = "/checkin";
 const CHECK_OUT: string = "/checkout";
 const ITEMS: string = "/items";
@@ -12,15 +12,16 @@ const ITEMS_AVAILABLE: string = ITEMS + "/available";
  * Name: sendPostRequest
  *
  */
-export async function sendPostRequest(endpoint: string) {
+export async function sendPostRequest(endpoint: string, body?: unknown) {
     // Scanner
     // Backend
     const response = await fetch(BACKEND_BASE + endpoint, {
         method: "POST",
+        mode: "cors",
         headers: {
             "Content-Type": "application/json",
         },
-        body: null,
+        body: body ? JSON.stringify(body) : null,
     });
 
     console.log("POST RESPONSE [", response, "]...");
