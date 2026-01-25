@@ -1,7 +1,7 @@
 // OutboundNetworkHandler.ts
 
 // Constants
-const BACKEND_BASE: string = "http://localhost:3001/api";
+const BACKEND_BASE: string = "http://localhost:3000/api";
 const CHECK_IN: string = "/checkin";
 const CHECK_OUT: string = "/checkout";
 const ITEMS: string = "/items";
