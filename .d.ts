@@ -3,10 +3,12 @@
 
 
 // Request Items
-interface ReqItem {
-    raw: string;
+export type ReqItem = {
     reqType: string;
     sender: string;
+    destination: string;
     itemName: string;
     timestamp: string;
-}
+    httpType: string;
+    endpoint: string;
+};

@@ -7,25 +7,15 @@ import Navbar from "../components/UI_Elements/Navbar.tsx";
 import LogRequestConsole from "../components/LogRequestConsole";
 import NetworkManager from "../API/NetworkManager.tsx";
 import { useState } from "react";
+import type { ReqItem } from "../../../.d.ts";
 
 // Type
 type AdminDashboardProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;
-    reqQueue: NetworkLogItem;
-    setReqQueue: (r: NetworkLogItem | null) => void;
+    reqQueue?: ReqItem;
+    setReqQueue?: (r: ReqItem) => void;
 };
-
-type NetworkLogItem = {
-    reqType: string;
-    sender: string;
-    destination: string;
-    itemName: string;
-    timestamp: string;
-    httpType: string;
-    endpoint: string;
-};
-
 /**
  * AdminDashboard
  * Type: Page
@@ -34,12 +24,10 @@ type NetworkLogItem = {
 export default function AdminDashboard({
     theme,
     setTheme,
-    reqQueue,
-    setReqQueue,
 }: AdminDashboardProps) {
     // networkLogs State
-    const [networkLogs, setNetworkLogs] = useState<NetworkLogItem[]>([]);
-    const addReqQueue = (newLog: NetworkLogItem) => {
+    const [networkLogs, setNetworkLogs] = useState<ReqItem[]>([]);
+    const addReqQueue = (newLog: ReqItem) => {
         setNetworkLogs((prev) => [...prev, newLog]);
     };
 

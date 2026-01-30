@@ -1,6 +1,6 @@
 // App.tsx
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     HashRouter as Router,
     Routes,
@@ -13,16 +13,7 @@ import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
 // import { lightTheme, darkTheme } from "./theme.ts";
-
-type ReqItem = {
-    reqType: string;
-    sender: string;
-    destination: string;
-    itemName: string;
-    timestamp: string;
-    httpType: string;
-    endpoint: string;
-};
+import type { ReqItem } from "../../.d.ts";
 
 /**
  * Name: App
@@ -67,8 +58,12 @@ export default function App() {
                             <AdminDashboard
                                 theme={theme}
                                 setTheme={setTheme}
-                                reqQueue={reqQueue}
-                                setReqQueue={setReqQueue}
+                                reqQueue={reqQueue as unknown as ReqItem}
+                                setReqQueue={
+                                    setReqQueue as unknown as (
+                                        r: ReqItem
+                                    ) => void
+                                }
                             />
                         }
                     />
@@ -78,8 +73,12 @@ export default function App() {
                             <UserDashboard
                                 theme={theme}
                                 setTheme={setTheme}
-                                reqQueue={reqQueue}
-                                setReqQueue={setReqQueue}
+                                reqQueue={reqQueue as unknown as ReqItem}
+                                setReqQueue={
+                                    setReqQueue as unknown as (
+                                        r: ReqItem
+                                    ) => void
+                                }
                             />
                         }
                     />

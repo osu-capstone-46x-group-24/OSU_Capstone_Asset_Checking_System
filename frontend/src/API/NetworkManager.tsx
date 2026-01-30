@@ -6,16 +6,7 @@ import "./OutboundNetworkHandler.ts";
 import { sendGetRequest, sendPostRequest } from "./OutboundNetworkHandler.ts";
 import { Option, Select } from "@material-tailwind/react";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
-
-type ReqItem = {
-    reqType: string;
-    sender: string;
-    destination: string;
-    itemName: string;
-    timestamp: string;
-    httpType: string;
-    endpoint: string;
-};
+import type { ReqItem } from "../../../.d.ts";
 
 type NetworkManagerProps = {
     color_primary_text: string;
@@ -99,7 +90,11 @@ export default function NetworkManager({
                     <Select
                         value={reqType}
                         className={`text-center`}
-                        onChange={(val) => setReqType(val)}
+                        onChange={(val) => {
+                            if (val) {
+                                setReqType(val! as RequestType);
+                            }
+                        }}
                         label="Select Request Type"
                         placeholder={undefined}
                         onResize={undefined}
@@ -123,7 +118,11 @@ export default function NetworkManager({
                     <Select
                         value={reqEndpoint}
                         className={`text-center`}
-                        onChange={(val) => setReqEndpoint(val)}
+                        onChange={(val) => {
+                            if (val) {
+                                setReqEndpoint(val);
+                            }
+                        }}
                         label="Select Endpoint"
                         placeholder={undefined}
                         onResize={undefined}

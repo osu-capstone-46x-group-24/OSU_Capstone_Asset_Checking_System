@@ -7,6 +7,7 @@ import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
 import DatetimeModal from "../components/UI_Elements/DatetimeModal.tsx";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
+import type { ReqItem } from "../../../.d.ts";
 
 // Types
 // ID data types based on the example stuff he provided
@@ -26,6 +27,8 @@ type CartItem = {
 type UserDashboardProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;
+    reqQueue?: ReqItem;
+    setReqQueue?: (r: ReqItem) => void;
 };
 
 /**
