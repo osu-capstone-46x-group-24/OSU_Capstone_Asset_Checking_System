@@ -12,6 +12,8 @@ import { useState } from "react";
 type AdminDashboardProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;
+    reqQueue: NetworkLogItem;
+    setReqQueue: (r: NetworkLogItem | null) => void;
 };
 
 type NetworkLogItem = {
@@ -32,10 +34,12 @@ type NetworkLogItem = {
 export default function AdminDashboard({
     theme,
     setTheme,
+    reqQueue,
+    setReqQueue,
 }: AdminDashboardProps) {
     // networkLogs State
     const [networkLogs, setNetworkLogs] = useState<NetworkLogItem[]>([]);
-    const addNetworkLog = (newLog: NetworkLogItem) => {
+    const addReqQueue = (newLog: NetworkLogItem) => {
         setNetworkLogs((prev) => [...prev, newLog]);
     };
 
@@ -91,7 +95,7 @@ export default function AdminDashboard({
                         <div className={`p-1`}>
                             <NetworkManager
                                 {...consoleParams}
-                                onRequest={addNetworkLog}
+                                onRequest={addReqQueue}
                             />
                         </div>
                     </div>

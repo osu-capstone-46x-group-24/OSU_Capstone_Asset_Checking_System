@@ -1,6 +1,6 @@
 // App.tsx
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     HashRouter as Router,
     Routes,
@@ -14,11 +14,22 @@ import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
 // import { lightTheme, darkTheme } from "./theme.ts";
 
+type ReqItem = {
+    reqType: string;
+    sender: string;
+    destination: string;
+    itemName: string;
+    timestamp: string;
+    httpType: string;
+    endpoint: string;
+};
+
 /**
  * Name: App
  */
 export default function App() {
     const [theme, setTheme] = useState<"light" | "dark">("light");
+    const [reqQueue, setReqQueue] = useState<[ReqItem]>();
 
     // Load theme from localStorage
     useEffect(() => {
@@ -53,13 +64,23 @@ export default function App() {
                     <Route
                         path="/Admin"
                         element={
-                            <AdminDashboard theme={theme} setTheme={setTheme} />
+                            <AdminDashboard
+                                theme={theme}
+                                setTheme={setTheme}
+                                reqQueue={reqQueue}
+                                setReqQueue={setReqQueue}
+                            />
                         }
                     />
                     <Route
                         path="/User"
                         element={
-                            <UserDashboard theme={theme} setTheme={setTheme} />
+                            <UserDashboard
+                                theme={theme}
+                                setTheme={setTheme}
+                                reqQueue={reqQueue}
+                                setReqQueue={setReqQueue}
+                            />
                         }
                     />
                 </Routes>
