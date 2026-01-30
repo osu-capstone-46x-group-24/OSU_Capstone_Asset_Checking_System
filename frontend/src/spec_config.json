@@ -2,7 +2,12 @@
   "scanner": {
     "port": 3000
   },
-  "backend": {},
+  "backend": {
+    "port": 3001
+  },
+  "frontend": {
+    "port": 5173
+  },
   "theme": {
     "color": {
       "text": {

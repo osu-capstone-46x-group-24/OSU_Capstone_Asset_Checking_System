@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 
 import { zValidator } from "@hono/zod-validator";
 import "dotenv/config";
@@ -13,6 +14,7 @@ import canaryRoute from "./routes/canary.js";
 
 function app_constructor(db: LibSQLDatabase<typeof schema>) {
     const app = new Hono();
+    app.use("/api/*", cors());
 
     // TODO: Refactor into seperate file
     app.post(
