@@ -6,7 +6,7 @@ import type { ButtonProps } from "@material-tailwind/react";
 // Types
 type ButtonDefaultProps = {
     props?: ButtonProps;
-    onClick?: () => void | undefined | Promise<void>;
+    onClick?: () => void;
     children?: string;
     className?: string;
 };
