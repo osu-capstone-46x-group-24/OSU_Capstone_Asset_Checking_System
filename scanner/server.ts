@@ -19,9 +19,9 @@ const PORT = process.env.PORT || 3000;
 
 // more mock cards could be added in the future,
 // currently I only have one working card
-const RFID_CARDS = ['00:00:00:20:04:aa:c7:ff'];
+const RFID_CARDS: string[] = ['00:00:00:20:04:aa:c7:ff'];
 
-const MOCK_ITEMS = [
+const MOCK_ITEMS: string[] = [
     '00:80:61:3e:89:1c:b4:04',
     '00:80:61:3e:8a:3e:63:04',
     '00:80:61:3e:81:bb:e9:04',
@@ -33,7 +33,7 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.post('/api/scanner/cards', (req, res) => {
-    let cardId;
+    let cardId: string;
     if (!req.body) {
         cardId = RFID_CARDS[Math.floor(Math.random() * RFID_CARDS.length)];
     } else {
@@ -45,7 +45,7 @@ app.post('/api/scanner/cards', (req, res) => {
 });
 
 app.post('/api/scanner/items', (req, res) => {
-    let itemId;
+    let itemId: string;
     if (!req.body) {
         itemId = MOCK_ITEMS[Math.floor(Math.random() * MOCK_ITEMS.length)];
     } else {
