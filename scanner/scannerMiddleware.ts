@@ -1,7 +1,10 @@
 import HID from 'node-hid';
 import { usb } from 'usb';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // constants
+const baseUrl = process.env.BASE_URL || `http://localhost:3000`;
 
 const VENDOR_ID = 3111;
 const PRODUCT_ID = 15354;

@@ -2,6 +2,9 @@ import express from 'express';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 const server = createServer(app);
@@ -12,7 +15,7 @@ const io = new Server(server, {
     },
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const RFID_CARDS = [
     '@05607858',
