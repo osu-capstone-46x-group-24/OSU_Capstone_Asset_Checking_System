@@ -1,17 +1,23 @@
 {
-  "name": "scanner",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "type": "module",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "socket.io": "^4.8.1"
-  }
+    "name": "scanner",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "type": "module",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^17.2.3",
+        "express": "^5.1.0",
+        "node-hid": "^3.2.0",
+        "socket.io": "^4.8.1",
+        "usb": "^2.17.0"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.6"
+    }
 }
