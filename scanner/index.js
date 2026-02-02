@@ -1,8 +1,4 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const BASE_URL = process.env.BASE_URL || `http://localhost:3000`;
+const BASE_URL = `http://localhost:3000`;
 
 const socket = io(BASE_URL);
 
