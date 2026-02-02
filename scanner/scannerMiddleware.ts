@@ -1,10 +1,13 @@
 import HID from 'node-hid';
+import { usb } from 'usb';
+
+// constants
 
 const VENDOR_ID = 3111;
 const PRODUCT_ID = 15354;
 
 const POLL_DELAY = 250;
-const RECONNECT_DELAY = 15000;
+const LOGGING_ENABLED = false;
 
 let device: HID.HID | null = null;
 let timer: NodeJS.Timeout | null = null;
@@ -20,6 +23,7 @@ function connectToDevice() {
         if (!deviceInfo.path) throw new Error('Device path not found');
 
         const dev = new HID.HID(deviceInfo.path);
+        console.log('Device connected');
         return dev;
     } catch (error) {
         console.error('Connection error:', error);
@@ -33,6 +37,7 @@ function disconnectDevice(reason?: string) {
     }
     try {
         device?.close();
+        console.log('Device disconnected');
     } catch {}
     device = null;
 }
@@ -79,24 +84,11 @@ function getScanType(ack: Buffer): ScanType {
     return bytesRead === 45 ? 'Card' : 'Item';
 }
 
-// main
-// MIGHT NOT NEED THESE?
-// const SETUP_FEATURES = [
-//     "8f00000000000000",
-//     "8e00000000000000"
-// ];
-
-// for (const feature of SETUP_FEATURES) {
-//     setFeature8(feature);
-//     const resp = getFeature8();
-// }
-
-// console.log("Setup complete.");
-
 function startPolling() {
     if (!device) return;
     timer = setInterval(() => {
         try {
+            if (LOGGING_ENABLED) console.log('polling');
             if (!device) return;
 
             // read last card data
@@ -107,29 +99,19 @@ function startPolling() {
             setFeature8('8c02040100000000', device); // clear card data
             const ack = getFeature8(device);
 
-            console.log('Card data: ', normalizeData(raw));
-            console.log('Scan type:', getScanType(ack));
+            if (LOGGING_ENABLED) console.log('Card data: ', normalizeData(raw));
+            if (LOGGING_ENABLED) console.log('Scan type:', getScanType(ack));
         } catch (error) {
-            if (timer) {
-                clearInterval(timer);
-            }
-            timer = null;
-            disconnectDevice('Error during polling');
-            scheduleReconnect();
+            console.error('Polling error:', error);
         }
     }, POLL_DELAY);
 }
 
-function scheduleReconnect() {
-    setTimeout(() => {
-        if (device) return; // already connected
-        const dev = connectToDevice();
-        if (!dev) return scheduleReconnect();
-
-        device = dev;
-        console.log('Reconnected to device.');
-        startPolling();
-    }, RECONNECT_DELAY);
+function stopPolling() {
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+    }
 }
 
 function main() {
@@ -137,9 +119,6 @@ function main() {
     if (device) {
         console.log('Connected to device.');
         startPolling();
-    } else {
-        console.log('Device not found, scheduling reconnect...');
-        scheduleReconnect();
     }
 }
 
@@ -147,6 +126,28 @@ process.on('SIGINT', () => {
     if (timer) clearInterval(timer);
     disconnectDevice('SIGINT');
     process.exit(0);
+});
+
+usb.on('attach', (d) => {
+    if (
+        d.deviceDescriptor.idVendor !== VENDOR_ID ||
+        d.deviceDescriptor.idProduct !== PRODUCT_ID
+    )
+        return;
+    console.log('Scanner plugged in');
+    device = connectToDevice();
+    startPolling();
+});
+
+usb.on('detach', (d) => {
+    if (
+        d.deviceDescriptor.idVendor !== VENDOR_ID ||
+        d.deviceDescriptor.idProduct !== PRODUCT_ID
+    )
+        return;
+    console.log('Scanner unplugged');
+    stopPolling();
+    disconnectDevice('unplugged');
 });
 
 main();
