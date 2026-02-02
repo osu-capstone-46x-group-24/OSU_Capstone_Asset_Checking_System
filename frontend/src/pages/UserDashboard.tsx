@@ -71,10 +71,13 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
             raw: fakeItem,
         };
 
-        setCartItems((prev) => [...prev, newItem]);
-        return newItem;
+        //PREVENTS DUPLICATE SCANS NO IDEA HOW WILL WORK FOR ACTUAL HARDWARE SCANS SO LOOOOOK HERE PLEASEEE
+        if (cartItems.some((item) => item.itemId === newItem.itemId)) {
+            alert(`Scanned same item twice! This item is already in your cart: \n \n ${newItem.itemId} ${newItem.itemName}`);
+            return;
+        }
+        setCartItems((prev) => [...prev,newItem]);
     }
-
     //and a second test string for variety/testing
     function handleItemScan2() {
         const fakeItem = "T0007,Wearable Osculatation simulator,,Avkin,,,,";
@@ -86,8 +89,12 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
             raw: fakeItem,
         };
 
-        setCartItems((prev) => [...prev, newItem]);
-        return newItem;
+        //PREVENTS DUPLICATE SCANS NO IDEA HOW WILL WORK FOR ACTUAL HARDWARE SCANS SO LOOOOOK HERE PLEASEEE
+        if (cartItems.some((item) => item.itemId === newItem.itemId)) {
+            alert(`Scanned same item twice! This item is already in your cart: \n \n ${newItem.itemId} ${newItem.itemName}`);
+            return;
+        }
+        setCartItems((prev) => [...prev,newItem]);
     }
 
     function handleConfirmCheckout(returnTime: string | null): void {
@@ -279,13 +286,13 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
                 </div>
             )}
 
-                <DatetimeModal
-                    open={showModal}
-                    onClose={() => setShowModal(false)}
-                    onConfirm={handleConfirmCheckout}
-                    user={scanned}
-                    items={cartItems}
-                />
+            <DatetimeModal
+                open={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleConfirmCheckout}
+                user={scanned}
+                items={cartItems}
+            />
             <Footer theme={theme} />
         </div>
     );
