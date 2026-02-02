@@ -15,6 +15,23 @@ const LOGGING_ENABLED = false;
 let device: HID.HID | null = null;
 let timer: NodeJS.Timeout | null = null;
 
+// http helper
+
+function postData(endpoint: string, data: string) {
+    const url = `${baseUrl}${endpoint}`;
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data }),
+    }).then((response) => {
+        if (!response.ok) {
+            console.error('HTTP error:', response.statusText);
+        }
+    });
+}
+
 // connect/disconnect
 
 function connectToDevice() {
@@ -104,6 +121,13 @@ function startPolling() {
 
             if (LOGGING_ENABLED) console.log('Card data: ', normalizeData(raw));
             if (LOGGING_ENABLED) console.log('Scan type:', getScanType(ack));
+            const scanType = getScanType(ack);
+
+            if (scanType === 'Card') {
+                postData('/api/scanner/cards', normalizeData(raw));
+            } else {
+                postData('/api/scanner/items', normalizeData(raw));
+            }
         } catch (error) {
             console.error('Polling error:', error);
         }
