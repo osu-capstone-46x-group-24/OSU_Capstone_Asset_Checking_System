@@ -1,9 +1,9 @@
 // UseSocket.tsx
 
 // Imports
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import configJson from "../spec_config.json";
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 // Constants
 const PORT: number = configJson.scanner.port;
@@ -14,9 +14,10 @@ const socket = io(BASE_URL);
 type ReqItem = {
     reqType: string;
     sender: string;
+    destination: string;
     itemName: string;
     timestamp: string;
-    raw: string;
+    httpType: string;
 };
 
 /**
@@ -28,7 +29,6 @@ type ReqItem = {
  * Return: void
  */
 export default function UseSocket(onRequest: (req: ReqItem) => void) {
-
     useEffect(() => {
         function getTimeStamp(): string {
             const epochTime = Date.now();
@@ -36,13 +36,18 @@ export default function UseSocket(onRequest: (req: ReqItem) => void) {
         }
 
         // Used as callback
-        const sendRequestToParent = ( requestType: string, message: string, requestSender: string) => {
+        const sendRequestToParent = (
+            requestType: string,
+            message: string,
+            requestSender: string
+        ) => {
             onRequest({
                 reqType: requestType,
                 sender: requestSender,
+                destination: "frontend",
                 itemName: message,
                 timestamp: getTimeStamp(),
-                raw: message,
+                httpType: "POST",
             });
         };
 
@@ -76,4 +81,4 @@ export default function UseSocket(onRequest: (req: ReqItem) => void) {
     }, [onRequest]);
 
     return null;
-    };
+}

@@ -13,12 +13,14 @@ import Home from "./pages/Home";
 import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
 // import { lightTheme, darkTheme } from "./theme.ts";
+import type { ReqItem } from "../../.d.ts";
 
 /**
  * Name: App
  */
 export default function App() {
     const [theme, setTheme] = useState<"light" | "dark">("light");
+    const [reqQueue, setReqQueue] = useState<[ReqItem]>();
 
     // Load theme from localStorage
     useEffect(() => {
@@ -53,13 +55,31 @@ export default function App() {
                     <Route
                         path="/Admin"
                         element={
-                            <AdminDashboard theme={theme} setTheme={setTheme} />
+                            <AdminDashboard
+                                theme={theme}
+                                setTheme={setTheme}
+                                reqQueue={reqQueue as unknown as ReqItem}
+                                setReqQueue={
+                                    setReqQueue as unknown as (
+                                        r: ReqItem
+                                    ) => void
+                                }
+                            />
                         }
                     />
                     <Route
                         path="/User"
                         element={
-                            <UserDashboard theme={theme} setTheme={setTheme} />
+                            <UserDashboard
+                                theme={theme}
+                                setTheme={setTheme}
+                                reqQueue={reqQueue as unknown as ReqItem}
+                                setReqQueue={
+                                    setReqQueue as unknown as (
+                                        r: ReqItem
+                                    ) => void
+                                }
+                            />
                         }
                     />
                 </Routes>

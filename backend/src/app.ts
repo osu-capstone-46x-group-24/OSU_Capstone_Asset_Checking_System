@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 
 import { zValidator } from "@hono/zod-validator";
 import "dotenv/config";
@@ -10,9 +11,11 @@ import checkoutRoute from "./routes/checkout.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 import itemsRoute from "./routes/items.js";
 import canaryRoute from "./routes/canary.js";
+import logRoute from "./routes/log.js";
 
 function app_constructor(db: LibSQLDatabase<typeof schema>) {
     const app = new Hono();
+    app.use("/api/*", cors());
 
     // TODO: Refactor into seperate file
     app.post(
@@ -33,6 +36,7 @@ function app_constructor(db: LibSQLDatabase<typeof schema>) {
 
     app.route("api/", checkinRoute(db));
     app.route("api/", checkoutRoute(db));
+    app.route("api/", logRoute(db));
     return app;
 }
 export default app_constructor;
