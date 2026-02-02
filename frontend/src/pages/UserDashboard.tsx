@@ -102,9 +102,9 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
         setThankYou(true); // show thank-you screen
 
         setTimeout(() => {
-            // after 8 seconds, fully reset to dashboard. if it feels like too long you can shorten it idk
+            // after 5 seconds, fully reset to dashboard. if it feels like too long you can shorten it idk
             handleReset();
-        }, 8000);
+        }, 5000);
     }
 
     const buttonTheme =
@@ -121,11 +121,10 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
         <div
             className={`absolute w-full top-0 left-0 min-h-screen font-mono
         transition-colors duration-300
-            ${
-                theme === "light"
+            ${theme === "light"
                     ? "bg-wu-gray-200 text-wu-gray-400"
                     : "bg-wu-gray-400 text-wu-gray-200"
-            }`}
+                }`}
         >
             <Navbar theme={theme} setTheme={setTheme} />
 
@@ -279,7 +278,7 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
                     </div>
                 </div>
             )}
-            <div className="flex items-center">
+
                 <DatetimeModal
                     open={showModal}
                     onClose={() => setShowModal(false)}
@@ -287,7 +286,6 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
                     user={scanned}
                     items={cartItems}
                 />
-            </div>
             <Footer theme={theme} />
         </div>
     );
