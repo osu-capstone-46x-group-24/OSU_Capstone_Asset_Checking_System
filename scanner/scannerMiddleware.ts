@@ -18,7 +18,7 @@ let timer: NodeJS.Timeout | null = null;
 // http helper
 
 function postData(endpoint: string, data: string) {
-    const url = `${baseUrl}${endpoint}`;
+    const url: string = `${baseUrl}${endpoint}`;
     fetch(url, {
         method: 'POST',
         headers: {
@@ -34,15 +34,15 @@ function postData(endpoint: string, data: string) {
 
 // connect/disconnect
 
-function connectToDevice() {
+function connectToDevice(): HID.HID | null {
     try {
-        const deviceInfo = HID.devices().find(
+        const deviceInfo: HID.Device | undefined = HID.devices().find(
             (d) => d.vendorId === VENDOR_ID && d.productId === PRODUCT_ID,
         );
         if (!deviceInfo) throw new Error('rfIDEAS device not found');
         if (!deviceInfo.path) throw new Error('Device path not found');
 
-        const dev = new HID.HID(deviceInfo.path);
+        const dev: HID.HID = new HID.HID(deviceInfo.path);
         console.log('Device connected');
         return dev;
     } catch (error) {
@@ -65,27 +65,27 @@ function disconnectDevice(reason?: string) {
 // helpers
 // send 8 payload bytes as a feature report
 function setFeature8(hex8bytes: string, dev: HID.HID) {
-    const payload = Buffer.from(hex8bytes, 'hex');
+    const payload: Buffer = Buffer.from(hex8bytes, 'hex');
     if (payload.length !== 8) throw new Error('payload must be 8 bytes');
 
     // [reportId, ...payload], report id = 0
-    const buf = Buffer.concat([Buffer.from([0x00]), payload]); // total 9 bytes
+    const buf: Buffer = Buffer.concat([Buffer.from([0x00]), payload]); // total 9 bytes
     dev.sendFeatureReport([...buf]);
 }
 
 // read 8 payload bytes from a feature report
 function getFeature8(dev: HID.HID): Buffer {
-    const array = dev.getFeatureReport(0x00, 9); // report id = 0, total 9 bytes
-    const buf = Buffer.from(array);
+    const array: number[] = dev.getFeatureReport(0x00, 9); // report id = 0, total 9 bytes
+    const buf: Buffer = Buffer.from(array);
     if (buf.length !== 9)
         throw new Error('expected 9 bytes from getFeatureReport');
-    const data = buf.subarray(1); // skip report id
+    const data: Buffer = buf.subarray(1); // skip report id
     return data;
 }
 
 // convert card data bugger to formatted hex string
 function normalizeData(data: Buffer): string {
-    const array = Array.from(data);
+    const array: number[] = Array.from(data);
 
     return array
         .reverse()
@@ -99,7 +99,7 @@ function isAllZero(data: Buffer): boolean {
 
 type ScanType = 'Card' | 'Item';
 function getScanType(ack: Buffer): ScanType {
-    const metaArray = Array.from(ack);
+    const metaArray: number[] = Array.from(ack);
     const bytesRead = metaArray[3];
     return bytesRead === 45 ? 'Card' : 'Item';
 }
@@ -113,15 +113,14 @@ function startPolling() {
 
             // read last card data
             setFeature8('8c02000100000000', device);
-            const raw = getFeature8(device);
+            const raw: Buffer = getFeature8(device);
             if (isAllZero(raw)) return;
 
             setFeature8('8c02040100000000', device); // clear card data
-            const ack = getFeature8(device);
-
+            const ack: Buffer = getFeature8(device);
             if (LOGGING_ENABLED) console.log('Card data: ', normalizeData(raw));
             if (LOGGING_ENABLED) console.log('Scan type:', getScanType(ack));
-            const scanType = getScanType(ack);
+            const scanType: ScanType = getScanType(ack);
 
             if (scanType === 'Card') {
                 postData('/api/scanner/cards', normalizeData(raw));
