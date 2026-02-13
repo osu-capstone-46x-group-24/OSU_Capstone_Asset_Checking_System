@@ -6,30 +6,34 @@ import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
 import LogRequestConsole from "../components/LogRequestConsole";
 import NetworkManager from "../API/NetworkManager.tsx";
-import { useState } from "react";
 import type { ReqItem } from "../../../.d.ts";
+import React from "react";
+import { useSocket } from "../hooks/useSocket.tsx";
 
 // Type
 type AdminDashboardProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;
-    reqQueue?: ReqItem;
-    setReqQueue?: (r: ReqItem) => void;
+    reqQueue: ReqItem[];
+    setReqQueue: React.Dispatch<React.SetStateAction<ReqItem[]>>;
 };
 /**
- * AdminDashboard
+ * Admin Dashboard
  * Type: Page
- * Params: theme: "light" | "dark", setTheme: (t: "light" | "dark") => void
  */
 export default function AdminDashboard({
     theme,
     setTheme,
+    reqQueue,
+    setReqQueue,
 }: AdminDashboardProps) {
     // networkLogs State
-    const [networkLogs, setNetworkLogs] = useState<ReqItem[]>([]);
+    //const [networkLogs, setNetworkLogs] = useState<ReqItem[]>([]);
     const addReqQueue = (newLog: ReqItem) => {
-        setNetworkLogs((prev) => [...prev, newLog]);
+        setReqQueue((prev) => [...prev, newLog]);
     };
+
+    useSocket(addReqQueue);
 
     // Theme
     const pageTheme =
@@ -72,7 +76,7 @@ export default function AdminDashboard({
                         <div className={`p-1`}>
                             <LogRequestConsole
                                 {...consoleParams}
-                                networkLogItems={networkLogs}
+                                reqItems={reqQueue}
                             />
                         </div>
                     </div>

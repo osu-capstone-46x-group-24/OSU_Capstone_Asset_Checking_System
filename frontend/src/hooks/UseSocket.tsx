@@ -1,34 +1,25 @@
-// UseSocket.tsx
+// useSocket.tsx
 
 // Imports
 import { io } from "socket.io-client";
-import configJson from "../spec_config.json";
+//import configJson from "../spec_config.json";
 import { useEffect } from "react";
+import type { ReqItem } from "../../../.d.ts";
 
 // Constants
-const PORT: number = configJson.scanner.port;
+const PORT = 3003;
 const BASE_URL: string = `http://localhost:${PORT}`;
 const socket = io(BASE_URL);
 
-// Types
-type ReqItem = {
-    reqType: string;
-    sender: string;
-    destination: string;
-    itemName: string;
-    timestamp: string;
-    httpType: string;
-};
-
 /**
 
- * Name: UseSocket
+ * Name: useSocket
  * Type: Hook
  * Description: Listens for socket events from *scanner* server
  * Props: onRequest: (req: ReqItem)
  * Return: void
  */
-export default function UseSocket(onRequest: (req: ReqItem) => void) {
+export function useSocket(onRequest: (req: ReqItem) => void) {
     useEffect(() => {
         function getTimeStamp(): string {
             const epochTime = Date.now();
@@ -39,15 +30,18 @@ export default function UseSocket(onRequest: (req: ReqItem) => void) {
         const sendRequestToParent = (
             requestType: string,
             message: string,
-            requestSender: string
+            requestSender: string,
+            httpType: string,
+            endpoint: string
         ) => {
             onRequest({
                 reqType: requestType,
                 sender: requestSender,
                 destination: "frontend",
+                endpoint: endpoint,
                 itemName: message,
                 timestamp: getTimeStamp(),
-                httpType: "POST",
+                httpType: httpType,
             });
         };
 
@@ -55,22 +49,20 @@ export default function UseSocket(onRequest: (req: ReqItem) => void) {
         // Message Event
         socket.on("message", (msg: string): void => {
             console.log(`Message from server: ${msg}`);
-            sendRequestToParent("message", msg, "scanner");
+            sendRequestToParent("MSG", msg, "scanner", "POST", "frontend");
         });
 
         // Card Event
         socket.on("card", (cardId: string): void => {
             console.log(`Card scanned: ${cardId}`);
-            sendRequestToParent("card", cardId, "scanner");
+            sendRequestToParent("CARD", cardId, "scanner", "POST", "frontend");
         });
 
         // Item Event
         socket.on("item", (itemId: string): void => {
             console.log(`Item scanned: ${itemId}`);
-            sendRequestToParent("item", itemId, "scanner");
+            sendRequestToParent("ITEM", itemId, "scanner", "POST", "frontend");
         });
-
-        // Listen for socket events - Backend
 
         // Cleanup / Unmount
         return () => {
