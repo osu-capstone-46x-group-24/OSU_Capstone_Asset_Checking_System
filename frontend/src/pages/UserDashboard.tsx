@@ -1,7 +1,7 @@
 // UserDashboard.tsx
 
 // Imports
-import { useState } from "react";
+import React, { useState } from "react";
 import "../App.css";
 import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
@@ -27,8 +27,8 @@ type CartItem = {
 type UserDashboardProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;
-    reqQueue?: ReqItem;
-    setReqQueue?: (r: ReqItem) => void;
+    reqQueue: ReqItem[];
+    setReqQueue: React.Dispatch<React.SetStateAction<ReqItem[]>>;
 };
 
 /**

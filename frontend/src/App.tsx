@@ -20,7 +20,7 @@ import type { ReqItem } from "../../.d.ts";
  */
 export default function App() {
     const [theme, setTheme] = useState<"light" | "dark">("light");
-    const [reqQueue, setReqQueue] = useState<[ReqItem]>();
+    const [reqQueue, setReqQueue] = useState<ReqItem[]>([]);
 
     // Load theme from localStorage
     useEffect(() => {
@@ -30,7 +30,7 @@ export default function App() {
         }
     }, []);
 
-    // Apply theme "dark" tot html, save theme
+    // Apply theme "dark" to html, save theme
     useEffect(() => {
         const root = document.documentElement;
 
@@ -58,12 +58,8 @@ export default function App() {
                             <AdminDashboard
                                 theme={theme}
                                 setTheme={setTheme}
-                                reqQueue={reqQueue as unknown as ReqItem}
-                                setReqQueue={
-                                    setReqQueue as unknown as (
-                                        r: ReqItem
-                                    ) => void
-                                }
+                                reqQueue={reqQueue}
+                                setReqQueue={setReqQueue}
                             />
                         }
                     />
@@ -73,12 +69,8 @@ export default function App() {
                             <UserDashboard
                                 theme={theme}
                                 setTheme={setTheme}
-                                reqQueue={reqQueue as unknown as ReqItem}
-                                setReqQueue={
-                                    setReqQueue as unknown as (
-                                        r: ReqItem
-                                    ) => void
-                                }
+                                reqQueue={reqQueue}
+                                setReqQueue={setReqQueue}
                             />
                         }
                     />
