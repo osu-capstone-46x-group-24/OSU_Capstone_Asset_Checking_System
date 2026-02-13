@@ -1,4 +1,4 @@
-const PORT = 3000;
+const PORT = 3003;
 const BASE_URL = `http://localhost:${PORT}`;
 
 const socket = io(BASE_URL);

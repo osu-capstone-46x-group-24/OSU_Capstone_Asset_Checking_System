@@ -12,7 +12,7 @@ const io = new Server(server, {
   },
 });
 
-const PORT = 3001;
+const PORT = 3003;
 
 const RFID_CARDS = [
   '@05607858',
