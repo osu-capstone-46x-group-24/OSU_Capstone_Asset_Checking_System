@@ -6,6 +6,6 @@ name: UseSocket
 
 ### UseSocket
 
-Path: `~/src/hooks/UseSocket.tsx`
+Path: `~/src/hooks/useSocket.tsx`
 
 Frontend Client Socket Handler implementation.
