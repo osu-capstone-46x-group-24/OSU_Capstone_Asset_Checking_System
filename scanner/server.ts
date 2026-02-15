@@ -15,7 +15,7 @@ const io = new Server(server, {
     },
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3003;
 
 // more mock cards could be added in the future,
 // currently I only have one working card
