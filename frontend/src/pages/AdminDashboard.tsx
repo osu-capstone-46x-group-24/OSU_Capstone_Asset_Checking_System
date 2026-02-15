@@ -6,6 +6,7 @@ import Footer from "../components/UI_Elements/Footer.tsx";
 import Navbar from "../components/UI_Elements/Navbar.tsx";
 import LogRequestConsole from "../components/LogRequestConsole";
 import NetworkManager from "../API/NetworkManager.tsx";
+import ServiceStatusIndicator from "../components/ServiceStatusIndicator.tsx";
 import type { ReqItem } from "../../../.d.ts";
 import React from "react";
 import { useSocket } from "../hooks/useSocket.tsx";
@@ -80,15 +81,25 @@ export default function AdminDashboard({
                             />
                         </div>
                     </div>
-                    <div className="min-h-[150px] min-w-[100px] p-10 flex flex-col">
-                        <div className="flex p-0.5 text-xl">
-                            <span>Send API Request</span>
+                    <div className="flex-col flex">
+                        <div className="min-h-[150px] min-w-[100px] p-10 flex flex-col">
+                            <div className="flex p-0.5 text-xl">
+                                <span>Send API Request</span>
+                            </div>
+                            <div className={`p-1`}>
+                                <NetworkManager
+                                    {...consoleParams}
+                                    onRequest={addReqQueue}
+                                />
+                            </div>
                         </div>
-                        <div className={`p-1`}>
-                            <NetworkManager
-                                {...consoleParams}
-                                onRequest={addReqQueue}
-                            />
+                        <div className={"flex flex-col p-10"}>
+                            <div className="flex p-0.5 text-xl">
+                                <span>Service Status</span>
+                            </div>
+                            <div className={`p-1`}>
+                                <ServiceStatusIndicator {...consoleParams} />
+                            </div>
                         </div>
                     </div>
                 </div>

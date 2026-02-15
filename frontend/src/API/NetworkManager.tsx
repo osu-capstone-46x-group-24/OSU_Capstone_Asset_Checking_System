@@ -166,6 +166,12 @@ export default function NetworkManager({
                         >
                             /items/all
                         </Option>
+                        <Option
+                            value="/canary"
+                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                        >
+                            /canary
+                        </Option>
                     </Select>
                 </div>
                 <div>
