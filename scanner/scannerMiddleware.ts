@@ -15,6 +15,23 @@ const LOGGING_ENABLED = false;
 let device: HID.HID | null = null;
 let timer: NodeJS.Timeout | null = null;
 
+// heartbeat
+const HEARTBEAT_INTERVAL_MS = 3000;
+let heartbeatTimer: NodeJS.Timeout | null = null;
+let consecutiveErrors = 0;
+
+function startHeartbeat() {
+    if (heartbeatTimer) return;
+    heartbeatTimer = setInterval(() => {
+        postStatus({ lastHeartbeatAt: Date.now() });
+    }, HEARTBEAT_INTERVAL_MS);
+}
+
+function stopHeartbeat() {
+    if (heartbeatTimer) clearInterval(heartbeatTimer);
+    heartbeatTimer = null;
+}
+
 // http helper
 
 function postData(endpoint: string, data: string) {
@@ -29,6 +46,17 @@ function postData(endpoint: string, data: string) {
         if (!response.ok) {
             console.error('HTTP error:', response.statusText);
         }
+    });
+}
+
+function postStatus(scannerStatus: Record<string, unknown>) {
+    const url = `${baseUrl}/api/scanner/status`;
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(scannerStatus),
+    }).then((r) => {
+        if (!r.ok) console.error('HTTP error (status):', r.statusText);
     });
 }
 
@@ -106,6 +134,18 @@ function getScanType(ack: Buffer): ScanType {
 
 function startPolling() {
     if (!device) return;
+
+    consecutiveErrors = 0;
+    postStatus({
+        status: 'ONLINE',
+        connected: true,
+        consecutiveErrors: 0,
+        lastError: null,
+        lastHeartbeatAt: Date.now(),
+    });
+
+    startHeartbeat();
+
     timer = setInterval(() => {
         try {
             if (LOGGING_ENABLED) console.log('polling');
@@ -122,13 +162,32 @@ function startPolling() {
             if (LOGGING_ENABLED) console.log('Scan type:', getScanType(ack));
             const scanType: ScanType = getScanType(ack);
 
+            if (consecutiveErrors !== 0) {
+                consecutiveErrors = 0;
+                postStatus({
+                    status: 'ONLINE',
+                    connected: true,
+                    consecutiveErrors: 0,
+                    lastError: null,
+                    lastHeartbeatAt: Date.now(),
+                });
+            }
+
             if (scanType === 'Card') {
                 postData('/api/scanner/cards', normalizeData(raw));
             } else {
                 postData('/api/scanner/items', normalizeData(raw));
             }
         } catch (error) {
+            consecutiveErrors++;
             console.error('Polling error:', error);
+            postStatus({
+                status: consecutiveErrors >= 5 ? 'ERROR' : 'DEGRADED',
+                connected: true,
+                consecutiveErrors,
+                lastError: String(error),
+                lastHeartbeatAt: Date.now(),
+            });
         }
     }, POLL_DELAY);
 }
@@ -145,12 +204,28 @@ function main() {
     if (device) {
         console.log('Connected to device.');
         startPolling();
+    } else {
+        postStatus({
+            status: 'OFFLINE',
+            connected: false,
+            lastError: 'device not found',
+            consecutiveErrors: 0,
+            lastHeartbeatAt: Date.now(),
+        });
     }
 }
 
 process.on('SIGINT', () => {
     if (timer) clearInterval(timer);
+    stopPolling();
+    stopHeartbeat();
     disconnectDevice('SIGINT');
+    postStatus({
+        status: 'OFFLINE',
+        connected: false,
+        lastError: 'SIGINT',
+        lastHeartbeatAt: Date.now(),
+    });
     process.exit(0);
 });
 
@@ -162,7 +237,16 @@ usb.on('attach', (d) => {
         return;
     console.log('Scanner plugged in');
     device = connectToDevice();
-    startPolling();
+    if (device) {
+        startPolling();
+    } else {
+        postStatus({
+            status: 'ERROR',
+            connected: false,
+            lastError: 'attach detected but connect failed',
+            lastHeartbeatAt: Date.now(),
+        });
+    }
 });
 
 usb.on('detach', (d) => {
@@ -173,7 +257,16 @@ usb.on('detach', (d) => {
         return;
     console.log('Scanner unplugged');
     stopPolling();
+    stopHeartbeat();
     disconnectDevice('unplugged');
+
+    postStatus({
+        status: 'OFFLINE',
+        connected: false,
+        lastError: 'unplugged',
+        consecutiveErrors: 0,
+        lastHeartbeatAt: Date.now(),
+    });
 });
 
 main();
