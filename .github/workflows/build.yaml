@@ -1,11 +1,11 @@
 name: Build and run tests
-  
+
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 jobs:
-  deploy:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,16 +15,30 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: |
+            frontend/package-lock.json
+            backend/package-lock.json
 
       - name: Create .env for GitHub Pages
         run: echo "VITE_BASE_URL=/OSU_Capstone_Asset_Checking_System/" > .env
         working-directory: ./frontend
 
       - name: install dependencies
-        run: npm install
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Run tests
+        run: npm run test
         working-directory: ./frontend
 
       - name: Build to dist
         run: npm run build
         working-directory: ./frontend
+
+      - name: install dependencies
+        run: npm ci
+        working-directory: ./backend
+
+      - name: Run tests
+        run: npm run test
+        working-directory: ./backend
