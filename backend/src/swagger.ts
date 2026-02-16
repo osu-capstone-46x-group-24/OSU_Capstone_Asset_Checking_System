@@ -1,62 +1,15 @@
 import { Hono } from "hono";
 import { swaggerUI } from "@hono/swagger-ui";
+import fs from "fs";
+import { parse } from "yaml";
 
 // A basic OpenAPI document
-const openApiDoc = {
-    openapi: "3.0.0", // This is the required version field
-    info: {
-        title: "API Documentation",
-        version: "1.0.0",
-        description: "API documentation for your service",
-    },
-    paths: {
-        // Add your API paths here
-        "/api/log/{level}": {
-            parameters: [
-                {
-                    name: "level",
-                    in: "path",
-                    description: "string",
-                    required: "true",
-                },
-            ],
-            post: {
-                summary: "Logs event to database with severity level.",
-                requestBody: {
-                    content: {
-                        "application/json": {
-                            schema: {
-                                type: "object",
-                                properties: {
-                                    timestamp: {
-                                        type: "string",
-                                        format: "date-time",
-                                    },
-                                    type: { type: "string" },
-                                    message: { type: "string" },
-                                },
-                                example: {
-                                    timestamp: "YYYY-MM-DD",
-                                    type: "Scanner",
-                                    message: "we must construct more scanners.",
-                                },
-                            },
-                        },
-                    },
-
-                    required: true,
-                },
-                responses: {
-                    "200": {
-                        description: "OK",
-                    },
-                },
-            },
-        },
-        "/api/items": {},
-        // Add more endpoints as needed
-    },
-};
+const openApiDoc = parse(
+    fs.readFileSync("./src/openapi.yaml", {
+        encoding: "utf8",
+        flag: "r",
+    })
+);
 
 const app = new Hono();
 // returns the app to serve swagger-ui
