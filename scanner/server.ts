@@ -44,8 +44,6 @@ let scannerStatus = {
     consecutiveErrors: 0,
 };
 
-const HEARTBEAT_TTL_MS = 10000;
-
 function statusPayload() {
     return {
         ...scannerStatus,
