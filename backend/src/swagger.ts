@@ -5,7 +5,7 @@ import { parse } from "yaml";
 
 // A basic OpenAPI document
 const openApiDoc = parse(
-    fs.readFileSync("./src/openapi.yaml", {
+    fs.readFileSync("./src/openapi/openapi.yaml", {
         encoding: "utf8",
         flag: "r",
     })

@@ -1,0 +1,142 @@
+openapi: 3.0.0
+info:
+  description: API documentation for your service
+  title: API Documentation
+  version: 1.0.0
+paths:
+  /api/log/{level}:
+    parameters:
+    - name: level
+      schema:
+        type: string
+      in: path
+      description: string
+      required: true
+    post:
+      summary: Logs event to database with severity level.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+              example:
+                timestamp: YYYY-MM-DD
+                type: Scanner
+                message: we must construct more scanners.
+        required: true
+      responses:
+        '200':
+          description: OK
+  /api/items:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          description: Item added to database
+        '501':
+          description: Failed to add item
+  /api/items/all:
+    get:
+      responses:
+        '200':
+          description: List of all items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+  /api/items/available:
+    get:
+      responses:
+        '200':
+          description: List of all available items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+  /api/checkout:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Checkout'
+      responses:
+        '200':
+          description: Successful checkout
+        '404':
+          description: An item was not available for checkout or the user doesn't exist. This cancels the request.
+  /api/checkin:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Checkin'
+      responses:
+        '200':
+          description: Successful checkin
+        '400':
+          description: Item already checkedin
+components:
+  schemas:
+    Checkin:
+      $ref: '#/components/schemas/Item'
+    Checkout:
+      type: object
+      required:
+      - userId
+      - items
+      - expectedReturn
+      properties:
+        userId:
+          description: UserID
+          type: integer
+          format: int32
+        items:
+          description: ItemID's to checkout
+          type: array
+          items:
+            type: integer
+            format: int32
+        expectedReturn:
+          description: Expected time of return
+          type: string
+          format: date-time
+    Event:
+      description: An event which is logged
+      type: object
+      required:
+      - type
+      - message
+      properties:
+        timestamp:
+          description: timestamp associated with event
+          type: string
+          format: date-time
+        type:
+          description: type of event
+          type: string
+        message:
+          description: message to log
+          type: string
+    Item:
+      description: Items are pieces of equipment that we can checkout
+      type: object
+      required:
+      - name
+      - rfid
+      properties:
+        name:
+          description: name of item
+          type: string
+        rfid:
+          description: rfid of item
+          type: string
