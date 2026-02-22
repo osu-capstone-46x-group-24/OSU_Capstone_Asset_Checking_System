@@ -11,13 +11,13 @@ controlling the mock endpoints.
 
 The node backend will intercept inputs from the scanner and emit events for
 `card` and `item` events whenever a scan of that type happens. You can listen
-for these events independantly like this on the frontend:
+for these events independently like this on the frontend:
 
 ```js
 const socket = io();
 
 socket.on('card', (cardId) => {
-  console.log(cardId);
+    console.log(cardId);
 });
 ```
 
@@ -37,6 +37,54 @@ scans. I've created 2 endpoints:
 Once the server is running, you can open the `index.html` in this folder in your
 browser and click the buttons to trigger scans. Below the buttons you can see a
 scan log of the items, so you can validate the data in the socket.
+
+## Status Reports
+
+In addition to the scanner endpoints, there is also an endpoint to get the current status of the scanner:
+
+`GET /api/scanner/status`
+
+which returns the current health and connectivity state of the physical scanner.
+
+### Sample Response
+
+```json
+{
+    "status": "ONLINE",
+    "connected": true,
+    "lastHeartbeatAt": 1771201285320,
+    "lastScanAt": 1771201286259,
+    "lastError": null,
+    "consecutiveErrors": 0
+}
+```
+
+#### JSON Field Reference
+
+- `status` (string)
+    - `"ONLINE"` – Scanner connected and heartbeats current
+    - `"DEGRADED"` – Connected but polling errors occurring
+    - `"ERROR"` – Repeated failures; scanner not functioning correctly
+    - `"OFFLINE"` – Hardware not connected or middleware not running
+
+- `connected` (boolean)
+    - `true` – USB device detected and opened
+    - `false` – Device unplugged or failed to initialize
+
+- `lastHeartbeatAt` (number, Unix ms)
+    - Timestamp of most recent middleware heartbeat
+
+- `lastScanAt` (number, Unix ms)
+    - Timestamp of last successful card/item scan
+    - `0` if no scans have occurred yet
+
+- `lastError` (string | null)
+    - `null` – No recent error
+    - string – Most recent polling/device error message
+
+- `consecutiveErrors` (number)
+    - `0` – No recent failures
+    - `>0` – Number of back-to-back polling errors
 
 ## Running the server
 
