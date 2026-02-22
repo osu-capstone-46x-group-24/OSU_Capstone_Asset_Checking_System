@@ -8,7 +8,7 @@ import LogRequestConsole from "../components/LogRequestConsole";
 import NetworkManager from "../API/NetworkManager.tsx";
 import type { ReqItem } from "../../../.d.ts";
 import React from "react";
-import { useSocket } from "../hooks/useSocket.tsx";
+import { useSocket } from "../hooks/UseSocket.tsx";
 
 // Type
 type AdminDashboardProps = {
