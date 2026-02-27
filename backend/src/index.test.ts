@@ -206,7 +206,6 @@ describe.sequential("POST /api/checkin", () => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                userId: 2,
                 itemId: 4,
             }),
         });
@@ -245,8 +244,7 @@ describe.sequential("POST /api/checkin", () => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                rfid: user.rfid,
-                itemId: item.name,
+                itemId: item.id,
             }),
         });
 

@@ -9,27 +9,7 @@ export default function checkinRoute(db: LibSQLDatabase<typeof schema>) {
     const router = new Hono();
 
     router.post("/checkin", zValidator("json", checkinSchema), async (c) => {
-        const { userId, itemId } = c.req.valid("json");
-
-        //  find user by RFID (TEXT)
-        const [user] = await db
-            .select()
-            .from(schema.users_table)
-            .where(eq(schema.users_table.id, userId));
-
-        if (!user) {
-            return c.json({ error: "User not found" }, 404);
-        }
-
-        //  find item by name
-        const [itemRow] = await db
-            .select()
-            .from(schema.items_table)
-            .where(eq(schema.items_table.id, itemId));
-
-        if (!itemRow) {
-            return c.json({ error: "Item not found" }, 404);
-        }
+        const { itemId } = c.req.valid("json");
 
         //  find active transaction
         const [tx] = await db
@@ -37,13 +17,11 @@ export default function checkinRoute(db: LibSQLDatabase<typeof schema>) {
             .from(schema.transactions)
             .where(
                 and(
-                    eq(schema.transactions.user_id, user.id),
-                    eq(schema.transactions.item_id, itemRow.id),
+                    eq(schema.transactions.item_id, itemId),
                     isNull(schema.transactions.checkin)
                 )
             );
 
-        console.log(tx);
         if (!tx) {
             return c.json({ error: "No active checkout found" }, 400);
         }
@@ -56,9 +34,8 @@ export default function checkinRoute(db: LibSQLDatabase<typeof schema>) {
             .set({ checkin: now })
             .where(
                 and(
-                    eq(schema.transactions.user_id, tx.user_id),
-                    eq(schema.transactions.item_id, tx.item_id),
-                    eq(schema.transactions.timestamp_id, tx.timestamp_id)
+                    eq(schema.transactions.item_id, tx.item_id!),
+                    eq(schema.transactions.timestamp_id, tx.timestamp_id!)
                 )
             );
 

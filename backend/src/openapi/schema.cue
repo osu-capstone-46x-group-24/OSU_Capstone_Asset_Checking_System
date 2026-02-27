@@ -35,4 +35,7 @@ info: {
 	expectedReturn: time.Time
 }
 
-#Checkin: #Item
+#Checkin: {
+	// itemId of item
+	itemId!: int32
+}
