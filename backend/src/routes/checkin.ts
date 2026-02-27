@@ -9,13 +9,13 @@ export default function checkinRoute(db: LibSQLDatabase<typeof schema>) {
     const router = new Hono();
 
     router.post("/checkin", zValidator("json", checkinSchema), async (c) => {
-        const { rfid, item } = c.req.valid("json");
+        const { userId, itemId } = c.req.valid("json");
 
         //  find user by RFID (TEXT)
         const [user] = await db
             .select()
             .from(schema.users_table)
-            .where(eq(schema.users_table.rfid, rfid));
+            .where(eq(schema.users_table.id, userId));
 
         if (!user) {
             return c.json({ error: "User not found" }, 404);
@@ -25,7 +25,7 @@ export default function checkinRoute(db: LibSQLDatabase<typeof schema>) {
         const [itemRow] = await db
             .select()
             .from(schema.items_table)
-            .where(eq(schema.items_table.name, item));
+            .where(eq(schema.items_table.id, itemId));
 
         if (!itemRow) {
             return c.json({ error: "Item not found" }, 404);
@@ -43,6 +43,7 @@ export default function checkinRoute(db: LibSQLDatabase<typeof schema>) {
                 )
             );
 
+        console.log(tx);
         if (!tx) {
             return c.json({ error: "No active checkout found" }, 400);
         }

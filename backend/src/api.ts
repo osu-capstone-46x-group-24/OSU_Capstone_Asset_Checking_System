@@ -3,7 +3,7 @@ import { z } from "zod";
 export const checkinSchema = z.object({
     userId: z.number().int(),
     itemId: z.number().int(),
-    timestampId: z.number().int(),
+    timestampId: z.number().int().optional(),
 });
 
 export const checkoutSchema = z.object({

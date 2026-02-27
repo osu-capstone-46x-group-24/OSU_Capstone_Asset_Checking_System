@@ -201,6 +201,18 @@ describe.sequential("GET /api/items", async () => {
 });
 
 describe.sequential("POST /api/checkin", () => {
+    test.sequential("Checkin Success", async () => {
+        const res = await app.request("/api/checkin", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId: 2,
+                itemId: 4,
+            }),
+        });
+        expect(res.status).toBe(200);
+    });
+
     test.sequential("Checkin fails if already checked in", async () => {
         const [tx] = await db
             .select()
@@ -234,7 +246,7 @@ describe.sequential("POST /api/checkin", () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 rfid: user.rfid,
-                item: item.name,
+                itemId: item.name,
             }),
         });
 
