@@ -3,24 +3,15 @@
 // Imports
 import { useEffect, useRef } from "react";
 import configJson from "../spec_config.json";
+import type { ReqItem } from "../../../.d.ts";
 
 // Types
-type NetworkLogItem = {
-    reqType: string;
-    sender: string;
-    destination: string;
-    itemName: string;
-    timestamp: string;
-    httpType: string;
-    endpoint: string;
-};
-
 type LogRequestConsoleProps = {
     color_primary_text: string;
     color_primary_bg: string;
     color_accent_text: string;
     color_accent_bg: string;
-    networkLogItems: NetworkLogItem[];
+    reqItems: ReqItem[];
 };
 
 // Constants
@@ -29,7 +20,7 @@ const color_placeholder_text = "wu-gray-300";
 /**
  * Name: LogRequestConsole
  * Type: Component
- * Description: Takes styling properties as props and displays a console that displays incoming requests caught via the UseSocket.tsx hook
+ * Description: Takes styling properties as props and displays a console that displays incoming requests caught via the useSocket.tsx hook
  * Props: color_primary_text, color_primary_bg, color_accent_text, color_accent_bg
  */
 export default function LogRequestConsole({
@@ -37,7 +28,7 @@ export default function LogRequestConsole({
     color_primary_bg,
     color_accent_text,
     color_accent_bg,
-    networkLogItems,
+    reqItems,
 }: LogRequestConsoleProps) {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,12 +38,14 @@ export default function LogRequestConsole({
 
     // Color-code message types *based on spec_config.json file
     function getReqTypeColor(reqType: string) {
-        if (reqType == "message") {
-            return configJson.theme.color.request.message;
-        } else if (reqType == "item") {
-            return configJson.theme.color.request.item;
-        } else if (reqType == "card") {
-            return configJson.theme.color.request.card;
+        if (reqType == "MSG") {
+            return configJson.theme.color.request.MSG;
+        } else if (reqType == "ITEM") {
+            return configJson.theme.color.request.ITEM;
+        } else if (reqType == "CARD") {
+            return configJson.theme.color.request.CARD;
+        } else if (reqType == "API") {
+            return configJson.theme.color.request.API;
         } else {
             return "text-wu-gray-200";
         }
@@ -64,7 +57,7 @@ export default function LogRequestConsole({
         if (!e1) return;
 
         e1.scrollTop = e1.scrollHeight;
-    }, [networkLogItems]);
+    }, [reqItems]);
 
     return (
         <>
@@ -94,7 +87,7 @@ export default function LogRequestConsole({
                     <tbody
                         className={`pt-[32px] min-w-full text-${color_primary_text}`}
                     >
-                        {networkLogItems.length === 0 ? (
+                        {reqItems.length === 0 ? (
                             <tr>
                                 <td
                                     className={`text-${color_placeholder_text} px-4 py-2`}
@@ -104,59 +97,57 @@ export default function LogRequestConsole({
                                 </td>
                             </tr>
                         ) : (
-                            networkLogItems.map(
-                                (item: NetworkLogItem, index: number) => (
-                                    <tr
-                                        key={index}
-                                        className={`border-b text-center border-dashed border-${color_primary_text} nth-[2n]:border-wu-gray-300 text-xs uppercase`}
+                            reqItems.map((item: ReqItem, index: number) => (
+                                <tr
+                                    key={index}
+                                    className={`border-b text-center border-dashed border-${color_primary_text} nth-[2n]:border-wu-gray-300 text-xs uppercase`}
+                                >
+                                    <td
+                                        className="px-4 py-2 whitespace-nowrap"
+                                        colSpan={1}
                                     >
-                                        <td
-                                            className="px-4 py-2 whitespace-nowrap"
-                                            colSpan={1}
-                                        >
-                                            [{item.timestamp}]
-                                        </td>
-                                        <td
-                                            className="px-4 py-2 whitespace-nowrap"
-                                            colSpan={1}
-                                        >
-                                            {item.sender}
-                                        </td>
-                                        <td
-                                            className="px-4 py-2 whitespace-nowrap"
-                                            colSpan={1}
-                                        >
-                                            {item.destination}
-                                        </td>
-                                        <td
-                                            className="px-4 py-2 whitespace-nowrap"
-                                            colSpan={1}
-                                        >
-                                            {item.endpoint}
-                                        </td>
-                                        <td
-                                            className={`px-4 py-2 whitespace-nowrap 
+                                        [{item.timestamp}]
+                                    </td>
+                                    <td
+                                        className="px-4 py-2 whitespace-nowrap"
+                                        colSpan={1}
+                                    >
+                                        {item.sender}
+                                    </td>
+                                    <td
+                                        className="px-4 py-2 whitespace-nowrap"
+                                        colSpan={1}
+                                    >
+                                        {item.destination}
+                                    </td>
+                                    <td
+                                        className="px-4 py-2 whitespace-nowrap"
+                                        colSpan={1}
+                                    >
+                                        {item.endpoint}
+                                    </td>
+                                    <td
+                                        className={`px-4 py-2 whitespace-nowrap 
                                             ${getReqTypeColor(item.reqType)}`}
-                                            colSpan={1}
-                                        >
-                                            {item.reqType}
-                                        </td>
-                                        <td
-                                            className="px-4 py-2 whitespace-nowrap"
-                                            colSpan={1}
-                                        >
-                                            {item.httpType}
-                                        </td>
-                                        <td
-                                            className="px-4 py-2 whitespace-nowrap"
-                                            colSpan={1}
-                                        >
-                                            {item.itemName}
-                                        </td>
-                                        <td className="px-[1px] w-full"></td>
-                                    </tr>
-                                )
-                            )
+                                        colSpan={1}
+                                    >
+                                        {item.reqType}
+                                    </td>
+                                    <td
+                                        className="px-4 py-2 whitespace-nowrap"
+                                        colSpan={1}
+                                    >
+                                        {item.httpType}
+                                    </td>
+                                    <td
+                                        className="px-4 py-2 whitespace-nowrap"
+                                        colSpan={1}
+                                    >
+                                        {item.itemName}
+                                    </td>
+                                    <td className="px-[1px] w-full"></td>
+                                </tr>
+                            ))
                         )}
                     </tbody>
                 </table>

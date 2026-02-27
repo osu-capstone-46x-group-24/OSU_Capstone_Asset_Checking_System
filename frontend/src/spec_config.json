@@ -27,9 +27,10 @@
         "yellow": "bg-wu-yellow-100"
       },
       "request": {
-        "message": "text-blue-400",
-        "item": "text-yellow-500",
-        "card": "text-green-600"
+        "MSG": "text-blue-400",
+        "ITEM": "text-yellow-500",
+        "CARD": "text-green-600",
+        "API": "text-orange-400"
       }
     },
     "font": {

@@ -41,7 +41,7 @@ echo "Starting *backend* at localhost:3001..."
 PIDS+=($!)
 
 # Start Scanner
-echo "Starting *scanner* at localhost:3000 + index.html..."
+echo "Starting *scanner* at localhost:3003 + index.html..."
 (cd "$BASE_DIR/scanner" && node server.js) &
 PIDS+=($!)
 
