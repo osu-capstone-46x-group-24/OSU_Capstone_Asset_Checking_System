@@ -32,6 +32,51 @@ const MOCK_ITEMS: string[] = [
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
+// scanner status helpers
+type ScannerState = 'ONLINE' | 'OFFLINE' | 'DEGRADED' | 'ERROR';
+
+let scannerStatus = {
+    status: 'OFFLINE' as ScannerState,
+    connected: false,
+    lastHeartbeatAt: 0,
+    lastScanAt: 0,
+    lastError: null as string | null,
+    consecutiveErrors: 0,
+};
+
+function statusPayload() {
+    return {
+        ...scannerStatus,
+    };
+}
+
+function broadcastStatus() {
+    io.emit('status', statusPayload());
+}
+
+// status endpoints
+
+app.get('/api/scanner/status', (req, res) => {
+    res.json(statusPayload());
+});
+
+app.post('/api/scanner/status', (req, res) => {
+    const patch = req.body ?? {};
+
+    scannerStatus = {
+        ...scannerStatus,
+        ...patch,
+    };
+
+    if (typeof patch.lastHeartbeatAt !== 'number') {
+        scannerStatus.lastHeartbeatAt = Date.now();
+    }
+
+    broadcastStatus();
+    res.json({ ok: true });
+});
+
+// scan endpoints
 app.post('/api/scanner/cards', (req, res) => {
     let cardId: string;
     if (!req.body) {
@@ -39,8 +84,13 @@ app.post('/api/scanner/cards', (req, res) => {
     } else {
         cardId = req.body.data;
     }
+
+    scannerStatus.lastScanAt = Date.now();
     console.log('Sending card ID:', cardId);
+
     io.emit('card', cardId);
+    broadcastStatus();
+
     res.json({ status: 'sent', cardId });
 });
 
@@ -51,13 +101,19 @@ app.post('/api/scanner/items', (req, res) => {
     } else {
         itemId = req.body.data;
     }
+
+    scannerStatus.lastScanAt = Date.now();
     console.log('Sending item ID:', itemId);
+
     io.emit('item', itemId);
+    broadcastStatus();
+
     res.json({ status: 'sent', itemId });
 });
 
 io.on('connection', (socket) => {
     console.log('connected');
+    broadcastStatus();
     io.emit('message', 'Connected');
 });
 

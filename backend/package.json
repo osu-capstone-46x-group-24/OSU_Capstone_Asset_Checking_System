@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "@hono/node-server": "^1.19.6",
+        "@hono/swagger-ui": "^0.5.3",
         "@hono/zod-openapi": "^1.1.4",
         "@hono/zod-validator": "^0.7.4",
         "@libsql/client": "^0.15.15",
@@ -19,6 +20,7 @@
         "drizzle-seed": "^0.3.1",
         "drizzle-zod": "^0.8.3",
         "hono": "^4.10.6",
+        "yaml": "^2.8.2",
         "zod": "^4.1.13"
     },
     "devDependencies": {
