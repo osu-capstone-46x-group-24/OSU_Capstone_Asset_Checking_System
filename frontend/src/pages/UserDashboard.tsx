@@ -9,6 +9,7 @@ import DatetimeModal from "../components/UI_Elements/DatetimeModal.tsx";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
 import type { ReqItem } from "../../../.d.ts";
 import Loader from "../components/UI_Elements/Loader.tsx";
+import HelpHover from "../components/UI_Elements/HelpHover.tsx";
 
 // Types
 // ID data types based on the example stuff he provided
@@ -197,6 +198,7 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
                                     <tr>
                                         <td colSpan={3} className="px-6 py-4 text-left text-wu-gray-400">
                                             No Items scanned. Scan to add items.
+                                            <HelpHover text="Each item should have a tag, which can be scanned by the scanner." />
                                         </td>
                                     </tr>
                                 ) : (
@@ -270,7 +272,7 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
                         <div className="basis-12 py-6 text-7xl mt-20">
                             <h2>User Dashboard</h2>
                             <h2 className="basis-12 py-4 text-3xl mt-10">
-                                Scan ID To Get Started:
+                                Scan your ID to checkout items, or scan an item to begin a return:
                             </h2>
                         </div>
 
@@ -351,7 +353,9 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
                                             >
                                                 No Items in Cart, Scan to Add
                                                 Items.
+                                                <HelpHover text="Each item should have a tag, which can be scanned by the scanner."/>
                                             </td>
+
                                         </tr>
                                     ) : (
                                         cartItems.map((item, index) => (
