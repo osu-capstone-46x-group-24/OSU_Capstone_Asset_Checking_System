@@ -1,6 +1,6 @@
 // NetworkManager.tsx
 
-// Types
+// Imports
 import React from "react";
 import "./OutboundNetworkHandler.ts";
 import { sendGetRequest, sendPostRequest } from "./OutboundNetworkHandler.ts";
@@ -8,6 +8,7 @@ import { Option, Select } from "@material-tailwind/react";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
 import type { ReqItem } from "../../../.d.ts";
 
+// Types
 type NetworkManagerProps = {
     color_primary_text: string;
     color_primary_bg: string;
@@ -55,6 +56,21 @@ export default function NetworkManager({
         });
     };
 
+    const endpointListings = [
+        { _value: "/", text: "/" },
+        { _value: "/checkin", text: "/checkin" },
+        { _value: "/checkout", text: "/checkout" },
+        { _value: "/items", text: "/items" },
+        { _value: "/items/available", text: "/items/available" },
+        { _value: "/items/all", text: "/items/all" },
+        { _value: "/canary", text: "/canary" }
+    ]
+
+    const requestListings = [
+        { _value: "GET", text: "GET" },
+        { _value: "POST", text: "POST" }
+    ]
+
     const handleSubmit = async (type: string, endpoint: string) => {
         try {
             console.log("Request [", type, "], [", endpoint, "]...");
@@ -87,9 +103,10 @@ export default function NetworkManager({
                 <div
                     className={`flex flex-row gap-6 m-6 min-h-12 text-wuGrey-100 bg-${color_primary_bg}`}
                 >
+
                     <Select
                         value={reqType}
-                        className={`text-center`}
+                        className={`h-8 text-center`}
                         onChange={(val) => {
                             if (val) {
                                 setReqType(val! as RequestType);
@@ -102,22 +119,18 @@ export default function NetworkManager({
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                     >
-                        <Option
-                            value="GET"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            GET
-                        </Option>
-                        <Option
-                            value="POST"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            POST
-                        </Option>
+                        {(requestListings.map((entry, index: number) => (
+                            <Option
+                                key={index}
+                                value={entry._value}
+                                className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                                children={entry.text}
+                            />
+                        )))}
                     </Select>
                     <Select
                         value={reqEndpoint}
-                        className={`text-center`}
+                        className={`h-8 text-center`}
                         onChange={(val) => {
                             if (val) {
                                 setReqEndpoint(val);
@@ -130,48 +143,14 @@ export default function NetworkManager({
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                     >
-                        <Option
-                            value="/"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /
-                        </Option>
-                        <Option
-                            value="/checkin"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /checkin
-                        </Option>
-                        <Option
-                            value="/checkout"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /checkout
-                        </Option>
-                        <Option
-                            value="/items"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /items
-                        </Option>
-                        <Option
-                            value="/items/available"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /items/available
-                        </Option>
-                        <Option
-                            value="/items/all"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /items/all
-                        </Option>
-                        <Option
-                            value="/canary"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /canary
-                        </Option>
+                        {(endpointListings.map((entry, index: number) => (
+                            <Option
+                                key={index}
+                                value={entry._value}
+                                className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                                children={entry.text}
+                            />
+                        )))}
                     </Select>
                 </div>
                 <div>
