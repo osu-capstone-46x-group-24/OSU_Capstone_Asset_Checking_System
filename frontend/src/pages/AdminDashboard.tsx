@@ -36,10 +36,6 @@ export default function AdminDashboard({
     useSocket(addReqQueue);
 
     // Theme
-    const pageTheme =
-        theme === "light"
-            ? "bg-wu-gray-200 text-wu-gray-400"
-            : "bg-wu-gray-400 text-wu-gray-200";
 
     const consoleParams =
         theme === "light"
@@ -57,12 +53,7 @@ export default function AdminDashboard({
               };
 
     return (
-        <div
-            className={`absolute w-full top-0 left-0 font-mono duration-300 transition-colors
-            ${pageTheme}`}
-        >
-            <Navbar theme={theme} setTheme={setTheme} />
-
+        <div className={`flex grow w-full`}>
             {/* Body */}
             <div className="flex-grow">
                 <div className="justify-items-start w-full pb-1 pt-10 text-5xl">
@@ -93,7 +84,6 @@ export default function AdminDashboard({
                     </div>
                 </div>
             </div>
-            <Footer theme={theme} />
         </div>
     );
 }

@@ -57,7 +57,7 @@ export default function App() {
                         <Route
                             index
                             path="/Home"
-                            element={<Home theme={theme} setTheme={setTheme} />}
+                            element={<Home theme={theme} />}
                         />
                         <Route
                             path="/Admin"
@@ -70,17 +70,7 @@ export default function App() {
                                 />
                             }
                         />
-                        <Route
-                            path="/User"
-                            element={
-                                <UserDashboard
-                                    theme={theme}
-                                    setTheme={setTheme}
-                                    reqQueue={reqQueue}
-                                    setReqQueue={setReqQueue}
-                                />
-                            }
-                        />
+                        <Route path="/User" element={<UserDashboard />} />
                     </Route>
                 </Routes>
             </Router>

@@ -8,7 +8,6 @@ import Footer from "../components/UI_Elements/Footer.tsx";
 // Types
 type HomeProps = {
     theme: "light" | "dark";
-    setTheme: (t: "light" | "dark") => void;
 };
 
 /**
@@ -16,7 +15,7 @@ type HomeProps = {
  * Type: Page
  * Description: Home page - '/' base directory
  */
-export default function Home({ theme, setTheme }: HomeProps) {
+export default function Home({ theme }: HomeProps) {
     return (
         <div className="flex grow mx-auto p-20 pb-40">
             {/* Body */}

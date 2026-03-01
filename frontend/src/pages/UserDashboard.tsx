@@ -25,8 +25,6 @@ type CartItem = {
 };
 
 type UserDashboardProps = {
-    theme: "light" | "dark";
-    setTheme: (t: "light" | "dark") => void;
     reqQueue: ReqItem[];
     setReqQueue: React.Dispatch<React.SetStateAction<ReqItem[]>>;
 };
@@ -35,7 +33,7 @@ type UserDashboardProps = {
  * UserDashboard Page
  * @constructor
  */
-export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
+export default function UserDashboard() {
     const [scanned, setScanned] = useState<ScanData | null>(null);
     const [showCart, setShowCart] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -108,27 +106,13 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
     }
 
     const buttonTheme =
-        theme === "light"
-            ? "bg-wu-gray-400 text-wu-gray-200"
-            : "bg-wu-gray-400 text-wu-gray-200";
+        "bg-wu-gray-400 text-wu-gray-200 dark:bg-wu-gray-200 dark:text-wu-gray-400";
 
     const modalTheme =
-        theme === "light"
-            ? "bg-wu-gray-400 text-wu-gray-200"
-            : "bg-wu-gray-200 text-wu-gray-400";
+        "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-lg";
 
     return (
-        <div
-            className={`absolute w-full top-0 left-0 min-h-screen font-mono
-        transition-colors duration-300
-            ${
-                theme === "light"
-                    ? "bg-wu-gray-200 text-wu-gray-400"
-                    : "bg-wu-gray-400 text-wu-gray-200"
-            }`}
-        >
-            <Navbar theme={theme} setTheme={setTheme} />
-
+        <div className="flex grow w-full">
             {thankYou ? (
                 <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
                     <h1 className="text-5xl">
@@ -156,7 +140,7 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
                                             )
                                         }
                                         children={"MIME ID SCAN"}
-                                        className={`${buttonTheme}`}
+                                        className={buttonTheme}
                                     />
                                 </div>
                                 <div className="ml-4 text-lg">
@@ -288,7 +272,6 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
                     items={cartItems}
                 />
             </div>
-            <Footer theme={theme} />
         </div>
     );
 }
