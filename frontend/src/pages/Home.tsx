@@ -20,8 +20,8 @@ export default function Home({ theme }: HomeProps) {
         <div className="flex grow mx-auto p-20 pb-40">
             {/* Body */}
             <div className="text-center">
-                <div className="flex flex-col">
-                    <div className="basis-12 py-6 text-7xl font-size-body mt-20">
+                <div className="flex flex-col py-22">
+                    <div className="basis-12 text-7xl py-4 font-size-body mt-20">
                         <a
                             href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/viewSingleProject.php?id=6RBYZj9tMGMllxTk"
                             className={`transition-colors duration-300 ${
