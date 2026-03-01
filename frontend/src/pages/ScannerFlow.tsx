@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function ScannerFlow() {
     const navigate = useNavigate();
     const [navigating, setNavigating] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isAdmin] = useState(false);
 
     const handleScan = (req: ReqItem) => {
         // Only react to card scans

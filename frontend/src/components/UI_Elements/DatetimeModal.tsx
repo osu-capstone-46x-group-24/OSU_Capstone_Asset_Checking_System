@@ -30,7 +30,6 @@ export default function DatetimeModal({
     open,
     onClose,
     onConfirm,
-    user,
     items,
 }: ModalProps) {
     const [datetime, setDatetime] = useState<string>("");

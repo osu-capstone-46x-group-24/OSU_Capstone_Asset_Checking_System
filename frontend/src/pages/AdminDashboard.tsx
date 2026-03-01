@@ -2,8 +2,6 @@
 
 // Imports
 import "../App.css";
-import Footer from "../components/UI_Elements/Footer.tsx";
-import Navbar from "../components/UI_Elements/Navbar.tsx";
 import LogRequestConsole from "../components/LogRequestConsole";
 import NetworkManager from "../API/NetworkManager.tsx";
 import type { ReqItem } from "../../../.d.ts";
@@ -23,7 +21,6 @@ type AdminDashboardProps = {
  */
 export default function AdminDashboard({
     theme,
-    setTheme,
     reqQueue,
     setReqQueue,
 }: AdminDashboardProps) {

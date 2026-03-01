@@ -1,7 +1,7 @@
 // UserDashboard.tsx
 
 // Imports
-import React, { useState } from "react";
+import { useState } from "react";
 import "../App.css";
 import DatetimeModal from "../components/UI_Elements/DatetimeModal.tsx";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
@@ -10,22 +10,11 @@ import { useSocket } from "../hooks/UseSocket.tsx";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 // Types
-// ID data types based on the example stuff he provided
-type ScanData = {
-    id: string;
-    firstName: string;
-    lastName: string;
-};
 
 // just saves itemId, item name, and the raw string from the whole scan.
 type CartItem = {
     itemId: string;
     itemName: string;
-};
-
-type UserDashboardProps = {
-    reqQueue: ReqItem[];
-    setReqQueue: React.Dispatch<React.SetStateAction<ReqItem[]>>;
 };
 
 /**
@@ -45,7 +34,7 @@ export default function UserDashboard() {
         // Only react to item scans
 
         if (req.reqType === "ITEM") {
-            console.log("User scanned item:", req);
+            console.log("User " + id + " scanned item:", req);
 
             if (cartItems.some((item) => item.itemId === req.itemName)) {
                 console.log("Item already in cart, ignoring scan.");

@@ -2,8 +2,6 @@
 
 // Imports
 import "../App.css";
-import Navbar from "../components/UI_Elements/Navbar";
-import Footer from "../components/UI_Elements/Footer.tsx";
 
 // Types
 type HomeProps = {
