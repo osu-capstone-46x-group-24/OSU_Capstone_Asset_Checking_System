@@ -18,15 +18,10 @@ type HomeProps = {
  */
 export default function Home({ theme, setTheme }: HomeProps) {
     return (
-        <div
-            className={`absolute w-full top-0 left-0 transition-colors font-mono
-            duration-300 bg-bg text-text`}
-        >
-            <Navbar theme={theme} setTheme={setTheme} />
-
+        <div className="flex grow mx-auto p-20 pb-40">
             {/* Body */}
-            <div className="relative min-h-180 w-full pt-19">
-                <div className="flex flex-col pt-20">
+            <div className="text-center">
+                <div className="flex flex-col">
                     <div className="basis-12 py-6 text-7xl font-size-body mt-20">
                         <a
                             href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/viewSingleProject.php?id=6RBYZj9tMGMllxTk"
@@ -44,8 +39,6 @@ export default function Home({ theme, setTheme }: HomeProps) {
                     </div>
                 </div>
             </div>
-
-            <Footer theme={theme} />
         </div>
     );
 }

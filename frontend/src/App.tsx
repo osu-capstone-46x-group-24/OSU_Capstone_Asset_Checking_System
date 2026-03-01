@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import UserDashboard from "./pages/UserDashboard";
 // import { lightTheme, darkTheme } from "./theme.ts";
 import type { ReqItem } from "../../.d.ts";
+import NavLayout from "./layouts/NavLayout.tsx";
 
 /**
  * Name: App
@@ -47,33 +48,40 @@ export default function App() {
         <ThemeProvider>
             <Router>
                 <Routes>
-                    <Route path="/" element={<Navigate to="/Home" />} />
                     <Route
-                        path="/Home"
-                        element={<Home theme={theme} setTheme={setTheme} />}
-                    />
-                    <Route
-                        path="/Admin"
+                        path="/"
                         element={
-                            <AdminDashboard
-                                theme={theme}
-                                setTheme={setTheme}
-                                reqQueue={reqQueue}
-                                setReqQueue={setReqQueue}
-                            />
+                            <NavLayout theme={theme} setTheme={setTheme} />
                         }
-                    />
-                    <Route
-                        path="/User"
-                        element={
-                            <UserDashboard
-                                theme={theme}
-                                setTheme={setTheme}
-                                reqQueue={reqQueue}
-                                setReqQueue={setReqQueue}
-                            />
-                        }
-                    />
+                    >
+                        <Route
+                            index
+                            path="/Home"
+                            element={<Home theme={theme} setTheme={setTheme} />}
+                        />
+                        <Route
+                            path="/Admin"
+                            element={
+                                <AdminDashboard
+                                    theme={theme}
+                                    setTheme={setTheme}
+                                    reqQueue={reqQueue}
+                                    setReqQueue={setReqQueue}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/User"
+                            element={
+                                <UserDashboard
+                                    theme={theme}
+                                    setTheme={setTheme}
+                                    reqQueue={reqQueue}
+                                    setReqQueue={setReqQueue}
+                                />
+                            }
+                        />
+                    </Route>
                 </Routes>
             </Router>
             <script src="../node_modules/@material-tailwind/html@latest/scripts/ripple.js"></script>
