@@ -11,6 +11,7 @@
 
 @layer theme, base, components, utilities;
 
+
 #root {
     max-width: 1280px;
     margin: 0 auto;
@@ -72,6 +73,14 @@
     --font-sans: ui-sans-serif system-ui, sans-serif;
     --font-serif: libre-baskerville-regular, normal, serif;
     --font-mono: jetbrains-mono-400, normal, monospace;
+
+    --color-bg: var(--color-wu-gray-200);
+    --color-text: var(--color-wu-gray-400);
+}
+
+:root.dark {
+    --color-bg: var(--color-wu-gray-400);
+    --color-text: var(--color-wu-gray-200);
 }
 
 {/* Font */}

@@ -20,12 +20,7 @@ export default function Home({ theme, setTheme }: HomeProps) {
     return (
         <div
             className={`absolute w-full top-0 left-0 transition-colors font-mono
-            duration-300
-        ${
-            theme === "light"
-                ? "bg-wu-gray-200 text-wu-gray-400"
-                : "bg-wu-gray-400 text-wu-gray-200"
-        }`}
+            duration-300 bg-bg text-text`}
         >
             <Navbar theme={theme} setTheme={setTheme} />
 
