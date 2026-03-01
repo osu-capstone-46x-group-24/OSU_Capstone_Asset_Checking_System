@@ -33,7 +33,6 @@ type UserDashboardProps = {
  * @constructor
  */
 export default function UserDashboard() {
-    const [showCart, setShowCart] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [thankYou, setThankYou] = useState(false);
@@ -66,7 +65,6 @@ export default function UserDashboard() {
     useSocket(handleScan);
 
     function handleReset(): void {
-        setShowCart(false);
         setCartItems([]);
         setThankYou(false);
         navigate("/Flow");
@@ -95,7 +93,7 @@ export default function UserDashboard() {
     return (
         <div className="flex grow w-full">
             {thankYou ? (
-                <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
+                <div className="flex flex-col items-center justify-center mx-auto min-h-[70vh] text-center">
                     <h1 className="text-5xl">
                         Thank you for checking out your items!
                     </h1>
