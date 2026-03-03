@@ -5,7 +5,7 @@ import React from "react";
 import "./OutboundNetworkHandler.ts";
 import { sendGetRequest, sendPostRequest } from "./OutboundNetworkHandler.ts";
 import { Option, Select } from "@material-tailwind/react";
-import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
+import ButtonDefault from "../components/UI_Elements/ButtonDefault";
 import type { ReqItem } from "../../../.d.ts";
 
 type NetworkManagerProps = {

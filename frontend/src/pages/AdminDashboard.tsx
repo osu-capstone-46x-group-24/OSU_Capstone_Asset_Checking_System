@@ -2,14 +2,15 @@
 
 // Imports
 import "../App.css";
-import Footer from "../components/UI_Elements/Footer.tsx";
-import Navbar from "../components/UI_Elements/Navbar.tsx";
+import Footer from "../components/UI_Elements/Footer";
+import Navbar from "../components/UI_Elements/Navbar";
 import LogRequestConsole from "../components/LogRequestConsole";
-import NetworkManager from "../API/NetworkManager.tsx";
+import NetworkManager from "../API/NetworkManager";
 import { useState } from "react";
 import type { ReqItem } from "../../../.d.ts";
 
-// Type
+// props for admin page
+
 type AdminDashboardProps = {
     theme: "light" | "dark";
     setTheme: (t: "light" | "dark") => void;

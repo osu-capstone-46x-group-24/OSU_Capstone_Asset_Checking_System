@@ -1,30 +1,18 @@
-// UserDashboard.tsx
 
-// Imports
 import { useState } from "react";
 import "../App.css";
-import Footer from "../components/UI_Elements/Footer.tsx";
-import Navbar from "../components/UI_Elements/Navbar.tsx";
-import DatetimeModal from "../components/UI_Elements/DatetimeModal.tsx";
-import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
+import Footer from "../components/UI_Elements/Footer";
+import Navbar from "../components/UI_Elements/Navbar";
+import DatetimeModal from "../components/UI_Elements/DatetimeModal";
+import ButtonDefault from "../components/UI_Elements/ButtonDefault";
 import type { ReqItem } from "../../../.d.ts";
-import Loader from "../components/UI_Elements/Loader.tsx";
-import HelpHover from "../components/UI_Elements/HelpHover.tsx";
+import Loader from "../components/UI_Elements/Loader";
+import HelpHover from "../components/UI_Elements/HelpHover";
 
-// Types
-// ID data types based on the example stuff he provided
-type ScanData = {
-    id: string;
-    firstName: string;
-    lastName: string;
-};
+// data structures
 
-// just saves itemId, item name, and the raw string from the whole scan.
-type CartItem = {
-    itemId: string;
-    itemName: string;
-    raw: string;
-};
+type ScanData = { id: string; firstName: string; lastName: string };
+type CartItem = { itemId: string; itemName: string; raw: string };
 
 type UserDashboardProps = {
     theme: "light" | "dark";
@@ -33,10 +21,7 @@ type UserDashboardProps = {
     setReqQueue?: (r: ReqItem) => void;
 };
 
-/**
- * UserDashboard Page
- * @constructor
- */
+/** User dashboard page */
 export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
     const [scanned, setScanned] = useState<ScanData | null>(null);
     const [showCart, setShowCart] = useState(false);
@@ -63,7 +48,7 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
         setThankYou(false);
     }
 
-    // hopefully this doesn't have to be changed much for actual item scanning. fakeItem just loads a test string
+    // development helper – replace with real scan result
     function handleItemScan() {
         const fakeItem = "T0001,Ultrasound machine,,Fuji/Sonosite ,,,,";
 
@@ -76,14 +61,14 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
         //opens return page on scan if checkout cart isn't already open
         if (!showCart) setShowReturnPage(true);
 
-        //PREVENTS DUPLICATE SCANS NO IDEA HOW WILL WORK FOR ACTUAL HARDWARE SCANS SO LOOOOOK HERE PLEASEEE
+        // prevent duplicate scans
         if (cartItems.some((item) => item.itemId === newItem.itemId)) {
             alert(`Scanned same item twice! This item is already in your cart: \n \n ${newItem.itemId} ${newItem.itemName}`);
             return;
         }
         setCartItems((prev) => [...prev, newItem]);
     }
-    //and a second test string for variety/testing
+    // second test string for development
     function handleItemScan2() {
         const fakeItem = "T0007,Wearable Osculatation simulator,,Avkin,,,,";
 
@@ -94,7 +79,7 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
             raw: fakeItem,
         };
         if (!showCart) setShowReturnPage(true);
-        //PREVENTS DUPLICATE SCANS NO IDEA HOW WILL WORK FOR ACTUAL HARDWARE SCANS SO LOOOOOK HERE PLEASEEE
+        // prevent duplicate scans
         if (cartItems.some((item) => item.itemId === newItem.itemId)) {
             alert(`Scanned same item twice! This item is already in your cart: \n \n ${newItem.itemId} ${newItem.itemName}`);
             return;
@@ -109,9 +94,9 @@ export default function UserDashboard({ theme, setTheme }: UserDashboardProps) {
         console.log("Items raw:", rawExport);
         console.log("Return time:", returnTime ?? "Not specified");
 
-        // reset
-        setShowModal(false); // close modal
-        setThankYou(true); // show thank-you screen
+        // close modal and show thank-you page
+        setShowModal(false);
+        setThankYou(true);
 
         setTimeout(() => {
             // after 5 seconds, fully reset to dashboard. if it feels like too long you can shorten it idk
