@@ -10,6 +10,7 @@ import ServiceStatusIndicator from "../components/ServiceStatusIndicator.tsx";
 import type { ReqItem } from "../../../.d.ts";
 import React from "react";
 import { useSocket } from "../hooks/useSocket.tsx";
+import CRUDatabaseElement from "../components/CRUDatabaseElement.tsx";
 
 // Type
 type AdminDashboardProps = {
@@ -81,7 +82,9 @@ export default function AdminDashboard({
                             />
                         </div>
                     </div>
-                    {// Network Request Tester - NetworkManager}
+                    {
+                        // Network Request Tester - NetworkManager
+                    }
                     <div className="flex-col flex">
                         <div className="min-h-[150px] min-w-[100px] p-10 flex flex-col">
                             <div className="flex p-0.5 text-xl">
@@ -94,19 +97,20 @@ export default function AdminDashboard({
                                 />
                             </div>
                         </div>
-                        {// CRUD Component - CRUDatabasElements}
+                        {
+                            // CRUD Component - CRUDatabasElements
+                        }
                         <div className="min-h-[150px] min-w-[100px] p-10 flex flex-col">
                             <div className="flex p-0.5 text-xl">
                                 <span>CRUD</span>
                             </div>
                             <div className={`p-1`}>
-                                <CRUDatabaseElement
-                                    {...consoleParams}
-                                    onRequest={addReqQueue}
-                                />
+                                <CRUDatabaseElement {...consoleParams} />
                             </div>
                         </div>
-                        {// Service Status Indicator}
+                        {
+                            // Service Status Indicator
+                        }
                         <div className={"flex flex-col p-10"}>
                             <div className="flex p-0.5 text-xl">
                                 <span>Service Status</span>
