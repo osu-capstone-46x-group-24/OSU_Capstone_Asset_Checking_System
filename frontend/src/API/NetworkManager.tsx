@@ -63,13 +63,35 @@ export default function NetworkManager({
         { _value: "/items", text: "/items" },
         { _value: "/items/available", text: "/items/available" },
         { _value: "/items/all", text: "/items/all" },
-        { _value: "/canary", text: "/canary" }
-    ]
+        { _value: "/canary", text: "/canary" },
+    ];
 
     const requestListings = [
         { _value: "GET", text: "GET" },
-        { _value: "POST", text: "POST" }
-    ]
+        { _value: "POST", text: "POST" },
+    ];
+
+    function handleRequest(result: string, type: string, endpoint: string) {
+        if (Array.isArray(result)) {
+            result.forEach((item) => {
+                sendRequestToParent(
+                    "API",
+                    JSON.stringify(item),
+                    "frontend",
+                    type,
+                    endpoint
+                );
+            });
+        } else {
+            sendRequestToParent(
+                "API",
+                JSON.stringify(result),
+                "frontend",
+                type,
+                endpoint
+            );
+        }
+    }
 
     const handleSubmit = async (type: string, endpoint: string) => {
         try {
@@ -77,21 +99,21 @@ export default function NetworkManager({
             if (type === "POST") {
                 const result: string = await sendPostRequest(endpoint);
                 console.log("Success: ", result);
-                sendRequestToParent("API", result, "frontend", type, endpoint);
+                handleRequest(result, type, endpoint);
             } else if (type === "GET") {
                 const result = await sendGetRequest(endpoint);
                 console.log("Success: ", result);
-                sendRequestToParent("API", result, "frontend", type, endpoint);
+                handleRequest(result, type, endpoint);
             } else {
                 const result = "ERROR";
                 console.log("Success: ", result);
-                sendRequestToParent("API", result, "frontend", type, endpoint);
+                handleRequest(result, type, endpoint);
             }
         } catch (err) {
             const message =
                 err instanceof Error ? err.message : "Unknown Error";
             console.error("Error: ", message);
-            sendRequestToParent("API", message, "frontend", type, endpoint);
+            handleRequest(message, type, endpoint);
         }
     };
 
@@ -103,7 +125,6 @@ export default function NetworkManager({
                 <div
                     className={`flex flex-row gap-6 m-6 min-h-12 text-wuGrey-100 bg-${color_primary_bg}`}
                 >
-
                     <Select
                         value={reqType}
                         className={`h-8 text-center`}
@@ -119,14 +140,14 @@ export default function NetworkManager({
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                     >
-                        {(requestListings.map((entry, index: number) => (
+                        {requestListings.map((entry, index: number) => (
                             <Option
                                 key={index}
                                 value={entry._value}
                                 className={`bg-${color_accent_bg} text-${color_accent_text}`}
                                 children={entry.text}
                             />
-                        )))}
+                        ))}
                     </Select>
                     <Select
                         value={reqEndpoint}
@@ -143,14 +164,14 @@ export default function NetworkManager({
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                     >
-                        {(endpointListings.map((entry, index: number) => (
+                        {endpointListings.map((entry, index: number) => (
                             <Option
                                 key={index}
                                 value={entry._value}
                                 className={`bg-${color_accent_bg} text-${color_accent_text}`}
                                 children={entry.text}
                             />
-                        )))}
+                        ))}
                     </Select>
                 </div>
                 <div>
