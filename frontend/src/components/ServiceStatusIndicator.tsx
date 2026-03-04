@@ -1,7 +1,7 @@
 // ServiceStatusIndicator.tsx
 
 // Imports
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import configJson from "../spec_config.json";
 
 // Types
@@ -26,28 +26,27 @@ type ServiceStatusIndicatorConsoleProps = {
 */
 
 // Constants
-const color_placeholder_text = "wu-gray-300";
 type statusTypes = "online" | "offline" | "error";
-const exampleStatusList = [
-    {
-        connection: {
-            address: "::1",
-            addressType: "IPv6",
-            port: 54609,
-        },
-        uptime: 99071331,
-        timestamp: "2026-02-14T21:45:39.450Z",
-    },
-    {
-        connection: {
-            address: "::1",
-            addressType: "IPv6",
-            port: 54609,
-        },
-        uptime: 99072012,
-        timestamp: "2026-02-14T21:47:44.580Z",
-    },
-];
+// const exampleStatusList = [
+//     {
+//         connection: {
+//             address: "::1",
+//             addressType: "IPv6",
+//             port: 54609,
+//         },
+//         uptime: 99071331,
+//         timestamp: "2026-02-14T21:45:39.450Z",
+//     },
+//     {
+//         connection: {
+//             address: "::1",
+//             addressType: "IPv6",
+//             port: 54609,
+//         },
+//         uptime: 99072012,
+//         timestamp: "2026-02-14T21:47:44.580Z",
+//     },
+// ];
 
 /**
  * Name: Service Status Indicator
@@ -58,13 +57,13 @@ const exampleStatusList = [
 export default function ServiceStatusIndicator({
     color_primary_text,
     color_primary_bg,
-    color_accent_text,
-    color_accent_bg,
+    // color_accent_text,
+    // color_accent_bg,
 }: ServiceStatusIndicatorConsoleProps) {
     const [scannerStatus, setScannerStatus] =
         React.useState<statusTypes>("offline");
-    const [backendStatus, setBackendStatus] =
-        React.useState<statusTypes>("offline");
+    //const [backendStatus, setBackendStatus] =
+    React.useState<statusTypes>("offline");
 
     function getStatusColor(status: statusTypes) {
         if (status === "online") {
@@ -77,6 +76,13 @@ export default function ServiceStatusIndicator({
             return configJson.theme.color.status.error;
         }
     }
+
+    const UpdateScannerStatus = (status: statusTypes) => {
+        setScannerStatus(status);
+    };
+    // const UpdateBackendStatus = (e) => {
+    //     setBackendStatus(e);
+    // }
 
     return (
         <>
@@ -97,6 +103,16 @@ export default function ServiceStatusIndicator({
                         <div
                             className={`${getStatusColor(scannerStatus)} w-full h-5 rounded-full`}
                         ></div>
+                    </div>
+                    <div>
+                        <button
+                            children={"Update Status"}
+                            onClick={() =>
+                                scannerStatus == "online"
+                                    ? UpdateScannerStatus("offline")
+                                    : UpdateScannerStatus("online")
+                            }
+                        ></button>
                     </div>
                 </div>
                 <div
