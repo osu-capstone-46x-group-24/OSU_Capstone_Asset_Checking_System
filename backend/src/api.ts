@@ -1,9 +1,7 @@
 import { z } from "zod";
 // defines api schema for endpoints
 export const checkinSchema = z.object({
-    userId: z.number().int(),
     itemId: z.number().int(),
-    timestampId: z.number().int(),
 });
 
 export const checkoutSchema = z.object({
