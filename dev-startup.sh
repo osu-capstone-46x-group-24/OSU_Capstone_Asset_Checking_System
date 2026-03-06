@@ -42,7 +42,7 @@ PIDS+=($!)
 
 # Start Scanner
 echo "Starting *scanner* at localhost:3003 + index.html..."
-(cd "$BASE_DIR/scanner" && node server.js) &
+(cd "$BASE_DIR/scanner" && node server.ts) &
 PIDS+=($!)
 
 echo "Services running with PIDs: ${PIDS[*]}"

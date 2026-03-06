@@ -23,6 +23,7 @@ export default function Navbar({ theme, setTheme }: NavbarProps) {
 
     // Names and links for navbar items
     const navItems = [
+        { title: "Scanner Flow", link: "/Flow" },
         { title: "User Dashboard", link: "/User" },
         { title: "Admin", link: "/Admin" },
         { title: "About", link: "/Home" },
@@ -31,11 +32,7 @@ export default function Navbar({ theme, setTheme }: NavbarProps) {
     return (
         <div
             className={`p-5 w-full h-min transition-colors font-mono
-            duration-300 drop-shadow-2xl ${
-                theme === "light"
-                    ? "bg-wu-gray-200 text-wu-gray-500"
-                    : "bg-wu-gray-500 text-wu-gray-200"
-            }`}
+            duration-300 drop-shadow-2xl bg-bg dark:bg-wu-gray-500 text-text`}
         >
             <nav className={""}>
                 <div className="max-w-7xl mx-auto px-4">

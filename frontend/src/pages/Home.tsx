@@ -2,13 +2,10 @@
 
 // Imports
 import "../App.css";
-import Navbar from "../components/UI_Elements/Navbar";
-import Footer from "../components/UI_Elements/Footer.tsx";
 
 // Types
 type HomeProps = {
     theme: "light" | "dark";
-    setTheme: (t: "light" | "dark") => void;
 };
 
 /**
@@ -16,23 +13,13 @@ type HomeProps = {
  * Type: Page
  * Description: Home page - '/' base directory
  */
-export default function Home({ theme, setTheme }: HomeProps) {
+export default function Home({ theme }: HomeProps) {
     return (
-        <div
-            className={`absolute w-full top-0 left-0 transition-colors font-mono
-            duration-300
-        ${
-            theme === "light"
-                ? "bg-wu-gray-200 text-wu-gray-400"
-                : "bg-wu-gray-400 text-wu-gray-200"
-        }`}
-        >
-            <Navbar theme={theme} setTheme={setTheme} />
-
+        <div className="flex grow mx-auto p-20 pb-40">
             {/* Body */}
-            <div className="relative min-h-180 w-full pt-19">
-                <div className="flex flex-col pt-20">
-                    <div className="basis-12 py-6 text-7xl font-size-body mt-20">
+            <div className="text-center">
+                <div className="flex flex-col py-22">
+                    <div className="basis-12 text-7xl py-4 font-size-body mt-20">
                         <a
                             href="https://eecs.engineering.oregonstate.edu/capstone/submission/pages/viewSingleProject.php?id=6RBYZj9tMGMllxTk"
                             className={`transition-colors duration-300 ${
@@ -49,8 +36,6 @@ export default function Home({ theme, setTheme }: HomeProps) {
                     </div>
                 </div>
             </div>
-
-            <Footer theme={theme} />
         </div>
     );
 }

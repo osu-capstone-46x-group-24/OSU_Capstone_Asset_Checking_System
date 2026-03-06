@@ -2,6 +2,7 @@
 
 @import "tailwindcss";
 
+
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
@@ -10,13 +11,9 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
 @layer theme, base, components, utilities;
+@config "../tailwind.config.ts";
 
-#root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-}
+
 
 .logo {
     height: 6em;
@@ -72,6 +69,14 @@
     --font-sans: ui-sans-serif system-ui, sans-serif;
     --font-serif: libre-baskerville-regular, normal, serif;
     --font-mono: jetbrains-mono-400, normal, monospace;
+
+    --color-bg: var(--color-wu-gray-200);
+    --color-text: var(--color-wu-gray-400);
+}
+
+:root.dark {
+    --color-bg: var(--color-wu-gray-400);
+    --color-text: var(--color-wu-gray-200);
 }
 
 {/* Font */}

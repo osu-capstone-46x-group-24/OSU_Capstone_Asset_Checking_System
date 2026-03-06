@@ -1,6 +1,6 @@
 // tailwind.config.ts
 
-import withMT = require("@material-tailwind/react/utils/withMT");
+const withMT = require("@material-tailwind/react/utils/withMT");
 
 module.exports = withMT({
     content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
@@ -23,6 +23,9 @@ module.exports = withMT({
                     300: "#7C878E",
                     400: "#242424",
                     500: "#1A1A1A",
+                },
+                emerald: {
+                    600: "#009966",
                 },
             },
         },

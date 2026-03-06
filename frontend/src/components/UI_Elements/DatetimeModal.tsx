@@ -30,7 +30,6 @@ export default function DatetimeModal({
     open,
     onClose,
     onConfirm,
-    user,
     items,
 }: ModalProps) {
     const [datetime, setDatetime] = useState<string>("");
@@ -58,18 +57,16 @@ export default function DatetimeModal({
             onResizeCapture={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
-            className={"mx-auto"}
         >
-            <div className="text-gray-800">
-                <DialogHeader
-                    children={"Confirm Checkout"}
-                    placeholder={undefined}
-                    onResize={undefined}
-                    onResizeCapture={undefined}
-                    onPointerEnterCapture={undefined}
-                    onPointerLeaveCapture={undefined}
-                />
-            </div>
+            <DialogHeader
+                children={"Confirm Checkout"}
+                placeholder={undefined}
+                onResize={undefined}
+                onResizeCapture={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+                className="pb-0"
+            />
             <DialogBody
                 placeholder={undefined}
                 onResize={undefined}
@@ -78,15 +75,6 @@ export default function DatetimeModal({
                 onPointerLeaveCapture={undefined}
             >
                 <div className="flex flex-col gap-4">
-                    {user && (
-                        <p className="text-gray-700 text-sm">
-                            Checking out as{" "}
-                            <strong>
-                                {user.firstName} {user.lastName}
-                            </strong>{" "}
-                            (ID: {user.id})
-                        </p>
-                    )}
                     {items && items.length > 0 && (
                         <div>
                             <p className="text-gray-600 text-sm mb-1">Items:</p>
@@ -130,11 +118,17 @@ export default function DatetimeModal({
                 onResizeCapture={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
+                className="flex gap-1"
             >
-                <ButtonDefault onClick={onClose} children={"Cancel"} />
+                <ButtonDefault
+                    onClick={onClose}
+                    children={"Cancel"}
+                    variant="Secondary"
+                />
                 <ButtonDefault
                     onClick={handleConfirm}
                     children={"Confirm & Checkout"}
+                    variant="Secondary"
                 />
             </DialogFooter>
         </Dialog>
