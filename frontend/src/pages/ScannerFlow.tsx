@@ -8,7 +8,7 @@ export default function ScannerFlow() {
     const navigate = useNavigate();
     const [navigating, setNavigating] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [userRFID, setUserRFID] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string>("");
 
     const handleScan = async (req: ReqItem) => {
         // Only react to card scans
@@ -17,14 +17,15 @@ export default function ScannerFlow() {
             const userData = await sendPostRequest("/user/scan", {
                 rfid: req.itemName,
             });
+            console.log(userData);
 
             if (userData.isAdmin) {
                 setIsAdmin(true);
-                setUserRFID(req.itemName);
+                setUserId(userData.id);
             } else {
                 setNavigating(true);
                 setTimeout(() => {
-                    navigate("/User?id=" + req.itemName);
+                    navigate("/User?id=" + userId);
                 }, 3000);
             }
         }
@@ -61,7 +62,7 @@ export default function ScannerFlow() {
                     <div className="mt-6 flex flex-col items-center gap-4">
                         <button
                             className="px-6 py-3 bg-text text-bg rounded-2xl hover:bg-secondary-dark transition-colors duration-300"
-                            onClick={() => navigate("/User?id=" + userRFID)}
+                            onClick={() => navigate("/User?id=" + userId)}
                         >
                             Checkout
                         </button>
