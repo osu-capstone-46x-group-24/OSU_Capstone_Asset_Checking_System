@@ -2,25 +2,30 @@ import type { ReqItem } from "../../../.d.ts";
 import { useSocket } from "../hooks/UseSocket.tsx";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { sendPostRequest } from "../API/OutboundNetworkHandler.ts";
 
 export default function ScannerFlow() {
     const navigate = useNavigate();
     const [navigating, setNavigating] = useState(false);
     const [isAdmin] = useState(false);
 
-    const handleScan = (req: ReqItem) => {
+    const handleScan = async (req: ReqItem) => {
         // Only react to card scans
 
         if (req.reqType === "CARD") {
-            // for now assume no user is an admin, later check db table
-            if (isAdmin) {
+            const userData = await sendPostRequest("/user/scan", {
+                rfid: req.itemName,
+            });
+            console.log("Scan result:", userData);
+
+            if (userData.isAdmin) {
                 console.log("Admin scanned card:", req);
             } else {
                 console.log("User scanned card:", req);
-                setNavigating(true);
-                setTimeout(() => {
-                    navigate("/User?id=" + req.itemName);
-                }, 3000);
+                // setNavigating(true);
+                // setTimeout(() => {
+                //     navigate("/User?id=" + req.itemName);
+                // }, 3000);
             }
         }
     };
