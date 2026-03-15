@@ -12,3 +12,9 @@ export type ReqItem = {
     httpType: string;
     endpoint: string;
 };
+
+// DB Item
+export type DB_Item = {
+    name: string;
+    rfid: string;
+}

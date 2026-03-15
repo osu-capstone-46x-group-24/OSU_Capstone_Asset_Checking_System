@@ -1,9 +1,9 @@
 {
   "scanner": {
-    "port": 3000
+    "port": 3003
   },
   "backend": {
-    "port": 3001
+    "port": 3000
   },
   "frontend": {
     "port": 5173
@@ -31,6 +31,11 @@
         "ITEM": "text-yellow-500",
         "CARD": "text-green-600",
         "API": "text-orange-400"
+      },
+      "status": {
+        "online": "bg-green-700",
+        "offline": "bg-wu-red-200",
+        "error": "bg-wu-yellow-100"
       }
     },
     "font": {

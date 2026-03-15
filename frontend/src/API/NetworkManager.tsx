@@ -1,6 +1,6 @@
 // NetworkManager.tsx
 
-// Types
+// Imports
 import React from "react";
 import "./OutboundNetworkHandler.ts";
 import { sendGetRequest, sendPostRequest } from "./OutboundNetworkHandler.ts";
@@ -8,6 +8,7 @@ import { Option, Select } from "@material-tailwind/react";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
 import type { ReqItem } from "../../../.d.ts";
 
+// Types
 type NetworkManagerProps = {
     color_primary_text: string;
     color_primary_bg: string;
@@ -55,27 +56,64 @@ export default function NetworkManager({
         });
     };
 
+    const endpointListings = [
+        { _value: "/", text: "/" },
+        { _value: "/checkin", text: "/checkin" },
+        { _value: "/checkout", text: "/checkout" },
+        { _value: "/items", text: "/items" },
+        { _value: "/items/available", text: "/items/available" },
+        { _value: "/items/all", text: "/items/all" },
+        { _value: "/canary", text: "/canary" },
+    ];
+
+    const requestListings = [
+        { _value: "GET", text: "GET" },
+        { _value: "POST", text: "POST" },
+    ];
+
+    function handleRequest(result: string, type: string, endpoint: string) {
+        if (Array.isArray(result)) {
+            result.forEach((item) => {
+                sendRequestToParent(
+                    "API",
+                    JSON.stringify(item),
+                    "frontend",
+                    type,
+                    endpoint
+                );
+            });
+        } else {
+            sendRequestToParent(
+                "API",
+                JSON.stringify(result),
+                "frontend",
+                type,
+                endpoint
+            );
+        }
+    }
+
     const handleSubmit = async (type: string, endpoint: string) => {
         try {
             console.log("Request [", type, "], [", endpoint, "]...");
             if (type === "POST") {
                 const result: string = await sendPostRequest(endpoint);
                 console.log("Success: ", result);
-                sendRequestToParent("API", result, "frontend", type, endpoint);
+                handleRequest(result, type, endpoint);
             } else if (type === "GET") {
                 const result = await sendGetRequest(endpoint);
                 console.log("Success: ", result);
-                sendRequestToParent("API", result, "frontend", type, endpoint);
+                handleRequest(result, type, endpoint);
             } else {
                 const result = "ERROR";
                 console.log("Success: ", result);
-                sendRequestToParent("API", result, "frontend", type, endpoint);
+                handleRequest(result, type, endpoint);
             }
         } catch (err) {
             const message =
                 err instanceof Error ? err.message : "Unknown Error";
             console.error("Error: ", message);
-            sendRequestToParent("API", message, "frontend", type, endpoint);
+            handleRequest(message, type, endpoint);
         }
     };
 
@@ -89,7 +127,7 @@ export default function NetworkManager({
                 >
                     <Select
                         value={reqType}
-                        className={`text-center`}
+                        className={`h-8 text-center`}
                         onChange={(val) => {
                             if (val) {
                                 setReqType(val! as RequestType);
@@ -102,22 +140,18 @@ export default function NetworkManager({
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                     >
-                        <Option
-                            value="GET"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            GET
-                        </Option>
-                        <Option
-                            value="POST"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            POST
-                        </Option>
+                        {requestListings.map((entry, index: number) => (
+                            <Option
+                                key={index}
+                                value={entry._value}
+                                className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                                children={entry.text}
+                            />
+                        ))}
                     </Select>
                     <Select
                         value={reqEndpoint}
-                        className={`text-center`}
+                        className={`h-8 text-center`}
                         onChange={(val) => {
                             if (val) {
                                 setReqEndpoint(val);
@@ -130,42 +164,14 @@ export default function NetworkManager({
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                     >
-                        <Option
-                            value="/"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /
-                        </Option>
-                        <Option
-                            value="/checkin"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /checkin
-                        </Option>
-                        <Option
-                            value="/checkout"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /checkout
-                        </Option>
-                        <Option
-                            value="/items"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /items
-                        </Option>
-                        <Option
-                            value="/items/available"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /items/available
-                        </Option>
-                        <Option
-                            value="/items/all"
-                            className={`bg-${color_accent_bg} text-${color_accent_text}`}
-                        >
-                            /items/all
-                        </Option>
+                        {endpointListings.map((entry, index: number) => (
+                            <Option
+                                key={index}
+                                value={entry._value}
+                                className={`bg-${color_accent_bg} text-${color_accent_text}`}
+                                children={entry.text}
+                            />
+                        ))}
                     </Select>
                 </div>
                 <div>
