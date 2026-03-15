@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // constants
-const baseUrl = process.env.BASE_URL || `http://localhost:3000`;
+const baseUrl = process.env.BASE_URL || `http://localhost:3003`;
 
 const VENDOR_ID = 3111;
 const PRODUCT_ID = 15354;
