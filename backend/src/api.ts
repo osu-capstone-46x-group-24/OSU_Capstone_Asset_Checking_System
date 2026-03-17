@@ -33,3 +33,7 @@ export const canaryResponse = z.object({
     uptime: z.int().describe("Server uptime in milliseconds"),
     timestamp: z.iso.datetime(),
 });
+
+export const scanSchema = z.object({
+    rfid: z.string(),
+});

@@ -1,20 +1,31 @@
 // UserDashboard.tsx
 
 // Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
 import DatetimeModal from "../components/UI_Elements/DatetimeModal.tsx";
 import ButtonDefault from "../components/UI_Elements/ButtonDefault.tsx";
 import type { ReqItem } from "../../../.d.ts";
-import { useSocket } from "../hooks/UseSocket.tsx";
+import { useSocket } from "../hooks/useSocket.tsx";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import {
+    sendGetRequest,
+    sendPostRequest,
+} from "../API/OutboundNetworkHandler.ts";
 
 // Types
 
 // just saves itemId, item name, and the raw string from the whole scan.
 type CartItem = {
-    itemId: string;
-    itemName: string;
+    id: string;
+    name: string;
+    rfid: string;
+};
+
+type Item = {
+    id: string;
+    name: string;
+    rfid: string;
 };
 
 /**
@@ -25,10 +36,20 @@ export default function UserDashboard() {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [thankYou, setThankYou] = useState(false);
+    const [items, setItems] = useState<Item[]>([]);
 
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchItems = async () => {
+            const items = await sendGetRequest("/items/all");
+            setItems(items);
+        };
+
+        fetchItems();
+    }, []);
 
     const handleScan = (req: ReqItem) => {
         // Only react to item scans
@@ -36,18 +57,23 @@ export default function UserDashboard() {
         if (req.reqType === "ITEM") {
             console.log("User " + id + " scanned item:", req);
 
-            if (cartItems.some((item) => item.itemId === req.itemName)) {
+            if (cartItems.some((item) => item.rfid === req.itemName)) {
                 console.log("Item already in cart, ignoring scan.");
                 return;
             }
 
-            // get item data from database, for now:
-            const item = {
-                itemId: req.itemName,
-                itemName: "Example Item Name for " + req.itemName,
+            const item = items.find((item: Item) => item.rfid === req.itemName);
+            console.log("Matched scanned RFID to item:", item);
+
+            const cartItem: CartItem = {
+                id: item ? item.id : "Unknown ID",
+                name: item ? item.name : "Unknown Item",
+                rfid: item ? item.rfid : "Unknown RFID",
             };
 
-            setCartItems((prev) => [...prev, item]);
+            setCartItems((prev) => [...prev, cartItem]);
+            console.log("Added item to cart:", cartItem);
+            console.log("Current cart items:", [...cartItems, cartItem]);
         }
     };
 
@@ -59,11 +85,18 @@ export default function UserDashboard() {
         navigate("/Flow");
     }
 
-    function handleConfirmCheckout(returnTime: string | null): void {
-        const rawExport = cartItems.map((item) => item.itemId); // array of raw strings
+    async function handleConfirmCheckout(returnTime: string | null) {
         console.log("Checkout summary:");
-        console.log("Items raw:", rawExport);
         console.log("Return time:", returnTime ?? "Not specified");
+
+        const checkoutObject = {
+            userId: Number(id),
+            items: cartItems.map((item) => item.id),
+            returnTime: returnTime,
+        };
+
+        console.log("Sending checkout data to backend:", checkoutObject);
+        await sendPostRequest("/checkout", checkoutObject);
 
         // reset
         setShowModal(false); // close modal
@@ -142,10 +175,10 @@ export default function UserDashboard() {
                                         cartItems.map((item, index) => (
                                             <tr key={index}>
                                                 <td className="px-4 py-3 text-left text-sm font-medium uppercase tracking-wider w-1/4">
-                                                    {item.itemId}
+                                                    {item.rfid}
                                                 </td>
                                                 <td className="px-4 py-3 text-left text-sm font-medium uppercase tracking-wider w-3/4">
-                                                    {item.itemName}
+                                                    {item.name}
                                                 </td>
                                                 <td className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider w-1/4">
                                                     <ButtonDefault

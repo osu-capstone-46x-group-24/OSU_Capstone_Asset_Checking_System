@@ -18,7 +18,7 @@ type ModalProps = {
     onClose: () => void;
     onConfirm: (returnTime: string | null) => void;
     user?: { id: string; firstName: string; lastName: string } | null;
-    items?: { itemId: string; itemName: string }[];
+    items?: { id: string; name: string; rfid: string }[];
 };
 
 /**
@@ -80,7 +80,9 @@ export default function DatetimeModal({
                             <p className="text-gray-600 text-sm mb-1">Items:</p>
                             <ul className="list-disc ml-5 text-sm text-gray-700">
                                 {items.map((it) => (
-                                    <li key={it.itemId}>{it.itemName}</li>
+                                    <li key={it.id}>
+                                        {it.name} ({it.rfid})
+                                    </li>
                                 ))}
                             </ul>
                         </div>
