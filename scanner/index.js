@@ -3,8 +3,19 @@ const BASE_URL = `http://localhost:3003`;
 const socket = io(BASE_URL);
 
 // POST to the scanner cards endpoint
-document.getElementById('scan-card').onclick = () => {
-    fetch(`${BASE_URL}/api/scanner/cards`, { method: 'POST' });
+document.getElementById('scan-admin-card').onclick = () => {
+    fetch(`${BASE_URL}/api/scanner/cards`, {
+        method: 'POST',
+        body: JSON.stringify({ data: '00:00:00:20:04:aa:c7:ff' }),
+    });
+};
+
+// POST to the scanner user card endpoint
+document.getElementById('scan-user-card').onclick = () => {
+    fetch(`${BASE_URL}/api/scanner/cards`, {
+        method: 'POST',
+        body: JSON.stringify({ data: '00:00:00:2c:e9:86:0c:de' }),
+    });
 };
 
 // POST to the scanner items endpoint
