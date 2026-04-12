@@ -29,6 +29,16 @@ document.getElementById('scan-item').onclick = () => {
     fetch(`${BASE_URL}/api/scanner/items`, { method: 'POST' });
 };
 
+document.getElementById('scan-item-1').onclick = () => {
+    fetch(`${BASE_URL}/api/scanner/items`, {
+        method: 'POST',
+        body: JSON.stringify({ data: '00:80:61:3e:89:1c:b4:04' }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+};
+
 // GET scanner status
 document.getElementById('get-status').onclick = () => {
     fetch(`${BASE_URL}/api/scanner/status`, { method: 'GET' })
