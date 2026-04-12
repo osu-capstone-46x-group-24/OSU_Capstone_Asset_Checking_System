@@ -7,6 +7,9 @@ document.getElementById('scan-admin-card').onclick = () => {
     fetch(`${BASE_URL}/api/scanner/cards`, {
         method: 'POST',
         body: JSON.stringify({ data: '00:00:00:20:04:aa:c7:ff' }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
 };
 
@@ -15,6 +18,9 @@ document.getElementById('scan-user-card').onclick = () => {
     fetch(`${BASE_URL}/api/scanner/cards`, {
         method: 'POST',
         body: JSON.stringify({ data: '00:00:00:2c:e9:86:0c:de' }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
 };
 
