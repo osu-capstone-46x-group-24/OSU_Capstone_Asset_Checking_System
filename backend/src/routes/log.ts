@@ -20,6 +20,7 @@ function log_route(db: LibSQLDatabase<typeof schema>) {
             const level = c.req.param("level");
             const event = c.req.valid("json");
             await db.insert(schema.log_table).values({ level, ...event });
+            return c.json({ success: true });
         }
     );
 
