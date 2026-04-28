@@ -3,6 +3,7 @@
 // Imports
 import { useEffect, useRef } from "react";
 import configJson from "../spec_config.json";
+import { sendPostRequest } from "../API/OutboundNetworkHandler.ts";
 import type { ReqItem } from "../../../.d.ts";
 
 // Types
@@ -58,6 +59,23 @@ export default function LogRequestConsole({
 
         e1.scrollTop = e1.scrollHeight;
     }, [reqItems]);
+
+    useEffect(() => {
+        if (reqItems.length === 0) return;
+        const lastItem = reqItems[reqItems.length - 1];
+        if (lastItem.reqType === "LOG") return;
+        sendPostRequest("/log/default",
+            {
+                timestamp: getTimeStamp(),
+                type: "API Request Log",
+                message: lastItem.itemName
+            });
+    }, [reqItems]);
+
+    function getTimeStamp(): string {
+        const epochTime = Date.now();
+        return new Date(epochTime).toLocaleString();
+    }
 
     return (
         <>
