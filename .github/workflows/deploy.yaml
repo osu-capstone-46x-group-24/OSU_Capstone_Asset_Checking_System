@@ -19,6 +19,7 @@ jobs:
 
       - name: Create .env for GitHub Pages
         run: echo "VITE_BASE_URL=/OSU_Capstone_Asset_Checking_System/" > .env
+        run: echo "VITE_PUBLIC_LANDING_ONLY=true" >> .env
         working-directory: ./frontend
 
       - name: install dependencies

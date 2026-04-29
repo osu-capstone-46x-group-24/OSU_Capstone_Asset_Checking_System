@@ -21,6 +21,10 @@ export default function Navbar({ theme, setTheme }: NavbarProps) {
     // Parameter for leftmost navbar text - logo-equivalent
     const title = "CS 46X Capstone";
 
+    // shows only the landing page when flag is set, hides the admin and user dashboards and scanner flow
+    const publicLandingOnly =
+        import.meta.env.VITE_PUBLIC_LANDING_ONLY === "true";
+
     // Names and links for navbar items
     const navItems = [
         { title: "Scanner Flow", link: "/Flow" },
@@ -28,6 +32,12 @@ export default function Navbar({ theme, setTheme }: NavbarProps) {
         { title: "Admin", link: "/Admin" },
         { title: "About", link: "/Home" },
     ];
+
+    const filteredNavItems = publicLandingOnly
+        ? navItems.filter(
+              (item) => item.link === "/Home" // Only include the Home link
+          )
+        : navItems; // Include all links if not in public landing only mode
 
     return (
         <div
@@ -52,7 +62,7 @@ export default function Navbar({ theme, setTheme }: NavbarProps) {
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center space-x-8">
-                            {navItems.map((item, index) => (
+                            {filteredNavItems.map((item, index) => (
                                 <Link
                                     key={index}
                                     to={item.link}

@@ -44,6 +44,10 @@ export default function App() {
         localStorage.setItem("theme", theme);
     }, [theme]);
 
+    // shows only the landing page when flag is set, hides the admin and user dashboards and scanner flow
+    const publicLandingOnly =
+        import.meta.env.VITE_PUBLIC_LANDING_ONLY === "true";
+
     return (
         <>
             <Router>
@@ -56,19 +60,27 @@ export default function App() {
                     >
                         <Route path="/" element={<Navigate to="/Home" />} />
                         <Route path="/Home" element={<Home theme={theme} />} />
-                        <Route
-                            path="/Admin"
-                            element={
-                                <AdminDashboard
-                                    theme={theme}
-                                    setTheme={setTheme}
-                                    reqQueue={reqQueue}
-                                    setReqQueue={setReqQueue}
+
+                        {!publicLandingOnly && (
+                            <>
+                                <Route
+                                    path="/Admin"
+                                    element={
+                                        <AdminDashboard
+                                            theme={theme}
+                                            setTheme={setTheme}
+                                            reqQueue={reqQueue}
+                                            setReqQueue={setReqQueue}
+                                        />
+                                    }
                                 />
-                            }
-                        />
-                        <Route path="/User" element={<UserDashboard />} />
-                        <Route path="/Flow" element={<ScannerFlow />} />
+                                <Route
+                                    path="/User"
+                                    element={<UserDashboard />}
+                                />
+                                <Route path="/Flow" element={<ScannerFlow />} />
+                            </>
+                        )}
                     </Route>
                 </Routes>
             </Router>
