@@ -19,10 +19,12 @@ const PORT = process.env.PORT || 3003;
 
 // more mock cards could be added in the future,
 // currently I only have one working card
-const RFID_CARDS: string[] = ['00:00:00:20:04:aa:c7:ff'];
+const RFID_CARDS: string[] = [
+    '00:00:00:20:04:aa:c7:ff',
+    '00:00:00:2c:e9:86:0c:de',
+];
 
 const MOCK_ITEMS: string[] = [
-    '00:80:61:3e:89:1c:b4:04',
     '00:80:61:3e:8a:3e:63:04',
     '00:80:61:3e:81:bb:e9:04',
     '00:80:61:3e:89:36:75:04',
