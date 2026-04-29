@@ -80,7 +80,7 @@ export default function LogRequestConsole({
     return (
         <>
             <div
-                className={`h-[600px] overflow-y-auto mb-8 rounded-sm shadow-lg bg-${color_primary_bg}`}
+                className={`h-[600px] w-[1030px] overflow-y-auto overflow-x-auto mb-8 rounded-sm shadow-lg bg-${color_primary_bg}`}
                 ref={containerRef}
             >
                 <table className="divide-y mb-6 m-1 text-left">

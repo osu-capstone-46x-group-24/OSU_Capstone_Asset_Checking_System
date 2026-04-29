@@ -3,6 +3,7 @@
 // Imports
 import React from "react";
 import configJson from "../spec_config.json";
+import ButtonDefault from "./UI_Elements/ButtonDefault.tsx";
 
 // Types
 type ServiceStatusIndicatorConsoleProps = {
@@ -11,6 +12,8 @@ type ServiceStatusIndicatorConsoleProps = {
     color_accent_text: string;
     color_accent_bg: string;
 };
+
+const SHOW_STATUS_WIDGET = false;
 
 // Example Canary Request
 /*
@@ -83,7 +86,7 @@ export default function ServiceStatusIndicator({
     // const UpdateBackendStatus = (e) => {
     //     setBackendStatus(e);
     // }
-
+    if (!SHOW_STATUS_WIDGET) {return false}
     return (
         <>
             <div
@@ -105,14 +108,14 @@ export default function ServiceStatusIndicator({
                         ></div>
                     </div>
                     <div>
-                        <button
+                        <ButtonDefault
                             children={"Update Status"}
                             onClick={() =>
                                 scannerStatus == "online"
                                     ? UpdateScannerStatus("offline")
                                     : UpdateScannerStatus("online")
                             }
-                        ></button>
+                        />
                     </div>
                 </div>
                 <div
