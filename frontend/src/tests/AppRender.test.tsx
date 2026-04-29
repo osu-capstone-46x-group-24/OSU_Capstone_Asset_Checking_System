@@ -36,8 +36,9 @@ describe("App component", () => {
     it("renders without crashing", () => {
         render(<App />);
         // You can adjust this text to something actually visible on your Home page
-        expect(screen.getByText(/User/i)).toBeTruthy();
-        expect(screen.getByText(/Admin/i)).toBeTruthy();
+        expect(
+            screen.getByText("OSU CS 46X Capstone Project 2025-2026")
+        ).toBeTruthy();
     });
 });
 
