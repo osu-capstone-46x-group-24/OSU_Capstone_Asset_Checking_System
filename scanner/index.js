@@ -3,13 +3,40 @@ const BASE_URL = `http://localhost:3003`;
 const socket = io(BASE_URL);
 
 // POST to the scanner cards endpoint
-document.getElementById('scan-card').onclick = () => {
-    fetch(`${BASE_URL}/api/scanner/cards`, { method: 'POST' });
+document.getElementById('scan-admin-card').onclick = () => {
+    fetch(`${BASE_URL}/api/scanner/cards`, {
+        method: 'POST',
+        body: JSON.stringify({ data: '00:00:00:20:04:aa:c7:ff' }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+};
+
+// POST to the scanner user card endpoint
+document.getElementById('scan-user-card').onclick = () => {
+    fetch(`${BASE_URL}/api/scanner/cards`, {
+        method: 'POST',
+        body: JSON.stringify({ data: '00:00:00:2c:e9:86:0c:de' }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 };
 
 // POST to the scanner items endpoint
 document.getElementById('scan-item').onclick = () => {
     fetch(`${BASE_URL}/api/scanner/items`, { method: 'POST' });
+};
+
+document.getElementById('scan-item-1').onclick = () => {
+    fetch(`${BASE_URL}/api/scanner/items`, {
+        method: 'POST',
+        body: JSON.stringify({ data: '00:80:61:3e:89:1c:b4:04' }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 };
 
 // GET scanner status
