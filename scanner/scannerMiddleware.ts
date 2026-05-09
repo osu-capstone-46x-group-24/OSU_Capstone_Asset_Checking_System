@@ -10,7 +10,7 @@ const VENDOR_ID = 3111;
 const PRODUCT_ID = 15354;
 
 const POLL_DELAY = 250;
-const LOGGING_ENABLED = true;
+const LOGGING_ENABLED = false;
 
 let device: HID.HID | null = null;
 let timer: NodeJS.Timeout | null = null;
