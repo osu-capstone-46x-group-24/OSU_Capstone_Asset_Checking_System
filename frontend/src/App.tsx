@@ -84,8 +84,6 @@ export default function App() {
                     </Route>
                 </Routes>
             </Router>
-            <script src="../node_modules/@material-tailwind/html@latest/scripts/ripple.js"></script>
-            <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
         </>
     );
 }

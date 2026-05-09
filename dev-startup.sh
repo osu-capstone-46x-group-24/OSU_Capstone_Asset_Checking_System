@@ -36,7 +36,7 @@ echo "Starting *frontend* at localhost:5173..."
 PIDS+=($!)
 
 # Start Backend
-echo "Starting *backend* at localhost:3001..."
+echo "Starting *backend* at localhost:3000..."
 (cd "$BASE_DIR/backend" && npm run dev) &
 PIDS+=($!)
 

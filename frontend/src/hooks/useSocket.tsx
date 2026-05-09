@@ -7,9 +7,13 @@ import { useEffect } from "react";
 import type { ReqItem } from "../../../.d.ts";
 
 // Constants
-const PORT = 3003;
-const BASE_URL: string = `http://localhost:${PORT}`;
-const socket = io(BASE_URL);
+const DEFAULT_SCANNER_BASE_URL = "http://localhost:3003";
+const scannerBaseUrl = import.meta.env.VITE_SCANNER_BASE_URL;
+const socket = scannerBaseUrl === undefined
+    ? io(DEFAULT_SCANNER_BASE_URL, { path: "/socket.io" })
+    : scannerBaseUrl.trim().length > 0
+      ? io(scannerBaseUrl, { path: "/socket.io" })
+      : io({ path: "/socket.io" });
 
 /**
 

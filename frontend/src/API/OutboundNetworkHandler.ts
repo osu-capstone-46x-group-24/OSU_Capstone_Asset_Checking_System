@@ -1,7 +1,11 @@
 // OutboundNetworkHandler.ts
 
 // Constants
-export const BACKEND_BASE: string = "http://localhost:3000/api";
+const DEFAULT_BACKEND_BASE = "http://localhost:3000/api";
+
+export const BACKEND_BASE: string = (
+    import.meta.env.VITE_API_BASE_URL || DEFAULT_BACKEND_BASE
+).replace(/\/$/, "");
 // const CHECK_IN: string = "/checkin";
 // const CHECK_OUT: string = "/checkout";
 // const ITEMS: string = "/items";

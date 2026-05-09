@@ -1,0 +1,80 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_BASE_URL: /
+        VITE_API_BASE_URL: /api
+        VITE_SCANNER_BASE_URL: ""
+        VITE_PUBLIC_LANDING_ONLY: ${VITE_PUBLIC_LANDING_ONLY:-false}
+    depends_on:
+      backend:
+        condition: service_healthy
+      scanner-server:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DB_FILE_NAME: file:/data/local.db
+      PORT: "3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/canary').then((res)=>process.exit(res.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    volumes:
+      - backend-data:/data
+
+  scanner-server:
+    build:
+      context: ./scanner
+      dockerfile: Dockerfile
+    command: ["npm", "run", "start:server"]
+    environment:
+      PORT: "3003"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3003/api/scanner/status').then((res)=>process.exit(res.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  scanner-middleware:
+    build:
+      context: ./scanner
+      dockerfile: Dockerfile
+    command: ["npm", "run", "start:middleware"]
+    privileged: true
+    devices:
+      - "/dev/hidraw0:/dev/hidraw0"
+    depends_on:
+      scanner-server:
+        condition: service_healthy
+    environment:
+      BASE_URL: http://scanner-server:3003
+    restart: unless-stopped
+
+volumes:
+  backend-data:
