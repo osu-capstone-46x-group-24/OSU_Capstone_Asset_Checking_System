@@ -18,14 +18,15 @@ export default function ScannerFlow() {
                 rfid: req.itemName,
             });
             console.log(userData);
+            const scannedUserId = String(userData.id);
 
             if (userData.isAdmin) {
                 setIsAdmin(true);
-                setUserId(userData.id);
+                setUserId(scannedUserId);
             } else {
                 setNavigating(true);
                 setTimeout(() => {
-                    navigate("/User?id=" + userId);
+                    navigate("/User?id=" + scannedUserId);
                 }, 3000);
             }
         }
