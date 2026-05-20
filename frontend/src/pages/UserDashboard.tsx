@@ -9,9 +9,11 @@ import type { ReqItem } from "../../../.d.ts";
 import { useSocket } from "../hooks/useSocket.tsx";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {
+    BACKEND_BASE,
     sendGetRequest,
-    sendPostRequest,
+    //sendPostRequest,
 } from "../API/OutboundNetworkHandler.ts";
+import { Alert } from "@material-tailwind/react";
 
 // Types
 
@@ -37,6 +39,7 @@ export default function UserDashboard() {
     const [showModal, setShowModal] = useState(false);
     const [thankYou, setThankYou] = useState(false);
     const [items, setItems] = useState<Item[]>([]);
+    const [showAlert, setShowAlert] = useState(false);
 
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
@@ -96,16 +99,44 @@ export default function UserDashboard() {
         };
 
         console.log("Sending checkout data to backend:", checkoutObject);
-        await sendPostRequest("/checkout", checkoutObject);
+        //await sendPostRequest("/checkout", checkoutObject);
 
-        // reset
-        setShowModal(false); // close modal
-        setThankYou(true); // show thank-you screen
+        try {
+            const response = await fetch(BACKEND_BASE + "/checkout", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(checkoutObject),
+            });
+            if (response.ok) {
+                // reset
+                setShowModal(false); // close modal
+                setThankYou(true); // show thank-you screen
 
+                setTimeout(() => {
+                    // after 8 seconds, fully reset to dashboard. if it feels like too long you can shorten it idk
+                    handleReset();
+                }, 8000);
+            } else {
+                console.log("Item not available...");
+                handleUserAlert();
+                setShowModal(false); // close modal
+            }
+            console.log("Response... : ", response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const userAlert = <Alert>Item not available...</Alert>;
+
+    function handleUserAlert() {
+        setShowAlert(true);
         setTimeout(() => {
-            // after 8 seconds, fully reset to dashboard. if it feels like too long you can shorten it idk
-            handleReset();
-        }, 8000);
+            setShowAlert(false);
+        }, 5000);
     }
 
     const buttonTheme = "bg-bg text-text";
@@ -114,6 +145,10 @@ export default function UserDashboard() {
 
     return (
         <div className="flex grow w-full">
+            {showAlert ? (
+                <div className=" w-75 flex h-min ">{userAlert}</div>
+            ) : null}
+
             {thankYou ? (
                 <div className="flex flex-col items-center justify-center mx-auto min-h-[70vh] text-center">
                     <h1 className="text-5xl">
@@ -217,6 +252,7 @@ export default function UserDashboard() {
                     </div>
                 </div>
             )}
+
             <DatetimeModal
                 open={showModal}
                 onClose={() => setShowModal(false)}
