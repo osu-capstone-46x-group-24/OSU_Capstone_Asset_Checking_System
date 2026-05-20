@@ -97,5 +97,12 @@ npm install
 Then, start the server (make sure ports arent conflicting) with:
 
 ```
-node server.js
+npm run start
+```
+
+If you want to run the scanner middleware against the local scanner server, use:
+
+```
+cp .env.example .env
+npm run start:middleware
 ```

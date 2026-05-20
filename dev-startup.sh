@@ -36,13 +36,20 @@ echo "Starting *frontend* at localhost:5173..."
 PIDS+=($!)
 
 # Start Backend
-echo "Starting *backend* at localhost:3001..."
+echo "Starting *backend* at localhost:3000..."
 (cd "$BASE_DIR/backend" && npm run dev) &
 PIDS+=($!)
 
 # Start Scanner
-echo "Starting *scanner* at localhost:3003 + index.html..."
-(cd "$BASE_DIR/scanner" && node server.ts) &
+echo "Starting *scanner server* at localhost:3003 + index.html..."
+(cd "$BASE_DIR/scanner" && npm run start:server) &
+PIDS+=($!)
+
+sleep 2
+
+# Start Scanner Middleware
+echo "Starting *scanner middleware*..."
+(cd "$BASE_DIR/scanner" && npm run start:middleware) &
 PIDS+=($!)
 
 echo "Services running with PIDs: ${PIDS[*]}"

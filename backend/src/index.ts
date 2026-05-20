@@ -21,7 +21,8 @@ const db = drizzle({
 await migrate(db, { migrationsFolder: "drizzle/" });
 
 const router = app(db);
+const port = Number(process.env.PORT || 3000);
 
-serve({ fetch: router.fetch, port: 3000 }, (info) => {
+serve({ fetch: router.fetch, port }, (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
 });

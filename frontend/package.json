@@ -19,7 +19,6 @@
     "@tailwindcss/postcss": "^4.1.17",
     "@tailwindcss/vite": "^4.1.16",
     "gh-pages": "^6.3.0",
-    "html": "file:latest/scripts/ripple.js",
     "node": "^22.21.0",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
