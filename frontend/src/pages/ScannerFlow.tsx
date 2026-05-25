@@ -7,12 +7,32 @@ import {
     sendPostRequest,
 } from "../API/OutboundNetworkHandler.ts";
 
+type displayReqItem = {
+    itemRFID: string;
+    itemName: string;
+};
+
+type itemType = {
+    id: number;
+    name: string;
+    rfid: string;
+};
+
+const defaultDisplayReqItem = {
+    itemRFID: "NULL",
+    itemName: "NULL",
+};
+
 export default function ScannerFlow() {
     const navigate = useNavigate();
     const [navigating, setNavigating] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [userId, setUserId] = useState<string>("");
-    const [itemChecked, setItemChecked] = useState<boolean>(false);
+    const [itemChecked, setItemChecked] = useState(false);
+    const [lastItemScanned, setLastItemScanned] = useState<displayReqItem>(
+        defaultDisplayReqItem
+    );
+    const [checkedErr, setCheckedErr] = useState<Error | null>(null);
 
     const handleScan = async (req: ReqItem) => {
         // Only react to card scans
@@ -34,6 +54,10 @@ export default function ScannerFlow() {
                 }, 3000);
             }
         } else if (req.reqType === "ITEM") {
+            setItemChecked(true);
+            setTimeout(() => {
+                setItemChecked(false);
+            }, 3000);
             try {
                 console.log("ATTEMPT CHECK IN: ", req.itemName);
                 // Get Database of items
@@ -49,45 +73,72 @@ export default function ScannerFlow() {
                 // {"id":10,"name":"EKG","rfid":"00:80:61:3e:89:36:75:04"}]
                 const databaseItemList = await sendGetRequest("/items/all");
                 console.log("DATABASE ITEM LIST:\n", databaseItemList);
+
                 // Get item entry: example [{"id":2,"name":"TEST2","rfid":"002"}]
                 const itemEntry = databaseItemList.find(
-                    (item: any) => item.rfid === req.itemName
+                    (item: itemType) => item.rfid === req.itemName
                 );
-                console.log(itemEntry);
-                // Pass id, name, and rfid to itemCheckinFlow()
-                await sendPostRequest("/checkin", {
-                    itemId: itemEntry.id,
+                console.log("ITEM NAME:", itemEntry);
+                setLastItemScanned({
+                    itemRFID: req.itemName,
+                    itemName: itemEntry ? itemEntry.name : null,
                 });
-                itemCheckinFlow(itemEntry);
+                if (itemEntry) {
+                    console.log(itemEntry);
+                    // Pass id, name, and rfid to itemCheckinFlow()
+                    await sendPostRequest("/checkin", {
+                        itemId: itemEntry.id,
+                    });
+                    itemCheckinFlow();
+                }
             } catch (error) {
                 console.error(error);
+                itemErrorFlow(error);
             }
         }
     };
 
     useSocket(handleScan);
 
-    function itemCheckinFlow(itemEntry: any) {
+    function itemErrorFlow(err: any) {
+        console.log("ERROR: no active checkout found...");
+        setCheckedErr(err);
+    }
+
+    function itemCheckinFlow() {
         setItemChecked(true);
-        if (itemChecked) {
-            return (
-                <div
-                    className={`w-full min-h-screen bg-bg text-text flex items-center justify-center`}
-                >
+
+        setTimeout(() => {
+            setItemChecked(false);
+            setCheckedErr(null);
+        }, 3000);
+    }
+
+    if (itemChecked) {
+        return (
+            <div
+                className={`w-full min-h-screen bg-bg text-text flex items-center justify-center`}
+            >
+                <main className="grow p-4 mb-40 text-center">
                     <h1 className={`text-3xl font-bold mb-20`}>
                         Item Scanned!
                     </h1>
-                    <h2 className={`text-xl font-bold mt-20`}>
-                        Checked in: {itemEntry.name} {`\n`}
-                        Item ID: {itemEntry.id} {`\n`}
-                        RFID: {itemEntry.rfid}
-                    </h2>
-                </div>
-            );
-        }
-        setTimeout(() => {
-            setItemChecked(false);
-        }, 3000);
+                    <p className={`text-xl`}>
+                        Scanned:{" "}
+                        {lastItemScanned.itemName != null
+                            ? lastItemScanned.itemName
+                            : "Unknown Item"}
+                        {/*Item ID: {itemEntry.id} {`\n`}*/}
+                        {/*RFID: {itemEntry.rfid}*/}
+                    </p>
+                    <p>
+                        {checkedErr === null
+                            ? "Successfully Checked In Item!"
+                            : "ERROR: " + checkedErr}
+                    </p>
+                </main>
+            </div>
+        );
     }
 
     if (navigating) {
