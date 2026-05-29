@@ -64,6 +64,7 @@ export default function NetworkManager({
         { _value: "/items/available", text: "/items/available" },
         { _value: "/items/all", text: "/items/all" },
         { _value: "/canary", text: "/canary" },
+        {_value: "/log", text: "/log" },
     ];
 
     const requestListings = [

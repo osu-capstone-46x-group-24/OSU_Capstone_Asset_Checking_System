@@ -4,6 +4,7 @@
 import type { DB_Item } from "../../../.d.ts";
 import { sendPostRequest } from "../API/OutboundNetworkHandler.ts";
 import React from "react";
+import ButtonDefault from "./UI_Elements/ButtonDefault.tsx";
 // import React from "react";
 
 type CRUDatabaseElementProps = {
@@ -39,6 +40,8 @@ export default function CRUDatabaseElement({
             console.log("POST request to /items sent [", itemToAdd, "]...");
             const result: string = await sendPostRequest("/items", itemToAdd);
             console.log("OUTPUT: ", result);
+            setName("");
+            setRFID("");
         } catch (err) {
             const message =
                 err instanceof Error ? err.message : "Unknown Error";
@@ -58,21 +61,24 @@ export default function CRUDatabaseElement({
                     <div className={`flex flex-col items-start`}>
                         <span className={`pl-6`}>Name</span>
                         <input
+                            id={"name_form"}
                             placeholder={"Insert Name..."}
                             type={"text"}
+                            value={name}
                             onChange={(e) => setName(e.target.value)}
                             className={`w-full h-10 bg-${color_accent_bg} rounded-sm text-${color_accent_text} pl-6`}
                         />
                         <span className={`pl-6`}>RFID</span>
                         <input
+                            id={"rfid_form"}
                             placeholder={"Insert RFID..."}
                             type={"text"}
                             onChange={(e) => setRFID(e.target.value)}
                             className={`w-full h-10 bg-${color_accent_bg} rounded-sm text-${color_accent_text} pl-6`}
                         />
                     </div>
-                    <div className={`mt-6 bg-white`}>
-                        <button
+                    <div className={`mt-6 rounded-sm`}>
+                        <ButtonDefault
                             onClick={() => AddItem(name, RFID)}
                             className={``}
                             children={"Create DB Element"}

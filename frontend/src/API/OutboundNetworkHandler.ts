@@ -17,7 +17,6 @@ export const BACKEND_BASE: string = (
  *
  */
 export async function sendPostRequest(endpoint: string, body?: unknown) {
-    // Scanner
     // Backend
     const response = await fetch(BACKEND_BASE + endpoint, {
         method: "POST",
@@ -41,7 +40,6 @@ export async function sendPostRequest(endpoint: string, body?: unknown) {
  *
  */
 export async function sendGetRequest(endpoint: string) {
-    // Scanner
     // Backend
     const response = await fetch(BACKEND_BASE + endpoint, {
         method: "GET",

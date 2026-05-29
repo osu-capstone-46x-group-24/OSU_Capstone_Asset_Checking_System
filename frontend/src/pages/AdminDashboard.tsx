@@ -55,7 +55,7 @@ export default function AdminDashboard({
         <div className={`flex grow w-full`}>
             {/* Body */}
             <div className="flex-grow">
-                <div className="justify-items-start w-full pb-1 pt-10 text-5xl">
+                <div className="justify-items-start w-full pb-1 pt-10 pl-10 text-5xl">
                     <span className="">Admin Dashboard</span>
                 </div>
                 <div className="flex flex-row">
@@ -101,7 +101,9 @@ export default function AdminDashboard({
                         }
                         <div className={"flex flex-col p-10"}>
                             <div className="flex p-0.5 text-xl">
-                                <span>Service Status</span>
+                                {
+                                    //<span>Service Status</span>
+                                }
                             </div>
                             <div className={`p-1`}>
                                 <ServiceStatusIndicator {...consoleParams} />
