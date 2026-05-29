@@ -3,6 +3,7 @@ import * as schema from "../db/schema.js";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 import { zValidator } from "@hono/zod-validator";
 import { createInsertSchema } from "drizzle-zod";
+import { eq } from "drizzle-orm";
 
 function log_route(db: LibSQLDatabase<typeof schema>) {
     const app = new Hono();
@@ -23,6 +24,20 @@ function log_route(db: LibSQLDatabase<typeof schema>) {
             return c.json({ success: true });
         }
     );
+
+    app.get("/log/:level", async (c) => {
+        const level = c.req.param("level");
+        const logs = await db
+            .select()
+            .from(schema.log_table)
+            .where(eq(schema.log_table.level, level));
+        return c.json(logs);
+    });
+
+    app.get("/log/", async (c) => {
+        const logs = await db.select().from(schema.log_table);
+        return c.json(logs);
+    });
 
     return app;
 }
