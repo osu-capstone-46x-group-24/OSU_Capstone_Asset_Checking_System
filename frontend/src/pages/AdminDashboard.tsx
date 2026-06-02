@@ -52,7 +52,7 @@ export default function AdminDashboard({
               };
 
     return (
-        <div className={`flex grow w-full`}>
+        <div className={`flex grow w-full flex-wrap`}>
             {/* Body */}
             <div className="flex-grow">
                 <div className="justify-items-start w-full pb-1 pt-10 text-5xl">
